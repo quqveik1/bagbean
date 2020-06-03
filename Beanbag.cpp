@@ -10,10 +10,21 @@ struct Rect
     double bottom;
 };
 
-void Movement (double x, double y, double r, double vX, double vY, double dt, double g = 0.7);
-void Physics (double *x, double *y, double *vX, double *vY, double dt, double g, Rect box);
-double SpeedX (double vX, double standartX);
-double SpeedY (double vY, double standartY);
+struct Ball 
+{
+    double x;
+    double y;
+    double r;
+    double vX;
+    double vY;
+    double dt;
+    double g;
+};
+
+void BallFrame(Ball *ball);
+void Physics (Ball *ball, Rect box);
+double SpeedX (double vX);
+double SpeedY (double vY);
 bool ClearBackground (bool flagClearBackground);
 void   SwitchColour ();
 double SwitchRadius (double r);
@@ -40,39 +51,47 @@ double SwitchRadius (double r);
 //New
 int main()
 {
-    Movement (100, 400, 20, 5, 5, 1);
+    txCreateWindow (800, 600);
+    txSetColor     (TX_LIGHTRED);
+    txSetFillColor (TX_RED);
+
+    Ball ball1 = {100, 400, 20, 5, 5, 1, 0.7};
+    Ball ball2 = {300, 100, 10, 5, 5, 1, 0.7};
+    Ball ball3 = {400, 500, 15, 5, 5, 1, 0.7};
+    bool flagClearBackground = false;
+    for (;;)
+    {
+        BallFrame (&ball1);
+        BallFrame (&ball2);
+        BallFrame (&ball3);
+        
+        txSleep (20);
+
+        if (txGetAsyncKeyState('Q')) break;
+        flagClearBackground = ClearBackground (flagClearBackground);
+    }
     
 
     return 0;
 }
 
 // x = 100; y = 400; r = 20; vX = 5; vY = 5; dt = 1; g = 0.7
-void Movement (double x, double y, double r, double vX, double vY, double dt, double g)
+void BallFrame (Ball *ball)
 {
-     double standartX = vX;
+    /*
+     double standartX = ball.vX;
      double standartY = vY;
-     bool flagClearBackground = false;
+     */
 
-     txCreateWindow (800, 600);
-     txSetColor     (TX_LIGHTRED);
-     txSetFillColor (TX_RED);
+     Physics (ball, {(*ball).r, (*ball).r, txGetExtent().x - (*ball).r, txGetExtent().y - (*ball).r});
 
-     for (;;)
-     {
-        flagClearBackground = ClearBackground(flagClearBackground);
+     (*ball).vX = SpeedX ((*ball).vX);
+     (*ball).vY = SpeedY ((*ball).vY);
 
-        Physics (&x, &y, &vX, &vY, dt, g, {r, r, txGetExtent().x - r, txGetExtent().y - r});
+     SwitchColour ();
+     (*ball).r = SwitchRadius ((*ball).r);
 
-        vX = SpeedX (vX, standartX);
-        vY = SpeedY (vY, standartY);
-
-        SwitchColour ();
-        r = SwitchRadius (r);
-
-       if (txGetAsyncKeyState ('Q')) break;
-       txCircle (x, y, r);
-       txSleep (33);
-     }
+     txCircle ((*ball).x, (*ball).y, (*ball).r);
 }
 
 
@@ -81,43 +100,43 @@ void Movement (double x, double y, double r, double vX, double vY, double dt, do
 //(x - 1)(x + 1) = 0
 
 // 0 - x; 1 - y; 2 - vX; 3 - vY;
-void Physics (double *x, double *y, double *vX, double *vY, double dt, double g, Rect box)
+void Physics (Ball *ball, Rect box)
 {
 
-        *vY +=  g * dt;
+        (*ball).vY +=  (*ball).g * (*ball).dt;
 
-        *x += *vX * dt;
-        *y += *vY * dt;
+        (*ball).x += (*ball).vX * (*ball).dt;
+        (*ball).y += (*ball).vY * (*ball).dt;
 
 
-        if (*x >= box.right)
+        if ((*ball).x >= box.right)
         {
-            *vX = -(*vX);
-            *x = box.right - (*x - box.right);
+            (*ball).vX = -((*ball).vX);
+            (*ball).x = box.right - ((*ball).x - box.right);
         }
 
-        if (*y >= box.bottom)
+        if ((*ball).y >= box.bottom)
         {
-            *vY = -*vY;
-            *y = box.bottom - (*y - box.bottom);
+            (*ball).vY = -((*ball).vY);
+            (*ball).y = box.bottom - ((*ball).y - box.bottom);
         }
 
-        if (*x <= box.left)
+        if ((*ball).x <= box.left)
         {
-            *vX = -*vX;
-            *x = box.left - (*x - box.left);
+            (*ball).vX = -((*ball).vX);
+            (*ball).x = box.left - ((*ball).x - box.left);
         }
 
-        if (*y <= box.top)
+        if ((*ball).y <= box.top)
         {
-            *vY = -*vY;
-            *y = box.top - (*y - box.top);
+            (*ball).vY = -((*ball).vY);
+            (*ball).y = box.top - ((*ball).y - box.top);
         }
         
         
 }
 
-double SpeedX (double vX, double standartX)
+double SpeedX (double vX)
 {
         if (txGetAsyncKeyState (VK_RIGHT))
         {
@@ -133,16 +152,16 @@ double SpeedX (double vX, double standartX)
 
             if (vX < 0)  vX++;
         }
-
+        /*
         if (txGetAsyncKeyState ('S'))
         {
             vX = standartX;
         }
-
+        */
         return vX;
 }
 
-double SpeedY (double vY, double standartY)
+double SpeedY (double vY)
 {
         if (txGetAsyncKeyState (VK_UP))
         {
@@ -158,12 +177,12 @@ double SpeedY (double vY, double standartY)
 
             if (vY < 0)  vY++;
         }
-
+        /*
         if (txGetAsyncKeyState ('S'))
         {
             vY = standartY;
         }
-
+        */
         return vY;
 }
 
