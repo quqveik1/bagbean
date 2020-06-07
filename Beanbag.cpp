@@ -2,27 +2,34 @@
 #define TX_COMPILED
 #include "C:/Users/Алехандро/Desktop/Alex_projects/TXTEST/TXLib.h"
 
-struct Rect
-{
-    double left;
-    double top;
-    double right;
-    double bottom;
-};
 
-struct Ball 
+struct Vector 
 {
     double x;
     double y;
-    double r;
-    double vX;
-    double vY;
-    double dt;
-    double g;
 };
 
-void BallFrame(Ball *ball);
-void Physics (Ball *ball, Rect box);
+struct Rect
+{
+    Vector pos;
+    Vector size;
+
+};
+
+double left  (const Rect *rect) { return rect->pos.x; }
+double top   (const Rect *rect) { return rect->pos.y; }
+double right (const Rect *rect) { return rect->size.x + 0; }
+double bottom(const Rect *rect) { return rect->size.y + 0; }
+
+struct Ball 
+{
+    Vector pos;
+    Vector v;
+    double r;
+};
+
+void BallFrame(Ball *ball, double dt, double g); 
+void Physics (Ball *ball, Rect box, double dt, double g);
 double SpeedX (double vX);
 double SpeedY (double vY);
 bool ClearBackground (bool flagClearBackground);
@@ -55,19 +62,25 @@ int main()
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
 
-    Ball ball1 = {100, 400, 20, 5, 5, 1, 0.7};
-    Ball ball2 = {300, 100, 10, 5, 5, 1, 0.7};
-    Ball ball3 = {400, 500, 15, 5, 5, 1, 0.7};
+    Ball ball1 = {{100, 400}, {5, 5}, 20};
+    Ball ball2 = {{300, 100}, {5, 5}, 10};
+    Ball ball3 = {{400, 500}, {5, 5}, 15};
+
     bool flagClearBackground = false;
+
+    double dt = 1;
+    double g = 0.7;
+
     for (;;)
     {
-        BallFrame (&ball1);
-        BallFrame (&ball2);
-        BallFrame (&ball3);
+        BallFrame (&ball1, dt, g);
+        BallFrame (&ball2, dt, g);
+        BallFrame (&ball3, dt, g);
         
         txSleep (20);
 
         if (txGetAsyncKeyState('Q')) break;
+
         flagClearBackground = ClearBackground (flagClearBackground);
     }
     
@@ -76,22 +89,22 @@ int main()
 }
 
 // x = 100; y = 400; r = 20; vX = 5; vY = 5; dt = 1; g = 0.7
-void BallFrame (Ball *ball)
+void BallFrame (Ball *ball, double dt, double g)
 {
     /*
      double standartX = ball.vX;
      double standartY = vY;
      */
+     const Rect box = {{ball->r, ball->r}, {txGetExtent().x - (ball->r), txGetExtent().y - (ball->r)}};
+     Physics (ball, box, dt, g);
 
-     Physics (ball, {(*ball).r, (*ball).r, txGetExtent().x - (*ball).r, txGetExtent().y - (*ball).r});
-
-     (*ball).vX = SpeedX ((*ball).vX);
-     (*ball).vY = SpeedY ((*ball).vY);
+     ball->v.x = SpeedX (ball->v.x);
+     ball->v.y = SpeedY (ball->v.y);
 
      SwitchColour ();
      (*ball).r = SwitchRadius ((*ball).r);
 
-     txCircle ((*ball).x, (*ball).y, (*ball).r);
+     txCircle ((*ball).pos.x, (*ball).pos.y, (*ball).r);
 }
 
 
@@ -100,37 +113,37 @@ void BallFrame (Ball *ball)
 //(x - 1)(x + 1) = 0
 
 // 0 - x; 1 - y; 2 - vX; 3 - vY;
-void Physics (Ball *ball, Rect box)
+void Physics (Ball *ball, Rect box, double dt, double g)
 {
 
-        (*ball).vY +=  (*ball).g * (*ball).dt;
+        (*ball).v.y +=  g * dt;
 
-        (*ball).x += (*ball).vX * (*ball).dt;
-        (*ball).y += (*ball).vY * (*ball).dt;
+        (*ball).pos.x += (*ball).v.x * dt;
+        (*ball).pos.y += (*ball).v.y * dt;
 
 
-        if ((*ball).x >= box.right)
+        if ((*ball).pos.x >= right (&box))
         {
-            (*ball).vX = -((*ball).vX);
-            (*ball).x = box.right - ((*ball).x - box.right);
+            (*ball).v.x = -((*ball).v.x);
+            (*ball).pos.x = right(&box) - ((*ball).pos.x - right(&box));
         }
 
-        if ((*ball).y >= box.bottom)
+        if ((*ball).pos.y >= bottom(&box))
         {
-            (*ball).vY = -((*ball).vY);
-            (*ball).y = box.bottom - ((*ball).y - box.bottom);
+            (*ball).v.y = -((*ball).v.y);
+            (*ball).pos.y = bottom(&box) - ((*ball).pos.y - bottom(&box));
         }
 
-        if ((*ball).x <= box.left)
+        if ((*ball).pos.x <= left(&box))
         {
-            (*ball).vX = -((*ball).vX);
-            (*ball).x = box.left - ((*ball).x - box.left);
+            (*ball).v.x = -((*ball).v.x);
+            (*ball).pos.x = left(&box) - ((*ball).pos.x - left(&box));
         }
 
-        if ((*ball).y <= box.top)
+        if ((*ball).pos.y <= top(&box))
         {
-            (*ball).vY = -((*ball).vY);
-            (*ball).y = box.top - ((*ball).y - box.top);
+            (*ball).v.y = -((*ball).v.y);
+            (*ball).pos.y = top(&box) - ((*ball).pos.y - top(&box));
         }
         
         
