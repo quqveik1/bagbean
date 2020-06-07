@@ -1,7 +1,7 @@
 ﻿
 #define TX_COMPILED
 #include "C:/Users/Алехандро/Desktop/Alex_projects/TXTEST/TXLib.h"
-
+//you should delete define and change #include "C:/Users/Алехандро/Desktop/Alex_projects/TXTEST/TXLib.h" to #include "TXLib.h"
 
 struct Vector 
 {
@@ -14,12 +14,12 @@ struct Rect
     Vector pos;
     Vector size;
 
+    double left  (const Rect *rect) { return rect->pos.x; }
+    double top   (const Rect *rect) { return rect->pos.y; }
+    double right (const Rect *rect) { return rect->size.x + 0; }
+    double bottom(const Rect *rect) { return rect->size.y + 0; }
 };
 
-double left  (const Rect *rect) { return rect->pos.x; }
-double top   (const Rect *rect) { return rect->pos.y; }
-double right (const Rect *rect) { return rect->size.x + 0; }
-double bottom(const Rect *rect) { return rect->size.y + 0; }
 
 struct Ball 
 {
@@ -29,7 +29,7 @@ struct Ball
 };
 
 void BallFrame(Ball *ball, double dt, double g); 
-void Physics (Ball *ball, Rect box, double dt, double g);
+void Physics  (Ball *ball, Rect box, double dt, double g);
 double SpeedX (double vX);
 double SpeedY (double vY);
 bool ClearBackground (bool flagClearBackground);
@@ -66,10 +66,10 @@ int main()
     Ball ball2 = {{300, 100}, {5, 5}, 10};
     Ball ball3 = {{400, 500}, {5, 5}, 15};
 
-    bool flagClearBackground = false;
-
     double dt = 1;
     double g = 0.7;
+
+    bool flagClearBackground = false;
 
     for (;;)
     {
@@ -122,32 +122,32 @@ void Physics (Ball *ball, Rect box, double dt, double g)
         (*ball).pos.y += (*ball).v.y * dt;
 
 
-        if ((*ball).pos.x >= right (&box))
+        if ((*ball).pos.x >= box.right (&box))
         {
             (*ball).v.x = -((*ball).v.x);
-            (*ball).pos.x = right(&box) - ((*ball).pos.x - right(&box));
+            (*ball).pos.x = box.right(&box) - ((*ball).pos.x - box.right(&box));
         }
 
-        if ((*ball).pos.y >= bottom(&box))
+        if ((*ball).pos.y >= box.bottom(&box))
         {
             (*ball).v.y = -((*ball).v.y);
-            (*ball).pos.y = bottom(&box) - ((*ball).pos.y - bottom(&box));
+            (*ball).pos.y = box.bottom(&box) - ((*ball).pos.y - box.bottom(&box));
         }
 
-        if ((*ball).pos.x <= left(&box))
+        if ((*ball).pos.x <= box.left(&box))
         {
             (*ball).v.x = -((*ball).v.x);
-            (*ball).pos.x = left(&box) - ((*ball).pos.x - left(&box));
+            (*ball).pos.x = box.left(&box) - ((*ball).pos.x - box.left(&box));
         }
 
-        if ((*ball).pos.y <= top(&box))
+        if ((*ball).pos.y <= box.top(&box))
         {
             (*ball).v.y = -((*ball).v.y);
-            (*ball).pos.y = top(&box) - ((*ball).pos.y - top(&box));
+            (*ball).pos.y = box.top(&box) - ((*ball).pos.y - box.top(&box));
         }
         
         
-}
+}//
 
 double SpeedX (double vX)
 {
