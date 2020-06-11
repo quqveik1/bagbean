@@ -1,7 +1,10 @@
 ﻿
 #define TX_COMPILED
-#include "C:/Users/Алехандро/Desktop/Alex_projects/TXTEST/TXLib.h"
+#include "TXLib.h"
+#include <math.h>
 //you should delete define and change #include "C:/Users/Алехандро/Desktop/Alex_projects/TXTEST/TXLib.h" to #include "TXLib.h"
+	
+
 
 struct Vector 
 {
@@ -9,27 +12,70 @@ struct Vector
     double y;
 };
 
+void Draw (const Vector &vector)
+{
+    double startX = rand() % txGetExtent().x - (fabs(vector.x)) + ( 0 + fabs(vector.x));
+    double startY = rand() % txGetExtent().y - (fabs(vector.y)) + ( 0 + fabs(vector.y));
+
+    double finishX = startX + vector.x;
+    double finishY = startY + vector.y;
+
+    txLine (startX, startY, finishX, finishY);
+    txCircle (startX,  startY, 10);
+    COLORREF color = txGetFillColor();
+    txSetFillColor (TX_BLUE);
+    txCircle (finishX, finishY, 20);
+    txSetFillColor (color);
+    //txLine(vector.x, vector.y, vector.x+);
+}
+
+Vector operator * (Vector a, double b)
+{
+    Vector result = {};
+    result.x = a.x * b;
+    result.y = a.y * b;
+
+    return result;
+}
+
+Vector operator + (Vector a, Vector b)
+{
+    Vector result = {};
+    result.x = a.x + b.x;
+    result.y = a.y + b.y;
+
+    return result;
+}
+
+void operator += (Vector &a, Vector b)
+{
+   a.x += b.x;
+   a.y += b.y;
+}
+
 struct Rect
 {
     Vector pos;
     Vector size;
 
-    double left  (const Rect *rect) { return rect->pos.x; }
-    double top   (const Rect *rect) { return rect->pos.y; }
-    double right (const Rect *rect) { return rect->size.x + 0; }
-    double bottom(const Rect *rect) { return rect->size.y + 0; }
+    double left  () { return this->pos.x; }
+    double top   () { return this->pos.y; }
+    double right () { return this->size.x + this->pos.x; }
+    double bottom() { return this->size.y + this->pos.y; }
 };
 
-
+//pos = r
+//size
 struct Ball 
 {
     Vector pos;
     Vector v;
+    Vector a;
     double r;
 };
 
-void BallFrame(Ball *ball, double dt, double g); 
-void Physics  (Ball *ball, Rect box, double dt, double g);
+void BallFrame(Ball *ball, double dt); 
+void Physics  (Ball *ball, Rect box, double dt);
 double SpeedX (double vX);
 double SpeedY (double vY);
 bool ClearBackground (bool flagClearBackground);
@@ -61,21 +107,21 @@ int main()
     txCreateWindow (800, 600);
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
-
-    Ball ball1 = {{100, 400}, {5, 5}, 20};
-    Ball ball2 = {{300, 100}, {5, 5}, 10};
-    Ball ball3 = {{400, 500}, {5, 5}, 15};
+    
+    /*
+    Ball ball1 = {{100, 400}, {5, 5}, {0, 0.7}, 20};
+    Ball ball2 = {{300, 100}, {5, 5}, {0, 0.7}, 10};
+    Ball ball3 = {{400, 500}, {5, 5}, {0, 0.7}, 15};
 
     double dt = 1;
-    double g = 0.7;
 
     bool flagClearBackground = false;
 
     for (;;)
     {
-        BallFrame (&ball1, dt, g);
-        BallFrame (&ball2, dt, g);
-        BallFrame (&ball3, dt, g);
+        BallFrame (&ball1, dt);
+        BallFrame (&ball2, dt);
+        BallFrame (&ball3, dt);
         
         txSleep (20);
 
@@ -83,20 +129,27 @@ int main()
 
         flagClearBackground = ClearBackground (flagClearBackground);
     }
+    */
     
+
+    Vector test = {};
+    test.x = 50;
+    test.y = -10;
+
+    Draw (test);
 
     return 0;
 }
 
 // x = 100; y = 400; r = 20; vX = 5; vY = 5; dt = 1; g = 0.7
-void BallFrame (Ball *ball, double dt, double g)
+void BallFrame (Ball *ball, double dt)
 {
     /*
      double standartX = ball.vX;
      double standartY = vY;
      */
-     const Rect box = {{ball->r, ball->r}, {txGetExtent().x - (ball->r), txGetExtent().y - (ball->r)}};
-     Physics (ball, box, dt, g);
+     const Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
+     Physics (ball, box, dt);
 
      ball->v.x = SpeedX (ball->v.x);
      ball->v.y = SpeedY (ball->v.y);
@@ -113,39 +166,40 @@ void BallFrame (Ball *ball, double dt, double g)
 //(x - 1)(x + 1) = 0
 
 // 0 - x; 1 - y; 2 - vX; 3 - vY;
-void Physics (Ball *ball, Rect box, double dt, double g)
+void Physics (Ball *ball, Rect box, double dt)
 {
+        ball->v += (ball->a * dt);
+        //(*ball).v.y +=  ball->a.y * dt;
+        //ball->  v.x +=  ball->a.x * dt;
 
-        (*ball).v.y +=  g * dt;
+        ball->pos += (ball->v * dt);
+        //(*ball).pos.x += (*ball).v.x * dt;
+        //(*ball).pos.y += (*ball).v.y * dt;
 
-        (*ball).pos.x += (*ball).v.x * dt;
-        (*ball).pos.y += (*ball).v.y * dt;
 
-
-        if ((*ball).pos.x >= box.right (&box))
+        if ((*ball).pos.x >= box.right ())
         {
             (*ball).v.x = -((*ball).v.x);
-            (*ball).pos.x = box.right(&box) - ((*ball).pos.x - box.right(&box));
+            (*ball).pos.x = box.right() - ((*ball).pos.x - box.right());
         }
 
-        if ((*ball).pos.y >= box.bottom(&box))
+        if ((*ball).pos.y >= box.bottom())
         {
             (*ball).v.y = -((*ball).v.y);
-            (*ball).pos.y = box.bottom(&box) - ((*ball).pos.y - box.bottom(&box));
+            (*ball).pos.y = box.bottom() - ((*ball).pos.y - box.bottom());
         }
 
-        if ((*ball).pos.x <= box.left(&box))
+        if ((*ball).pos.x <= box.left())
         {
             (*ball).v.x = -((*ball).v.x);
-            (*ball).pos.x = box.left(&box) - ((*ball).pos.x - box.left(&box));
+            (*ball).pos.x = box.left() - ((*ball).pos.x - box.left());
         }
 
-        if ((*ball).pos.y <= box.top(&box))
+        if ((*ball).pos.y <= box.top())
         {
             (*ball).v.y = -((*ball).v.y);
-            (*ball).pos.y = box.top(&box) - ((*ball).pos.y - box.top(&box));
+            (*ball).pos.y = box.top() - ((*ball).pos.y - box.top());
         }
-        
         
 }//
 
