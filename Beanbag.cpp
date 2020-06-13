@@ -5,54 +5,31 @@
 //you should delete define and change #include "C:/Users/Алехандро/Desktop/Alex_projects/TXTEST/TXLib.h" to #include "TXLib.h"
 	
 
+/*
+-   -
+a + b = a.x + b.x; a.y + b.y
+->
+a  * k = a.x * k; a.y * k
+->  ->
+a   b
+
+a.y * b.y + a.x * b.x = 0
+->
+|a| = sqrt (a.x^2 + a.y^2)(
+->
+AB = {};
+A = {1, 2}
+B = {3, 4}
+|AB| = {b.x - a.x, b.y - a.y};
+
+*/
+
 
 struct Vector 
 {
     double x;
     double y;
 };
-
-void Draw (const Vector &vector)
-{
-    double startX = rand() % txGetExtent().x - (fabs(vector.x)) + ( 0 + fabs(vector.x));
-    double startY = rand() % txGetExtent().y - (fabs(vector.y)) + ( 0 + fabs(vector.y));
-
-    double finishX = startX + vector.x;
-    double finishY = startY + vector.y;
-
-    txLine (startX, startY, finishX, finishY);
-    txCircle (startX,  startY, 10);
-    COLORREF color = txGetFillColor();
-    txSetFillColor (TX_BLUE);
-    txCircle (finishX, finishY, 20);
-    txSetFillColor (color);
-    //txLine(vector.x, vector.y, vector.x+);
-}
-
-Vector operator * (Vector a, double b)
-{
-    Vector result = {};
-    result.x = a.x * b;
-    result.y = a.y * b;
-
-    return result;
-}
-
-Vector operator + (Vector a, Vector b)
-{
-    Vector result = {};
-    result.x = a.x + b.x;
-    result.y = a.y + b.y;
-
-    return result;
-}
-
-void operator += (Vector &a, Vector b)
-{
-   a.x += b.x;
-   a.y += b.y;
-}
-
 struct Rect
 {
     Vector pos;
@@ -63,9 +40,6 @@ struct Rect
     double right () { return this->size.x + this->pos.x; }
     double bottom() { return this->size.y + this->pos.y; }
 };
-
-//pos = r
-//size
 struct Ball 
 {
     Vector pos;
@@ -73,6 +47,14 @@ struct Ball
     Vector a;
     double r;
 };
+
+void Draw (const Vector &vector);
+void drawArrows (const Vector &mainVector, const  Vector &startArrowPoint);
+Vector makePerpendikularLine (const Vector &mainVector);
+
+Vector operator * (Vector a, double b);
+Vector operator + (Vector a, Vector b);
+void operator += (Vector &a, Vector b);
 
 void BallFrame(Ball *ball, double dt); 
 void Physics  (Ball *ball, Rect box, double dt);
@@ -293,4 +275,82 @@ bool ClearBackground (bool flagClearBackground)
      return flagClearBackground;
 }
 
+
+
+
+void Draw (const Vector &vector)
+{
+    Vector startPoint = {};
+    startPoint.x = rand() % txGetExtent().x - (fabs(vector.x)) + ( 0 + fabs(vector.x));
+    startPoint.y = rand() % txGetExtent().y - (fabs(vector.y)) + ( 0 + fabs(vector.y));
+
+    Vector finishPoint = {};
+    finishPoint = startPoint + vector;
+
+    txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+    txSetColor (TX_GREEN);
+    drawArrows (vector, finishPoint);
+
+    /*
+    txCircle (startX,  startY, 7);
+    COLORREF color = txGetFillColor();
+    txSetFillColor (TX_BLUE);
+    txCircle (finishX, finishY, 5);
+    txSetFillColor (color);
+    */
+    //txLine(vector.x, vector.y, vector.x+);
+}
+
+void drawArrows (const Vector &mainVector, const Vector &startArrowPoint)
+{
+    Vector perpendicular1 = makePerpendikularLine(mainVector);
+    Vector perpendicular2 = perpendicular1 * -1;
+
+    Vector arrow1 = (perpendicular2 + mainVector) * -1;
+    Vector arrow2 = (perpendicular1 + mainVector) * -1;
+
+    Vector toCopyArrow1 = arrow1;
+    arrow1 = arrow2;
+    arrow2 = toCopyArrow1;
+
+    Vector arrow1finishPoint = (arrow1 * 0.2 + startArrowPoint);
+    Vector arrow2finishPoint = (arrow2 * 0.2 + startArrowPoint);
+
+    txLine (startArrowPoint.x, startArrowPoint.y, arrow1finishPoint.x, arrow1finishPoint.y);
+    txLine (startArrowPoint.x, startArrowPoint.y, arrow2finishPoint.x, arrow2finishPoint.y);
+}
+
+Vector makePerpendikularLine(const Vector &mainVector)
+{
+    Vector perpendikularLine = {};
+    perpendikularLine.x = -(mainVector.y);
+    perpendikularLine.y = mainVector.x;
+
+    return perpendikularLine;
+}
+
+Vector operator * (Vector a, double b)
+{
+    Vector result = {};
+    result.x = a.x * b;
+    result.y = a.y * b;
+
+    return result;
+}
+
+
+Vector operator + (Vector a, Vector b)
+{
+    Vector result = {};
+    result.x = a.x + b.x;
+    result.y = a.y + b.y;
+
+    return result;
+}
+
+void operator += (Vector &a, Vector b)
+{
+   a.x += b.x;
+   a.y += b.y;
+}
 
