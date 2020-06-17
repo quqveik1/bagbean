@@ -2,7 +2,7 @@
 #define TX_COMPILED
 #include "TXLib.h"
 #include <math.h>
-//you should delete define and change #include "C:/Users/Алехандро/Desktop/Alex_projects/TXTEST/TXLib.h" to #include "TXLib.h"
+//You must to delete "my" TXLib.h file from the ptoject or you can do not download "my" TXLib.h file, you need to download TXLib from https://sourceforge.net/projects/txlib/files/latest/download and install this
 	
 
 /*
@@ -48,13 +48,19 @@ struct Ball
     double r;
 };
 
-void Draw (const Vector &vector);
+inline Vector  operator +  (const Vector &a, const Vector &b);
+inline Vector &operator += (Vector &a, const Vector &b);
+inline Vector  operator -  (const Vector &a, const Vector &b);
+inline Vector  operator *  (const Vector &a, const double b);
+inline Vector  operator *  (const Vector &a, const Vector &b);
+inline Vector &operator *= (Vector &a, const Vector &b);
+
+void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness = 1);
 void drawArrows (const Vector &mainVector, const  Vector &startArrowPoint);
 Vector makePerpendikularLine (const Vector &mainVector);
-
-Vector operator * (Vector a, double b);
-Vector operator + (Vector a, Vector b);
-void operator += (Vector &a, Vector b);
+void drawVectorCircle (const Vector &vector, const Vector &startP, COLORREF color, double thickness = 1);
+void rotateVector (Vector &vector, double angle);
+void Draw_verVector (Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, const double thickness, double angle);
 
 void BallFrame(Ball *ball, double dt); 
 void Physics  (Ball *ball, Rect box, double dt);
@@ -112,13 +118,11 @@ int main()
         flagClearBackground = ClearBackground (flagClearBackground);
     }
     */
-    
 
-    Vector test = {};
-    test.x = 50;
-    test.y = -10;
+    Vector start =  {.x = 400, .y = 300};
+    Vector vector = {.x = 0,   .y = -50};
 
-    Draw (test);
+    Draw_verVector (vector, start, TX_RED, 5, 0);
 
     return 0;
 }
@@ -278,17 +282,13 @@ bool ClearBackground (bool flagClearBackground)
 
 
 
-void Draw (const Vector &vector)
+void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness)
 {
-    Vector startPoint = {};
-    startPoint.x = rand() % txGetExtent().x - (fabs(vector.x)) + ( 0 + fabs(vector.x));
-    startPoint.y = rand() % txGetExtent().y - (fabs(vector.y)) + ( 0 + fabs(vector.y));
-
     Vector finishPoint = {};
     finishPoint = startPoint + vector;
 
+    txSetColor (colorOfMainVector, thickness);
     txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
-    txSetColor (TX_GREEN);
     drawArrows (vector, finishPoint);
 
     /*
@@ -301,35 +301,73 @@ void Draw (const Vector &vector)
     //txLine(vector.x, vector.y, vector.x+);
 }
 
+void Draw_verVector (Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, const double thickness, double angle)
+{
+    for (int i = 0; i < 360; i++)
+    {
+        //.i = i % 100;
+        angle++;
+        rotateVector (vector, angle);
+
+        Vector finishPoint = {};
+        finishPoint = startPoint + vector; 
+        txSetColor (colorOfMainVector, thickness);
+        txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+        drawArrows (vector, finishPoint);
+
+        txSleep (100);
+        txSetFillColor (TX_BLACK);
+        txClear ();
+    }
+}
+
+
+
+void rotateVector (Vector &vector, double angle)
+{
+    Vector newVector = {};
+    double cosinus = cos (angle * 3.14 / 180);
+    double sinus   = sin (angle * 3.14 / 180);
+    newVector.x = vector.x * cosinus - vector.y * sinus;
+    newVector.y = vector.y * cosinus + vector.x * sinus;
+
+    vector = newVector;
+}
+
 void drawArrows (const Vector &mainVector, const Vector &startArrowPoint)
 {
     Vector perpendicular1 = makePerpendikularLine(mainVector);
     Vector perpendicular2 = perpendicular1 * -1;
 
-    Vector arrow1 = (perpendicular2 + mainVector) * -1;
-    Vector arrow2 = (perpendicular1 + mainVector) * -1;
+    Vector arrow1 = perpendicular1 * 0.05 - mainVector * 0.2;
+    Vector arrow2 = perpendicular2 * 0.05 - mainVector * 0.2;
 
-    Vector toCopyArrow1 = arrow1;
-    arrow1 = arrow2;
-    arrow2 = toCopyArrow1;
-
-    Vector arrow1finishPoint = (arrow1 * 0.2 + startArrowPoint);
-    Vector arrow2finishPoint = (arrow2 * 0.2 + startArrowPoint);
+    Vector arrow1finishPoint = ((arrow1) + startArrowPoint);
+    Vector arrow2finishPoint = ((arrow2) + startArrowPoint);
 
     txLine (startArrowPoint.x, startArrowPoint.y, arrow1finishPoint.x, arrow1finishPoint.y);
     txLine (startArrowPoint.x, startArrowPoint.y, arrow2finishPoint.x, arrow2finishPoint.y);
 }
 
+void drawVectorCircle (const Vector &vector, const Vector &startP, COLORREF color, double thickness)
+{
+    Vector finishP = vector + startP;
+
+    txSetColor (color, thickness);
+    txLine   (startP.x, startP.y, finishP.x, finishP.y);
+    txCircle (finishP.x, finishP.y, 5);
+}
+
 Vector makePerpendikularLine(const Vector &mainVector)
 {
     Vector perpendikularLine = {};
-    perpendikularLine.x = -(mainVector.y);
-    perpendikularLine.y = mainVector.x;
+    perpendikularLine.x =   mainVector.y;
+    perpendikularLine.y = -(mainVector.x);
 
     return perpendikularLine;
 }
 
-Vector operator * (Vector a, double b)
+inline Vector operator * (const Vector &a, const double b)
 {
     Vector result = {};
     result.x = a.x * b;
@@ -339,7 +377,7 @@ Vector operator * (Vector a, double b)
 }
 
 
-Vector operator + (Vector a, Vector b)
+inline Vector operator + (const Vector &a, const Vector &b)
 {
     Vector result = {};
     result.x = a.x + b.x;
@@ -348,9 +386,44 @@ Vector operator + (Vector a, Vector b)
     return result;
 }
 
-void operator += (Vector &a, Vector b)
+inline Vector operator - (const Vector &a, const Vector &b)
+{
+    return { .x = a.x - b.x,
+             .y = a.y - b.y };
+}
+
+inline Vector &operator += (Vector &a, const Vector &b)
 {
    a.x += b.x;
    a.y += b.y;
+   
+   return a;
 }
+
+inline Vector operator * (const Vector &a, const Vector &b)
+{
+    Vector copyA  = a;
+    return copyA *= b;
+}
+
+inline Vector &operator *= (Vector &a, const Vector &b)
+{
+    a.x *= b.x;
+    a.y *= b.y;
+    return a;
+}
+
+/*
+int x = 0;
+x += 3;
+int y = (x +  3);
+int y = (x += 3);
+(x += 3) += 7
+
+
+Vector v = {};
+Vector p = v + v;
+Vector p = v += v;
+
+*/
 
