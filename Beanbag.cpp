@@ -1,7 +1,6 @@
 ﻿
 #define TX_COMPILED
 #include "TXLib.h"
-#include <math.h>
 //You must to delete "my" TXLib.h file from the ptoject or you can do not download "my" TXLib.h file, you need to download TXLib from https://sourceforge.net/projects/txlib/files/latest/download and install this
 	
 
@@ -54,13 +53,19 @@ inline Vector  operator -  (const Vector &a, const Vector &b);
 inline Vector  operator *  (const Vector &a, const double b);
 inline Vector  operator *  (const Vector &a, const Vector &b);
 inline Vector &operator *= (Vector &a, const Vector &b);
+Vector operator ^ (const Vector &vector, int degree);
 
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness = 1);
 void drawArrows (const Vector &mainVector, const  Vector &startArrowPoint);
 Vector makePerpendikularLine (const Vector &mainVector);
 void drawVectorCircle (const Vector &vector, const Vector &startP, COLORREF color, double thickness = 1);
-void rotateVector (Vector &vector, double angle);
-void Draw_verVector (Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, const double thickness, double angle);
+Vector rotateVector (const Vector &vector, double rad);
+void Draw_verVector (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, const double thickness, double angle);
+double DegToRad (double degrees);
+double length (const Vector &vector);
+
+double elDeg (const double number, const double deg);
+double degreesOfDouble (const double number, int degree);
 
 void BallFrame(Ball *ball, double dt); 
 void Physics  (Ball *ball, Rect box, double dt);
@@ -92,9 +97,9 @@ double SwitchRadius (double r);
 //New
 int main()
 {
-    txCreateWindow (800, 600);
-    txSetColor     (TX_LIGHTRED);
-    txSetFillColor (TX_RED);
+    //txCreateWindow (800, 600);
+    //txSetColor     (TX_LIGHTRED);
+    //txSetFillColor (TX_RED);
     
     /*
     Ball ball1 = {{100, 400}, {5, 5}, {0, 0.7}, 20};
@@ -118,11 +123,18 @@ int main()
         flagClearBackground = ClearBackground (flagClearBackground);
     }
     */
-
+    /*
     Vector start =  {.x = 400, .y = 300};
     Vector vector = {.x = 0,   .y = -50};
 
-    Draw_verVector (vector, start, TX_RED, 5, 0);
+    Draw_verVector (vector, start, TX_RED, 5, DegToRad (1));
+    */
+    /**/
+    $unittest (degreesOfDouble (2, 4), 16);
+    $unittest (degreesOfDouble (3, 4), 81);
+    $unittest (degreesOfDouble (2, 0), 1);
+    $unittest (degreesOfDouble (100, 1), 100);
+    $unittest (degreesOfDouble (1, 1000), 1);
 
     return 0;
 }
@@ -280,16 +292,55 @@ bool ClearBackground (bool flagClearBackground)
 }
 
 
+double degreesOfDouble (const double number, int degree)
+{
+    double result = number;
+    printf ("\nArguements: res: %lg \t degree: %d\n", result, degree);
+    for (; degree > 1;)
+    {
+        if (degree % 2 == 0)
+        {
+            result *= result;
+            degree /= 2;
+            printf ("print: A\t result: %lg\t degree: %i \n", result, degree);
+        }
+        else if (degree % 2 == 1)
+        {
+            result *= number;
+            degree--;
+            printf ("print: B\t result: %lg\t degree: %i \n", result, degree);
+        }
+    }
 
+    if (degree == 0)
+    {
+        result = 1;
+    }
+
+    return result;
+}
+
+
+double elDeg (const double number, const double deg)
+{
+    double result = 1;
+    for (int i = 0; i < deg; i++)
+    {
+        result = result * number;
+    }
+
+    return result;
+}
 
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness)
 {
-    Vector finishPoint = {};
-    finishPoint = startPoint + vector;
+    Vector finishPoint = startPoint + vector;
 
     txSetColor (colorOfMainVector, thickness);
     txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
     drawArrows (vector, finishPoint);
+    txSetFillColor (colorOfMainVector);
+    txCircle (startPoint.x, startPoint.y, thickness * 0.5 + 0.05 * length (vector));
 
     /*
     txCircle (startX,  startY, 7);
@@ -301,37 +352,52 @@ void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainV
     //txLine(vector.x, vector.y, vector.x+);
 }
 
-void Draw_verVector (Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, const double thickness, double angle)
+double length (const Vector &vector)
 {
-    for (int i = 0; i < 360; i++)
-    {
-        //.i = i % 100;
-        angle++;
-        rotateVector (vector, angle);
-
-        Vector finishPoint = {};
-        finishPoint = startPoint + vector; 
-        txSetColor (colorOfMainVector, thickness);
-        txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
-        drawArrows (vector, finishPoint);
-
-        txSleep (100);
-        txSetFillColor (TX_BLACK);
-        txClear ();
-    }
+    return sqrt (vector.x * vector.x + vector.y * vector.y);
 }
 
-
-
-void rotateVector (Vector &vector, double angle)
+Vector operator ^ (const Vector &vector, int degree)    
 {
-    Vector newVector = {};
-    double cosinus = cos (angle * 3.14 / 180);
-    double sinus   = sin (angle * 3.14 / 180);
-    newVector.x = vector.x * cosinus - vector.y * sinus;
-    newVector.y = vector.y * cosinus + vector.x * sinus;
+    Vector result = {};
+    for (int i = 1; i <= degree; i++)
+    {
+        result.x = vector.x * vector.x;
+        result.y = vector.y * vector.y;
+    }
 
-    vector = newVector;
+    return result;
+}
+
+void Draw_verVector (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, const double thickness, double rad)
+{
+    txBegin ();
+
+    for (int i = 0; i < 360; i++)
+    {
+        txSetFillColor (TX_BLACK);
+        txClear ();
+
+        Draw (rotateVector (vector, rad * i), startPoint, TX_RED, thickness);
+
+        txSleep (0);
+    }
+
+    txEnd ();
+}
+
+double DegToRad (double degrees)
+{
+    return (degrees * M_PI / 180);
+}
+
+Vector rotateVector (const Vector &vector, double rad)
+{
+    double cosinus = cos (rad);
+    double sinus   = sin (rad);
+
+    return Vector {.x = vector.x * cosinus - vector.y * sinus,
+                   .y = vector.y * cosinus + vector.x * sinus };
 }
 
 void drawArrows (const Vector &mainVector, const Vector &startArrowPoint)
@@ -351,11 +417,7 @@ void drawArrows (const Vector &mainVector, const Vector &startArrowPoint)
 
 void drawVectorCircle (const Vector &vector, const Vector &startP, COLORREF color, double thickness)
 {
-    Vector finishP = vector + startP;
-
-    txSetColor (color, thickness);
-    txLine   (startP.x, startP.y, finishP.x, finishP.y);
-    txCircle (finishP.x, finishP.y, 5);
+    txCircle (startP.x, startP.y, 5);
 }
 
 Vector makePerpendikularLine(const Vector &mainVector)
