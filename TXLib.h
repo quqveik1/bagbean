@@ -1,1 +1,0 @@
-#include "C:\Users\Алехандро\Downloads\TX\TXlib.h"
