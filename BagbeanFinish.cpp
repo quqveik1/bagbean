@@ -1,6 +1,5 @@
 ﻿#include "TXLib.h"
-//You must to delete "my" TXLib.h file from the ptoject or you can do not download "my" TXLib.h file, you need to download TXLib from https://sourceforge.net/projects/txlib/files/latest/download and install this
-	
+//You must to delete "my" TXLib.h file from the ptoject or you can do not download "my" TXLib.h file, you need to download TXLib from https://sourceforge.net/projects/txlib/files/latest/download and install this	
 
 /*
 -   -
@@ -18,7 +17,6 @@ A = {1, 2}
 B = {3, 4}
 |AB| = {b.x - a.x, b.y - a.y};
 */
-
 
 struct Vector 
 {
@@ -39,7 +37,7 @@ struct Ball
 {
     Vector pos;
     Vector v;
-    Vector a;
+    double m;
     double r;
 };
 
@@ -49,7 +47,8 @@ inline Vector  operator -  (const Vector &a, const Vector &b);
 inline Vector  operator *  (const Vector &a, const double b);
 inline Vector  operator *  (const Vector &a, const Vector &b);
 inline Vector &operator *= (Vector &a, const Vector &b);
-Vector operator ^ (const Vector &vector, int degree);
+inline Vector  operator /  (const Vector &a, double m)
+Vector operator ^          (const Vector &vector, int degree);
 
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness = 1);
 void drawArrows (const Vector &mainVector, const  Vector &startArrowPoint);
@@ -116,18 +115,15 @@ int main()
     Vector vector = {.x = 0,   .y = -50};
     Draw_verVector (vector, start, TX_RED, 5, DegToRad (1));
     */
-    /**/
-   
+    
     txCreateWindow (800, 600);
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
 
-   
-
     double dt = 1;
     double g = 0.7;
 
-    Ball ball1 = {{100, 100}, {5, 5}, {0, g}, 5};
+    Ball ball1 = {{100, 100}, {5, 5}, 1, 5};
 
     bool flagClearBackground = false;
 
@@ -165,6 +161,7 @@ void BallFrame (Ball *ball, double dt, double thicknessOfVector)
      txCircle ((*ball).pos.x, (*ball).pos.y, (*ball).r);
 }
 
+void 
 
 //x^2 + x = 0
 //x^2 - 1 = 0 
@@ -173,38 +170,49 @@ void BallFrame (Ball *ball, double dt, double thicknessOfVector)
 // 0 - x; 1 - y; 2 - vX; 3 - vY;
 void Physics (Ball *ball, Rect box, double dt)
 {
-        ball->v += (ball->a * dt);
-        //(*ball).v.y +=  ball->a.y * dt;
-        //ball->  v.x +=  ball->a.x * dt;
+    Vector f  = {.x = 0, .y = 0.7};
 
-        ball->pos += (ball->v * dt);
-        //(*ball).pos.x += (*ball).v.x * dt;
-        //(*ball).pos.y += (*ball).v.y * dt;
+    Vector currPosMouse = {.x = txMousePos ().x
+                           .y = txMousePos ().y}
+    Vector f2 = ball->pos - currPosMouse;
+
+    Draw (f2, ball->pos, TX_CYAN, 5);
+
+    Vector a = f / m;
+    ball->v += (a * dt);
+    //(*ball).v.y +=  ball->a.y * dt;
+    //ball->  v.x +=  ball->a.x * dt;
+        
+        
+
+    //ball->pos += (ball->v * dt);
+    //(*ball).pos.x += (*ball).v.x * dt;
+    //(*ball).pos.y += (*ball).v.y * dt;
 
 
-        if ((*ball).pos.x >= box.right ())
-        {
-            (*ball).v.x = -((*ball).v.x);
-            (*ball).pos.x = box.right() - ((*ball).pos.x - box.right());
-        }
+    if ((*ball).pos.x >= box.right ())
+    {
+        (*ball).v.x = -((*ball).v.x);
+        (*ball).pos.x = box.right() - ((*ball).pos.x - box.right());
+    }
 
-        if ((*ball).pos.y >= box.bottom())
-        {
-            (*ball).v.y = -((*ball).v.y);
-            (*ball).pos.y = box.bottom() - ((*ball).pos.y - box.bottom());
-        }
+    if ((*ball).pos.y >= box.bottom())
+    {
+        (*ball).v.y = -((*ball).v.y);
+        (*ball).pos.y = box.bottom() - ((*ball).pos.y - box.bottom());
+    }
 
-        if ((*ball).pos.x <= box.left())
-        {
-            (*ball).v.x = -((*ball).v.x);
-            (*ball).pos.x = box.left() - ((*ball).pos.x - box.left());
-        }
+    if ((*ball).pos.x <= box.left())
+    {
+        (*ball).v.x = -((*ball).v.x);
+        (*ball).pos.x = box.left() - ((*ball).pos.x - box.left());
+    }
 
-        if ((*ball).pos.y <= box.top())
-        {
-            (*ball).v.y = -((*ball).v.y);
-            (*ball).pos.y = box.top() - ((*ball).pos.y - box.top());
-        }
+    if ((*ball).pos.y <= box.top())
+    {
+        (*ball).v.y = -((*ball).v.y);
+        (*ball).pos.y = box.top() - ((*ball).pos.y - box.top());
+    }
         
 }//
 
@@ -482,13 +490,9 @@ inline Vector &operator *= (Vector &a, const Vector &b)
     return a;
 }
 
-/*
-int x = 0;
-x += 3;
-int y = (x +  3);
-int y = (x += 3);
-(x += 3) += 7
-Vector v = {};
-Vector p = v + v;
-Vector p = v += v;
-*/
+inline Vector operator / (const Vector &a, double m)
+{
+    return {.x = a.x / m
+            .y = a.y / m
+    };
+}
