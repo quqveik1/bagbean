@@ -15,11 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BagbeanFinish.cpp">
+    <ClCompile Include="BeanbagFinish2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BagbeanFinish.ruleset" />
+    <None Include="BeanbagFinish2.ruleset" />
   </ItemGroup>
 </Project>

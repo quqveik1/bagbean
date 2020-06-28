@@ -18,6 +18,8 @@ B = {3, 4}
 |AB| = {b.x - a.x, b.y - a.y};
 */
 
+const int BallHistoryLength = 100;
+
 struct Vector 
 {
     double x;
@@ -39,6 +41,10 @@ struct Ball
     Vector v;
     double m;
     double r;
+
+    Vector history [BallHistoryLength];
+
+    void DrawHistory ();
 };
 
 inline Vector  operator +  (const Vector &a, const Vector &b);
@@ -47,8 +53,8 @@ inline Vector  operator -  (const Vector &a, const Vector &b);
 inline Vector  operator *  (const Vector &a, const double b);
 inline Vector  operator *  (const Vector &a, const Vector &b);
 inline Vector &operator *= (Vector &a, const Vector &b);
-inline Vector  operator /  (const Vector &a, double m)
-Vector operator ^          (const Vector &vector, int degree);
+inline Vector  operator /  (const Vector &a, double m);
+Vector operator ^ (const Vector &vector, int degree);
 
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness = 1);
 void drawArrows (const Vector &mainVector, const  Vector &startArrowPoint);
@@ -120,13 +126,14 @@ int main()
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
 
-    double dt = 1;
-    double g = 0.7;
+    double dt = 0.1;
 
-    Ball ball1 = {{100, 100}, {5, 5}, 1, 5};
+    Ball ball1 = {{100, 100}, {5, 5}, 1, 10};
 
-    bool flagClearBackground = false;
 
+    bool flagClearBackground = true;
+
+    txBegin ();
     for (;;)
     {
         BallFrame (&ball1, dt, 3);
@@ -137,6 +144,7 @@ int main()
 
         flagClearBackground = ClearBackground (flagClearBackground);
     }
+    txEnd ();
 
     return 0;
 }
@@ -144,24 +152,18 @@ int main()
 // x = 100; y = 400; r = 20; vX = 5; vY = 5; dt = 1; g = 0.7
 void BallFrame (Ball *ball, double dt, double thicknessOfVector)
 {
-    /*
-     double standartX = ball.vX;
-     double standartY = vY;
-     */
+     txCircle ((*ball).pos.x, (*ball).pos.y, (*ball).r);
+
      const Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
      Physics (ball, box, dt);
 
      ball->v.x = SpeedX (ball->v.x);
      ball->v.y = SpeedY (ball->v.y);
-     Draw ({ball->v.x, ball->v.y}, {ball->pos.x, ball->pos.y}, TX_GREEN, thicknessOfVector);
 
      SwitchColour ();
      (*ball).r = SwitchRadius ((*ball).r);
-
-     txCircle ((*ball).pos.x, (*ball).pos.y, (*ball).r);
 }
-
-void 
+ 
 
 //x^2 + x = 0
 //x^2 - 1 = 0 
@@ -170,25 +172,31 @@ void
 // 0 - x; 1 - y; 2 - vX; 3 - vY;
 void Physics (Ball *ball, Rect box, double dt)
 {
-    Vector f  = {.x = 0, .y = 0.7};
+    Vector fGravity  = {.x = 0, .y = 70};
 
-    Vector currPosMouse = {.x = txMousePos ().x
-                           .y = txMousePos ().y}
-    Vector f2 = ball->pos - currPosMouse;
+    Vector currPosMouse = {txMouseX (), txMouseY ()};
+    Vector mouseForce = (currPosMouse - ball->pos) * 0.5;
 
-    Draw (f2, ball->pos, TX_CYAN, 5);
+    Vector resultantForce = fGravity + mouseForce;
 
-    Vector a = f / m;
+    Vector a = resultantForce / ball->m;
+
+    txSetFillColor (TX_YELLOW);
+    txSetColor     (TX_YELLOW);
+    txCircle (txMousePos ().x, txMousePos ().y, 10);
+    Draw (resultantForce, ball->pos, TX_LIGHTRED,  5);
+    Draw (mouseForce,     ball->pos, TX_LIGHTCYAN, 3);
+    Draw (fGravity,       ball->pos, TX_LIGHTGRAY, 2);
+
     ball->v += (a * dt);
     //(*ball).v.y +=  ball->a.y * dt;
     //ball->  v.x +=  ball->a.x * dt;
-        
-        
 
-    //ball->pos += (ball->v * dt);
+    Draw (ball->v, ball->pos, TX_GREEN, 3);
+
+    ball->pos += (ball->v * dt);
     //(*ball).pos.x += (*ball).v.x * dt;
     //(*ball).pos.y += (*ball).v.y * dt;
-
 
     if ((*ball).pos.x >= box.right ())
     {
@@ -215,6 +223,14 @@ void Physics (Ball *ball, Rect box, double dt)
     }
         
 }//
+
+void Ball::DrawHistory ()
+{
+    for (int i = 0; i < BallHistoryLength; i++)
+    {
+        txSetPixel (history[i].x, history[i].y, TX_DARKGREY);
+    }
+}
 
 double SpeedX (double vX)
 {
@@ -355,7 +371,7 @@ void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainV
     txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
     drawArrows (vector, finishPoint);
     txSetFillColor (colorOfMainVector);
-    txCircle (startPoint.x, startPoint.y, thickness * 0.5 + 0.05 * length (vector));
+    //txCircle (startPoint.x, startPoint.y, thickness * 0.5 + 0.05 * length (vector));
 
     /*
     txCircle (startX,  startY, 7);
@@ -492,7 +508,7 @@ inline Vector &operator *= (Vector &a, const Vector &b)
 
 inline Vector operator / (const Vector &a, double m)
 {
-    return {.x = a.x / m
+    return {.x = a.x / m,
             .y = a.y / m
     };
 }
