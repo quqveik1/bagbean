@@ -44,6 +44,7 @@ struct Ball
 
     Vector history [BallHistoryLength];
 
+    void fillHistory ();
     void DrawHistory ();
 };
 
@@ -65,11 +66,15 @@ void Draw_verVector (const Vector &vector, const Vector &startPoint, COLORREF co
 double DegToRad (double degrees);
 double length (const Vector &vector);
 
+
 double elDeg (const double number, const double deg);
 double degreesOfDouble (const double number, int degree);
 
-void BallFrame (Ball *ball, double dt, double thicknessOfVector);
-void Physics  (Ball *ball, Rect box, double dt);
+
+void BallFrame           (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle);
+void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle);
+void Physics           (Ball *ball, Rect box, double dt);
+void PhysicsNoGrathics (Ball *ball, Rect box, double dt);
 double SpeedX (double vX);
 double SpeedY (double vY);
 bool ClearBackground (bool flagClearBackground);
@@ -129,15 +134,19 @@ int main()
     double dt = 0.1;
 
     Ball ball1 = {{100, 100}, {5, 5}, 1, 10};
-
+    Ball ball2 = {{300, 300}, {5, 5}, 1, 10};
+    Ball ball3 = {{200, 200}, {5, 5}, 1, 10};
 
     bool flagClearBackground = true;
 
     txBegin ();
     for (;;)
     {
-        BallFrame (&ball1, dt, 3);
-        
+        BallFrame (&ball1, dt, 3, TX_GREEN);
+        BallFrameNoGrathics (&ball2, dt, 1, TX_RED);
+        BallFrameNoGrathics (&ball3, dt, 1, TX_RED);
+
+
         txSleep (20);
 
         if (txGetAsyncKeyState('Q')) break;
@@ -150,8 +159,9 @@ int main()
 }
 
 // x = 100; y = 400; r = 20; vX = 5; vY = 5; dt = 1; g = 0.7
-void BallFrame (Ball *ball, double dt, double thicknessOfVector)
+void BallFrame (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle)
 {
+     txSetFillColor (colorCircle);
      txCircle ((*ball).pos.x, (*ball).pos.y, (*ball).r);
 
      const Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
@@ -163,7 +173,21 @@ void BallFrame (Ball *ball, double dt, double thicknessOfVector)
      SwitchColour ();
      (*ball).r = SwitchRadius ((*ball).r);
 }
- 
+
+void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle)
+{
+     txSetFillColor (colorCircle);
+     txCircle ((*ball).pos.x, (*ball).pos.y, (*ball).r);
+
+     const Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
+     PhysicsNoGrathics (ball, box, dt);
+
+     ball->v.x = SpeedX (ball->v.x);
+     ball->v.y = SpeedY (ball->v.y);
+
+     SwitchColour ();
+     (*ball).r = SwitchRadius ((*ball).r);
+}
 
 //x^2 + x = 0
 //x^2 - 1 = 0 
@@ -172,6 +196,8 @@ void BallFrame (Ball *ball, double dt, double thicknessOfVector)
 // 0 - x; 1 - y; 2 - vX; 3 - vY;
 void Physics (Ball *ball, Rect box, double dt)
 {
+    ball->DrawHistory();
+
     Vector fGravity  = {.x = 0, .y = 70};
 
     Vector currPosMouse = {txMouseX (), txMouseY ()};
@@ -198,6 +224,8 @@ void Physics (Ball *ball, Rect box, double dt)
     //(*ball).pos.x += (*ball).v.x * dt;
     //(*ball).pos.y += (*ball).v.y * dt;
 
+    ball->fillHistory ();
+
     if ((*ball).pos.x >= box.right ())
     {
         (*ball).v.x = -((*ball).v.x);
@@ -223,6 +251,80 @@ void Physics (Ball *ball, Rect box, double dt)
     }
         
 }//
+
+void PhysicsNoGrathics (Ball *ball, Rect box, double dt)
+{
+    //ball->DrawHistory();
+
+    Vector fGravity  = {.x = 0, .y = 70};
+
+    Vector currPosMouse = {txMouseX (), txMouseY ()};
+    Vector mouseForce = (currPosMouse - ball->pos) * 0.5;
+
+    Vector resultantForce = fGravity + mouseForce;
+
+    Vector a = resultantForce / ball->m;
+
+    txSetFillColor (TX_YELLOW);
+    txSetColor     (TX_YELLOW);
+    txCircle (txMousePos ().x, txMousePos ().y, 10);
+    Draw (resultantForce, ball->pos, TX_LIGHTRED,  0);
+    Draw (mouseForce,     ball->pos, TX_LIGHTCYAN, 0);
+    Draw (fGravity,       ball->pos, TX_LIGHTGRAY, 0);
+
+    ball->v += (a * dt);
+    //(*ball).v.y +=  ball->a.y * dt;
+    //ball->  v.x +=  ball->a.x * dt;
+
+    Draw (ball->v, ball->pos, TX_GREEN, 0);
+
+    ball->pos += (ball->v * dt);
+    //(*ball).pos.x += (*ball).v.x * dt;
+    //(*ball).pos.y += (*ball).v.y * dt;
+
+    //ball->fillHistory ();
+
+    if ((*ball).pos.x >= box.right ())
+    {
+        (*ball).v.x = -((*ball).v.x);
+        (*ball).pos.x = box.right() - ((*ball).pos.x - box.right());
+    }
+
+    if ((*ball).pos.y >= box.bottom())
+    {
+        (*ball).v.y = -((*ball).v.y);
+        (*ball).pos.y = box.bottom() - ((*ball).pos.y - box.bottom());
+    }
+
+    if ((*ball).pos.x <= box.left())
+    {
+        (*ball).v.x = -((*ball).v.x);
+        (*ball).pos.x = box.left() - ((*ball).pos.x - box.left());
+    }
+
+    if ((*ball).pos.y <= box.top())
+    {
+        (*ball).v.y = -((*ball).v.y);
+        (*ball).pos.y = box.top() - ((*ball).pos.y - box.top());
+    }
+        
+}//
+
+void Ball::fillHistory ()
+{
+    for (int i = 0; i < BallHistoryLength; i++)
+    {
+        if (i < BallHistoryLength - 1)
+        {
+            history [i] = history [i+1];
+        }
+
+        else if (i == BallHistoryLength - 1)
+        {
+            history [i] = pos;
+        }
+    }
+}
 
 void Ball::DrawHistory ()
 {
@@ -365,22 +467,26 @@ double elDeg (const double number, const double deg)
 
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness)
 {
-    Vector finishPoint = startPoint + vector;
+    if (thickness > 0)
+    {
+        Vector finishPoint = startPoint + vector;
 
-    txSetColor (colorOfMainVector, thickness);
-    txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
-    drawArrows (vector, finishPoint);
-    txSetFillColor (colorOfMainVector);
-    //txCircle (startPoint.x, startPoint.y, thickness * 0.5 + 0.05 * length (vector));
+        txSetColor (colorOfMainVector, thickness);
+        txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+        drawArrows (vector, finishPoint);
+        txSetFillColor (colorOfMainVector);
+    }
 
     /*
+    txCircle (startPoint.x, startPoint.y, thickness * 0.5 + 0.05 * length (vector));
     txCircle (startX,  startY, 7);
     COLORREF color = txGetFillColor();
     txSetFillColor (TX_BLUE);
     txCircle (finishX, finishY, 5);
     txSetFillColor (color);
+
+    txLine(vector.x, vector.y, vector.x+);
     */
-    //txLine(vector.x, vector.y, vector.x+);
 }
 
 double length (const Vector &vector)
