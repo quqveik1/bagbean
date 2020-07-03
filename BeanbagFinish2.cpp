@@ -44,8 +44,11 @@ struct Ball
 
     Vector history [BallHistoryLength];
 
+    int oldestNum;
     void fillHistory ();
+
     void DrawHistory ();
+    void DrawHistoryLines ();
 };
 
 inline Vector  operator +  (const Vector &a, const Vector &b);
@@ -131,7 +134,7 @@ int main()
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
 
-    double dt = 0.1;
+    double dt = 0.02;
 
     Ball ball1 = {{100, 100}, {5, 5}, 1, 10};
     Ball ball2 = {{300, 300}, {5, 5}, 1, 10};
@@ -142,9 +145,9 @@ int main()
     txBegin ();
     for (;;)
     {
-        BallFrame (&ball1, dt, 3, TX_GREEN);
-        BallFrameNoGrathics (&ball2, dt, 1, TX_RED);
-        BallFrameNoGrathics (&ball3, dt, 1, TX_RED);
+        BallFrame       (&ball1, dt, 3, TX_GREEN);
+        //BallFrameNoGrathics (&ball2, dt, 1, TX_RED);
+        //BallFrameNoGrathics (&ball3, dt, 1, TX_RED);
 
 
         txSleep (20);
@@ -196,7 +199,7 @@ void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLOR
 // 0 - x; 1 - y; 2 - vX; 3 - vY;
 void Physics (Ball *ball, Rect box, double dt)
 {
-    ball->DrawHistory();
+    ball->DrawHistoryLines ();
 
     Vector fGravity  = {.x = 0, .y = 70};
 
@@ -210,15 +213,18 @@ void Physics (Ball *ball, Rect box, double dt)
     txSetFillColor (TX_YELLOW);
     txSetColor     (TX_YELLOW);
     txCircle (txMousePos ().x, txMousePos ().y, 10);
+    /*
     Draw (resultantForce, ball->pos, TX_LIGHTRED,  5);
     Draw (mouseForce,     ball->pos, TX_LIGHTCYAN, 3);
     Draw (fGravity,       ball->pos, TX_LIGHTGRAY, 2);
+    */
+
 
     ball->v += (a * dt);
     //(*ball).v.y +=  ball->a.y * dt;
     //ball->  v.x +=  ball->a.x * dt;
 
-    Draw (ball->v, ball->pos, TX_GREEN, 3);
+   // Draw (ball->v, ball->pos, TX_GREEN, 3);
 
     ball->pos += (ball->v * dt);
     //(*ball).pos.x += (*ball).v.x * dt;
@@ -312,26 +318,67 @@ void PhysicsNoGrathics (Ball *ball, Rect box, double dt)
 
 void Ball::fillHistory ()
 {
-    for (int i = 0; i < BallHistoryLength; i++)
-    {
-        if (i < BallHistoryLength - 1)
-        {
-            history [i] = history [i+1];
-        }
+    history [oldestNum] = pos;
+    oldestNum++;
 
-        else if (i == BallHistoryLength - 1)
-        {
-            history [i] = pos;
-        }
+    if (oldestNum >= (sizeof (history) / sizeof (history[0])))
+    {
+        oldestNum = 0;
     }
 }
 
 void Ball::DrawHistory ()
 {
-    for (int i = 0; i < BallHistoryLength; i++)
+    const double kRgb = 225 / BallHistoryLength;
+    double nColor = 0;
+
+    for (int i = oldestNum; i < BallHistoryLength; i++)
     {
-        txSetPixel (history[i].x, history[i].y, TX_DARKGREY);
+        txSetFillColor (RGB (nColor, nColor, nColor));
+        txSetColor     (RGB (nColor, nColor, nColor));
+        txCircle (history[i].x, history[i].y, 2);
+        nColor += kRgb;
     }
+
+    for (int i = 0; i < oldestNum; i++)
+    {
+        txSetFillColor (RGB (nColor, nColor, nColor));
+        txSetColor     (RGB (nColor, nColor, nColor));
+        txCircle (history[i].x, history[i].y, 2);
+        nColor += kRgb;
+    }
+
+    txSetFillColor (TX_PINK);
+    txSetColor     (TX_PINK);
+    txCircle (history[oldestNum].x, history[oldestNum].y, 3);
+}
+
+void Ball::DrawHistoryLines ()
+{
+    const double kRgb = 225 / BallHistoryLength;
+    double nColor = 0;
+
+    for (int i = oldestNum; i < BallHistoryLength; i++)
+    {
+        txSetFillColor (RGB (nColor, nColor, nColor));
+        txSetColor     (RGB (nColor, nColor, nColor));
+        txCircle (history[i].x, history[i].y, 2);
+        txLine   (history[i].x, history[i].y, history[i + 1].x, history[i + 1].y);
+        nColor += kRgb;
+    }
+
+    for (int i = 0; i < oldestNum; i++)
+    {
+        txSetFillColor (RGB (nColor, nColor, nColor));
+        txSetColor     (RGB (nColor, nColor, nColor));
+        txCircle (history[i].x, history[i].y, 2);
+        txLine   (history[i].x, history[i].y, history[i + 1].x, history[i + 1].y);
+        nColor += kRgb;
+    }
+
+    txSetFillColor (TX_PINK);
+    txSetColor     (TX_PINK);
+    txCircle (history[oldestNum].x, history[oldestNum].y, 3);
 }
 
 double SpeedX (double vX)
