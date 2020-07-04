@@ -360,15 +360,20 @@ void Ball::DrawHistoryLines ()
 
     for (int i = oldestNum; i < BallHistoryLength; i++)
     {
+        //cout << i;
         txSetFillColor (RGB (nColor, nColor, nColor));
         txSetColor     (RGB (nColor, nColor, nColor));
         txCircle (history[i].x, history[i].y, 2);
-        txLine   (history[i].x, history[i].y, history[i + 1].x, history[i + 1].y);
+        if (i < BallHistoryLength - 1)
+        {
+            txLine   (history[i].x, history[i].y, history[i + 1].x, history[i + 1].y);
+        }
         nColor += kRgb;
     }
 
-    for (int i = 0; i < oldestNum; i++)
+    for (int i = 0; i < oldestNum - 1; i++)
     {
+        //cout << i;
         txSetFillColor (RGB (nColor, nColor, nColor));
         txSetColor     (RGB (nColor, nColor, nColor));
         txCircle (history[i].x, history[i].y, 2);
