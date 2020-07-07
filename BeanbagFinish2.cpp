@@ -136,18 +136,20 @@ int main()
 
     double dt = 0.02;
 
-    Ball ball1 = {{100, 100}, {5, 5}, 1, 10};
-    Ball ball2 = {{300, 300}, {5, 5}, 1, 10};
-    Ball ball3 = {{200, 200}, {5, 5}, 1, 10};
+    Ball ball[3] = {};
+
+    ball[0] = {{100, 100}, {5, 5}, 1, 10};
+    ball[1] = {{300, 300}, {5, 5}, 1, 10};
+    ball[2] = {{200, 200}, {5, 5}, 1, 10};
 
     bool flagClearBackground = true;
 
     txBegin ();
     for (;;)
     {
-        BallFrame       (&ball1, dt, 3, TX_GREEN);
-        //BallFrameNoGrathics (&ball2, dt, 1, TX_RED);
-        //BallFrameNoGrathics (&ball3, dt, 1, TX_RED);
+        BallFrame           (&ball[0], dt, 3, TX_GREEN);
+        BallFrameNoGrathics (&ball[1], dt, 1, TX_RED);
+        BallFrameNoGrathics (&ball[2], dt, 1, TX_RED);
 
 
         txSleep (20);
@@ -316,6 +318,15 @@ void PhysicsNoGrathics (Ball *ball, Rect box, double dt)
         
 }//
 
+void findElectricForce (Ball ball[], int length)
+{
+    for (int j = 0; j < length; j++)
+    {
+        Vector fElectric = (ball[j].charge * ball[0].charge) / ( (ball[j].pos - ball[0].pos) * (ball[j].pos - ball[0].pos) );
+        
+    }
+}
+
 void Ball::fillHistory ()
 {
     history [oldestNum] = pos;
@@ -357,18 +368,21 @@ void Ball::DrawHistoryLines ()
 {
     const double kRgb = 225 / BallHistoryLength;
     double nColor = 0;
+    //$(oldestNum);
 
-    for (int i = oldestNum; i < BallHistoryLength; i++)
+    for (int i = oldestNum; i < BallHistoryLength - 1; i++)
     {
         //cout << i;
         txSetFillColor (RGB (nColor, nColor, nColor));
         txSetColor     (RGB (nColor, nColor, nColor));
-        txCircle (history[i].x, history[i].y, 2);
-        if (i < BallHistoryLength - 1)
-        {
-            txLine   (history[i].x, history[i].y, history[i + 1].x, history[i + 1].y);
-        }
+      // txCircle (history[i].x, history[i].y, 2);
+        txLine   (history[i].x, history[i].y, history[i + 1].x, history[i + 1].y);
         nColor += kRgb;
+    }
+
+    if (oldestNum != 0)
+    {
+        txLine (history[BallHistoryLength - 1].x, history[BallHistoryLength - 1].y, history[0].x, history[0].y);
     }
 
     for (int i = 0; i < oldestNum - 1; i++)
@@ -376,7 +390,7 @@ void Ball::DrawHistoryLines ()
         //cout << i;
         txSetFillColor (RGB (nColor, nColor, nColor));
         txSetColor     (RGB (nColor, nColor, nColor));
-        txCircle (history[i].x, history[i].y, 2);
+        //txCircle (history[i].x, history[i].y, 2);
         txLine   (history[i].x, history[i].y, history[i + 1].x, history[i + 1].y);
         nColor += kRgb;
     }
