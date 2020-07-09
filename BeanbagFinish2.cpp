@@ -19,6 +19,9 @@ B = {3, 4}
 */
 
 const int BallHistoryLength = 100;
+const int BallLength = 3;
+const double Precision = 1e-100;
+const double ElectricKf = 80000000000;
 
 struct Vector 
 {
@@ -41,6 +44,7 @@ struct Ball
     Vector v;
     double m;
     double r;
+    double charge;
 
     Vector history [BallHistoryLength];
 
@@ -58,6 +62,7 @@ inline Vector  operator *  (const Vector &a, const double b);
 inline Vector  operator *  (const Vector &a, const Vector &b);
 inline Vector &operator *= (Vector &a, const Vector &b);
 inline Vector  operator /  (const Vector &a, double m);
+inline Vector operator / (const double a, const Vector &b);
 Vector operator ^ (const Vector &vector, int degree);
 
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness = 1);
@@ -67,17 +72,19 @@ void drawVectorCircle (const Vector &vector, const Vector &startP, COLORREF colo
 Vector rotateVector (const Vector &vector, double rad);
 void Draw_verVector (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, const double thickness, double angle);
 double DegToRad (double degrees);
-double length (const Vector &vector);
+double lengthV (const Vector &vector);
+Vector vectorNormal (Vector vector);
 
 
 double elDeg (const double number, const double deg);
 double degreesOfDouble (const double number, int degree);
 
 
-void BallFrame           (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle);
-void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle);
-void Physics           (Ball *ball, Rect box, double dt);
-void PhysicsNoGrathics (Ball *ball, Rect box, double dt);
+void BallFrame           (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle, Ball balls[], int numberOfFind);
+void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle, Ball balls[], int numberOfFind);
+void Physics           (Ball *ball, Rect box, double dt, Ball balls[], int numberOfFind);
+void PhysicsNoGrathics (Ball *ball, Rect box, double dt, Ball balls[], int numberOfFind);
+Vector findElectricForce (Ball ball[], int numberOfFind, int length);
 double SpeedX (double vX);
 double SpeedY (double vY);
 bool ClearBackground (bool flagClearBackground);
@@ -137,19 +144,20 @@ int main()
     double dt = 0.02;
 
     Ball ball[3] = {};
+    
 
-    ball[0] = {{100, 100}, {5, 5}, 1, 10};
-    ball[1] = {{300, 300}, {5, 5}, 1, 10};
-    ball[2] = {{200, 200}, {5, 5}, 1, 10};
+    ball[0] = {{100, 100}, {0, 0}, 1000000, 10, 2};
+    ball[1] = {{500, 100}, {0, 0}, 1000000, 10, 2};
+    ball[2] = {{300, 300}, {0, 0}, 1000000, 10, 2};
 
     bool flagClearBackground = true;
 
     txBegin ();
     for (;;)
     {
-        BallFrame           (&ball[0], dt, 3, TX_GREEN);
-        BallFrameNoGrathics (&ball[1], dt, 1, TX_RED);
-        BallFrameNoGrathics (&ball[2], dt, 1, TX_RED);
+        BallFrameNoGrathics (&ball[0], dt, 3, TX_GREEN, ball, 0);
+        BallFrameNoGrathics (&ball[1], dt, 1, TX_RED, ball, 1);
+        BallFrameNoGrathics (&ball[2], dt, 1, TX_RED, ball, 2);
 
 
         txSleep (20);
@@ -164,13 +172,13 @@ int main()
 }
 
 // x = 100; y = 400; r = 20; vX = 5; vY = 5; dt = 1; g = 0.7
-void BallFrame (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle)
+void BallFrame (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle, Ball balls[], int numberOfFind)
 {
      txSetFillColor (colorCircle);
      txCircle ((*ball).pos.x, (*ball).pos.y, (*ball).r);
 
      const Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
-     Physics (ball, box, dt);
+     Physics (ball, box, dt, balls, numberOfFind);
 
      ball->v.x = SpeedX (ball->v.x);
      ball->v.y = SpeedY (ball->v.y);
@@ -179,13 +187,13 @@ void BallFrame (Ball *ball, double dt, double thicknessOfVector, COLORREF colorC
      (*ball).r = SwitchRadius ((*ball).r);
 }
 
-void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle)
+void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle, Ball balls[], int numberOfFind)
 {
      txSetFillColor (colorCircle);
      txCircle ((*ball).pos.x, (*ball).pos.y, (*ball).r);
 
      const Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
-     PhysicsNoGrathics (ball, box, dt);
+     PhysicsNoGrathics (ball, box, dt, balls, numberOfFind);
 
      ball->v.x = SpeedX (ball->v.x);
      ball->v.y = SpeedY (ball->v.y);
@@ -199,7 +207,7 @@ void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLOR
 //(x - 1)(x + 1) = 0
 
 // 0 - x; 1 - y; 2 - vX; 3 - vY;
-void Physics (Ball *ball, Rect box, double dt)
+void Physics (Ball *ball, Rect box, double dt, Ball balls[], int numberOfFind)
 {
     ball->DrawHistoryLines ();
 
@@ -207,8 +215,9 @@ void Physics (Ball *ball, Rect box, double dt)
 
     Vector currPosMouse = {txMouseX (), txMouseY ()};
     Vector mouseForce = (currPosMouse - ball->pos) * 0.5;
+    Vector fElectric = findElectricForce (balls, numberOfFind, BallLength);
 
-    Vector resultantForce = fGravity + mouseForce;
+    Vector resultantForce = fGravity + mouseForce + fElectric;
 
     Vector a = resultantForce / ball->m;
 
@@ -260,7 +269,7 @@ void Physics (Ball *ball, Rect box, double dt)
         
 }//
 
-void PhysicsNoGrathics (Ball *ball, Rect box, double dt)
+void PhysicsNoGrathics (Ball *ball, Rect box, double dt, Ball balls[], int numberOfFind)
 {
     //ball->DrawHistory();
 
@@ -268,8 +277,9 @@ void PhysicsNoGrathics (Ball *ball, Rect box, double dt)
 
     Vector currPosMouse = {txMouseX (), txMouseY ()};
     Vector mouseForce = (currPosMouse - ball->pos) * 0.5;
+    Vector fElectric = findElectricForce (balls, numberOfFind, BallLength);
 
-    Vector resultantForce = fGravity + mouseForce;
+    Vector resultantForce = fGravity + mouseForce + fElectric;
 
     Vector a = resultantForce / ball->m;
 
@@ -318,13 +328,34 @@ void PhysicsNoGrathics (Ball *ball, Rect box, double dt)
         
 }//
 
-void findElectricForce (Ball ball[], int length)
+Vector findElectricForce (Ball ball[], int numberOfFind, int length)
 {
+    Vector fElectric = {0, 0};
+        
     for (int j = 0; j < length; j++)
     {
-        Vector fElectric = (ball[j].charge * ball[0].charge) / ( (ball[j].pos - ball[0].pos) * (ball[j].pos - ball[0].pos) );
+        if (j != numberOfFind)
+        {
+            Vector vectorDistance = ball[j].pos - ball[numberOfFind].pos;
+            double distance = lengthV (vectorDistance);
+
+            if (distance * distance < Precision) continue;
+
+            double vectorLength = (ball[j].charge * ball[numberOfFind].charge) / (distance * distance);
+            fElectric += vectorNormal (vectorDistance) * vectorLength * ElectricKf;
+            
+            Draw ((vectorNormal (vectorDistance) * vectorLength) * 1000000, ball[numberOfFind].pos, TX_PINK);
+            printf ("vectorLength: %lg\n", vectorLength);
+        }
         
     }
+
+    return fElectric;
+}
+
+Vector vectorNormal (Vector vector)
+{
+    return vector / lengthV (vector);
 }
 
 void Ball::fillHistory ()
@@ -361,7 +392,7 @@ void Ball::DrawHistory ()
 
     txSetFillColor (TX_PINK);
     txSetColor     (TX_PINK);
-    txCircle (history[oldestNum].x, history[oldestNum].y, 3);
+    //txCircle (history[oldestNum].x, history[oldestNum].y, 3);
 }
 
 void Ball::DrawHistoryLines ()
@@ -555,7 +586,7 @@ void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainV
     */
 }
 
-double length (const Vector &vector)
+double lengthV (const Vector &vector)
 {
     return sqrt (vector.x * vector.x + vector.y * vector.y);
 }
@@ -641,6 +672,14 @@ inline Vector operator * (const Vector &a, const double b)
     return result;
 }
 
+inline Vector operator / (const double a, const Vector &b)
+{
+    Vector result = {};
+    result.x = a / b.x;
+    result.y = a / b.y;
+
+    return result;
+}
 
 inline Vector operator + (const Vector &a, const Vector &b)
 {

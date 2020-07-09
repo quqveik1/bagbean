@@ -133,6 +133,7 @@
       <EnablePREfast>true</EnablePREfast>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>﻿C:\Users\Алехандро\Desktop\AlexProjects\TX</AdditionalIncludeDirectories>
+      <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

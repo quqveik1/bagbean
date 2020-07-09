@@ -1,0 +1,4 @@
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe.lastcodeanalysissucceeded
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\NativeCodeAnalysis.read.1.tlog
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.pdb

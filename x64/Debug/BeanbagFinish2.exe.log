@@ -1,0 +1,332 @@
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: Деление на ноль при операции с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_DIVIDE_BY_ZERO (0xC000008E) при выполнении кода по адресу 0x00007FF72E41CCFA. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF72E4C8178 (64-bit), Flags: CMdRe0, Thread: 0x449C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 9 0x00007FFDD7066FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#10 0x00007FFDD72DCEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (213):
+
+    211:     Vector fGravity  = {.x = 0, .y = 70};
+    212: 
+=>  213:     Vector currPosMouse = {txMouseX (), txMouseY ()};
+    214:     Vector mouseForce = (currPosMouse - ball->pos) * 0.5;
+    215:     Vector fElectric = findElectricForce (balls, numberOfFind, BallLength);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Jul  8 2020 21:53:53, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Jul  8 2020 21:54:10
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: signal (8, 0x83): SIGFPE: Грубая ошибка в вычислениях. _FPE_ZERODIVIDE: Деление на ноль. 
+
+Деление на ноль при операции с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_DIVIDE_BY_ZERO (0xC000008E) при выполнении кода по адресу 0x00007FF72E41CCFA. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF72E4C8178 (64-bit), Flags: CMdRe0, Thread: 0x449C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 9 0x00007FFDD7066FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#10 0x00007FFDD72DCEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Jul  8 2020 21:53:53, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Jul  8 2020 21:54:10
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: Деление на ноль при операции с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_DIVIDE_BY_ZERO (0xC000008E) при выполнении кода по адресу 0x00007FF671F8CCFA. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF672038178 (64-bit), Flags: CMdRe0, Thread: 0x1B50 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 9 0x00007FFDD7066FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#10 0x00007FFDD72DCEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (213):
+
+    211:     Vector fGravity  = {.x = 0, .y = 70};
+    212: 
+=>  213:     Vector currPosMouse = {txMouseX (), txMouseY ()};
+    214:     Vector mouseForce = (currPosMouse - ball->pos) * 0.5;
+    215:     Vector fElectric = findElectricForce (balls, numberOfFind, BallLength);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Jul  8 2020 21:55:39, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Jul  8 2020 21:55:53
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: signal (8, 0x83): SIGFPE: Грубая ошибка в вычислениях. _FPE_ZERODIVIDE: Деление на ноль. 
+
+Деление на ноль при операции с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_DIVIDE_BY_ZERO (0xC000008E) при выполнении кода по адресу 0x00007FF671F8CCFA. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF672038178 (64-bit), Flags: CMdRe0, Thread: 0x1B50 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 9 0x00007FFDD7066FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#10 0x00007FFDD72DCEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Jul  8 2020 21:55:39, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Jul  8 2020 21:55:53
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: Деление на ноль при операции с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_DIVIDE_BY_ZERO (0xC000008E) при выполнении кода по адресу 0x00007FF60AA0CC1A. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF60AAB8178 (64-bit), Flags: CMdRe0, Thread: 0x492C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 9 0x00007FFDD7066FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#10 0x00007FFDD72DCEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (213):
+
+    211:     Vector fGravity  = {.x = 0, .y = 70};
+    212: 
+=>  213:     Vector currPosMouse = {txMouseX (), txMouseY ()};
+    214:     Vector mouseForce = (currPosMouse - ball->pos) * 0.5;
+    215:     Vector fElectric = findElectricForce (balls, numberOfFind, BallLength);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Jul  8 2020 21:56:45, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Jul  8 2020 21:57:38
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: signal (8, 0x83): SIGFPE: Грубая ошибка в вычислениях. _FPE_ZERODIVIDE: Деление на ноль. 
+
+Деление на ноль при операции с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_DIVIDE_BY_ZERO (0xC000008E) при выполнении кода по адресу 0x00007FF60AA0CC1A. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF60AAB8178 (64-bit), Flags: CMdRe0, Thread: 0x492C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 9 0x00007FFDD7066FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#10 0x00007FFDD72DCEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Jul  8 2020 21:56:45, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Jul  8 2020 21:57:38
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: Деление на ноль при операции с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_DIVIDE_BY_ZERO (0xC000008E) при выполнении кода по адресу 0x00007FF60AA0CC1A. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF60AAB8178 (64-bit), Flags: CMdRe0, Thread: 0xF0C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 9 0x00007FFDD7066FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#10 0x00007FFDD72DCEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (213):
+
+    211:     Vector fGravity  = {.x = 0, .y = 70};
+    212: 
+=>  213:     Vector currPosMouse = {txMouseX (), txMouseY ()};
+    214:     Vector mouseForce = (currPosMouse - ball->pos) * 0.5;
+    215:     Vector fElectric = findElectricForce (balls, numberOfFind, BallLength);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Jul  8 2020 21:56:45, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Jul  8 2020 21:58:00
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: signal (8, 0x83): SIGFPE: Грубая ошибка в вычислениях. _FPE_ZERODIVIDE: Деление на ноль. 
+
+Деление на ноль при операции с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_DIVIDE_BY_ZERO (0xC000008E) при выполнении кода по адресу 0x00007FF60AA0CC1A. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF60AAB8178 (64-bit), Flags: CMdRe0, Thread: 0xF0C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 9 0x00007FFDD7066FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#10 0x00007FFDD72DCEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Jul  8 2020 21:56:45, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Jul  8 2020 21:58:00
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
