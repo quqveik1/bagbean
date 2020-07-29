@@ -19,9 +19,9 @@ B = {3, 4}
 */
 
 const int BallHistoryLength = 100;
-const int BallLength = 3;
+const int BallLength = 5;
 const double Precision = 1e-100;
-const double ElectricKf = 80000000000;
+const double ElectricKf = 800;
 
 struct Vector 
 {
@@ -141,24 +141,27 @@ int main()
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
 
-    double dt = 0.02;
+    double dt = 0.2;
 
-    Ball ball[3] = {};
+    Ball ball[5] = {};
     
 
-    ball[0] = {{100, 100}, {0, 0}, 1000000, 10, 2};
-    ball[1] = {{500, 100}, {0, 0}, 1000000, 10, 2};
-    ball[2] = {{300, 300}, {0, 0}, 1000000, 10, 2};
+    ball[0] = {{100, 100}, {0, 0}, 100, 10, 2};
+    ball[1] = {{500, 100}, {0, 0}, 100, 10, 2};
+    ball[2] = {{300, 300}, {0, 0}, 100, 10, 2};
+    ball[3] = {{700, 300}, {0, 0}, 10,  10, 2};
+    ball[4] = {{100, 300}, {0, 0}, 100, 10, 2};
 
     bool flagClearBackground = true;
 
     txBegin ();
     for (;;)
     {
-        BallFrameNoGrathics (&ball[0], dt, 3, TX_GREEN, ball, 0);
-        BallFrameNoGrathics (&ball[1], dt, 1, TX_RED, ball, 1);
-        BallFrameNoGrathics (&ball[2], dt, 1, TX_RED, ball, 2);
-
+        BallFrame (&ball[0], dt, 3, TX_GREEN,   ball, 0);
+        BallFrameNoGrathics (&ball[1], dt, 1, TX_RED,     ball, 1);
+        BallFrameNoGrathics (&ball[2], dt, 1, TX_RED,     ball, 2);
+        BallFrameNoGrathics (&ball[3], dt, 1, TX_YELLOW,  ball, 3);
+        BallFrameNoGrathics (&ball[4], dt, 1, TX_RED,     ball, 4);
 
         txSleep (20);
 
@@ -214,7 +217,7 @@ void Physics (Ball *ball, Rect box, double dt, Ball balls[], int numberOfFind)
     Vector fGravity  = {.x = 0, .y = 70};
 
     Vector currPosMouse = {txMouseX (), txMouseY ()};
-    Vector mouseForce = (currPosMouse - ball->pos) * 0.5;
+    Vector mouseForce = (currPosMouse - ball->pos) * 2;
     Vector fElectric = findElectricForce (balls, numberOfFind, BallLength);
 
     Vector resultantForce = fGravity + mouseForce + fElectric;
@@ -344,8 +347,8 @@ Vector findElectricForce (Ball ball[], int numberOfFind, int length)
             double vectorLength = (ball[j].charge * ball[numberOfFind].charge) / (distance * distance);
             fElectric += vectorNormal (vectorDistance) * vectorLength * ElectricKf;
             
-            Draw ((vectorNormal (vectorDistance) * vectorLength) * 1000000, ball[numberOfFind].pos, TX_PINK);
-            printf ("vectorLength: %lg\n", vectorLength);
+            Draw ((vectorNormal (vectorDistance) * vectorLength) * 100000, ball[numberOfFind].pos, TX_PINK);
+            //printf ("vectorLength: %lg\n", vectorLength);
         }
         
     }

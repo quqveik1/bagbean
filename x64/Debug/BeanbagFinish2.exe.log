@@ -330,3 +330,169 @@ Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinis
 Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
 
 --------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: Деление на ноль при операции с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_DIVIDE_BY_ZERO (0xC000008E) при выполнении кода по адресу 0x00007FF6A4C5CBFF. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF6A4D08168 (64-bit), Flags: CMdRe0, Thread: 0x104 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 8 0x00007FFA5D8B6FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+# 9 0x00007FFA5F1BCEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (576):
+
+    574:         txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+    575:         drawArrows (vector, finishPoint);
+=>  576:         txSetFillColor (colorOfMainVector);
+    577:     }
+    578: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Jul 29 2020 19:21:34, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Jul 29 2020 19:21:48
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: signal (8, 0x83): SIGFPE: Грубая ошибка в вычислениях. _FPE_ZERODIVIDE: Деление на ноль. 
+
+Деление на ноль при операции с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_DIVIDE_BY_ZERO (0xC000008E) при выполнении кода по адресу 0x00007FF6A4C5CBFF. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF6A4D08168 (64-bit), Flags: CMdRe0, Thread: 0x104 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 8 0x00007FFA5D8B6FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+# 9 0x00007FFA5F1BCEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Jul 29 2020 19:21:34, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Jul 29 2020 19:21:48
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: Деление на ноль при операции с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_DIVIDE_BY_ZERO (0xC000008E) при выполнении кода по адресу 0x00007FF6A4C5CBFF. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF6A4D08168 (64-bit), Flags: CMdRe0, Thread: 0x4FF4 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 8 0x00007FFA5D8B6FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+# 9 0x00007FFA5F1BCEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (576):
+
+    574:         txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+    575:         drawArrows (vector, finishPoint);
+=>  576:         txSetFillColor (colorOfMainVector);
+    577:     }
+    578: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Jul 29 2020 19:21:34, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Jul 29 2020 19:22:41
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: signal (8, 0x83): SIGFPE: Грубая ошибка в вычислениях. _FPE_ZERODIVIDE: Деление на ноль. 
+
+Деление на ноль при операции с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_DIVIDE_BY_ZERO (0xC000008E) при выполнении кода по адресу 0x00007FF6A4C5CBFF. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF6A4D08168 (64-bit), Flags: CMdRe0, Thread: 0x4FF4 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 8 0x00007FFA5D8B6FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+# 9 0x00007FFA5F1BCEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Jul 29 2020 19:21:34, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Jul 29 2020 19:22:41
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------

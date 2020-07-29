@@ -1,12 +1,12 @@
 ﻿  BeanbagFinish2.cpp
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(175,47): warning C4100: thicknessOfVector: неиспользованный формальный параметр
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(190,57): warning C4100: thicknessOfVector: неиспользованный формальный параметр
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(216,28): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(216,41): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(278,28): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(278,41): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(606,79): warning C4100: colorOfMainVector: неиспользованный формальный параметр
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(652,91): warning C4100: thickness: неиспользованный формальный параметр
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(652,77): warning C4100: color: неиспользованный формальный параметр
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(652,38): warning C4100: vector: неиспользованный формальный параметр
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(178,47): warning C4100: thicknessOfVector: неиспользованный формальный параметр
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(193,57): warning C4100: thicknessOfVector: неиспользованный формальный параметр
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(219,28): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(219,41): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(281,28): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(281,41): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(609,79): warning C4100: colorOfMainVector: неиспользованный формальный параметр
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(655,91): warning C4100: thickness: неиспользованный формальный параметр
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(655,77): warning C4100: color: неиспользованный формальный параметр
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(655,38): warning C4100: vector: неиспользованный формальный параметр
   BeanbagFinish2.vcxproj -> C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
