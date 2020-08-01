@@ -1,1 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS />
+﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\bagbean\</FILEPATH>
+      <FILENAME>BeanbagFinish2.cpp</FILENAME>
+      <LINE>266</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>6244</DEFECTCODE>
+    <DESCRIPTION>Локальное объявление "dt" скрывает предыдущее объявление в строке "25" файла "c:\users\алехандро\desktop\alexprojects\bagbean\beanbagfinish2.cpp".</DESCRIPTION>
+    <FUNCTION>Physics</FUNCTION>
+    <DECORATED>?Physics@@YAXPEAUBall@@NQEAU1@H_N@Z</DECORATED>
+    <FUNCLINE>266</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\bagbean\</FILEPATH>
+        <FILENAME>BeanbagFinish2.cpp</FILENAME>
+        <LINE>25</LINE>
+        <COLUMN>7</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT></DEFECTS>

@@ -22,6 +22,8 @@ const int BallHistoryLength = 100;
 const int BallLength = 5;
 const double Precision = 1e-100;
 const double ElectricKf = 800;
+double dt = 0.09;
+const double minDistance = 10;
 
 struct Vector 
 {
@@ -33,10 +35,10 @@ struct Rect
     Vector pos;
     Vector size;
 
-    double left  () { return this->pos.x; }
-    double top   () { return this->pos.y; }
-    double right () { return this->size.x + this->pos.x; }
-    double bottom() { return this->size.y + this->pos.y; }
+    double left  () const { return this->pos.x; }
+    double top   () const { return this->pos.y; }
+    double right () const { return this->size.x + this->pos.x; }
+    double bottom() const { return this->size.y + this->pos.y; }
 };
 struct Ball 
 {
@@ -45,6 +47,8 @@ struct Ball
     double m;
     double r;
     double charge;
+    COLORREF color;
+    bool alive = 1;
 
     Vector history [BallHistoryLength];
 
@@ -79,12 +83,16 @@ Vector vectorNormal (Vector vector);
 double elDeg (const double number, const double deg);
 double degreesOfDouble (const double number, int degree);
 
-
-void BallFrame           (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle, Ball balls[], int numberOfFind);
-void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle, Ball balls[], int numberOfFind);
-void Physics           (Ball *ball, Rect box, double dt, Ball balls[], int numberOfFind);
-void PhysicsNoGrathics (Ball *ball, Rect box, double dt, Ball balls[], int numberOfFind);
+void drawAllBall (Ball ball[]);
+void PhysicsAllBall (Ball ball[]);
+void drawBall (Ball *ball, COLORREF colorCircle);
+void Control (Ball *ball);
+void Physics (Ball *ball, double dt, Ball balls[], int numberOfFind, bool Graphic);
+void PhysicsNoGrathics (Ball *ball, double dt, Ball balls[], int numberOfFind);
 Vector findElectricForce (Ball ball[], int numberOfFind, int length);
+void Colision (Ball *ball1, Ball *ball2);
+void FindColilision (Ball balls[], int numberOfFind);
+void ControlAllBalls (Ball balls[]);
 double SpeedX (double vX);
 double SpeedY (double vY);
 bool ClearBackground (bool flagClearBackground);
@@ -141,27 +149,29 @@ int main()
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
 
-    double dt = 0.2;
-
-    Ball ball[5] = {};
     
 
-    ball[0] = {{100, 100}, {0, 0}, 100, 10, 2};
-    ball[1] = {{500, 100}, {0, 0}, 100, 10, 2};
-    ball[2] = {{300, 300}, {0, 0}, 100, 10, 2};
-    ball[3] = {{700, 300}, {0, 0}, 10,  10, 2};
-    ball[4] = {{100, 300}, {0, 0}, 100, 10, 2};
+    Ball ball[BallLength] = {};
+    
+
+    ball[0] = {{100, 100}, {0, 0}, 100, 10, 2, TX_RED};
+    ball[1] = {{500, 100}, {0, 0}, 100, 10, 2, TX_RED};
+    ball[2] = {{300, 300}, {0, 0}, 100, 10, 2, TX_RED};
+    ball[3] = {{700, 300}, {0, 0}, 100,  10, 2, TX_RED};
+    ball[4] = {{100, 300}, {0, 0}, 100, 10, 2, TX_RED};
 
     bool flagClearBackground = true;
 
     txBegin ();
     for (;;)
     {
-        BallFrame (&ball[0], dt, 3, TX_GREEN,   ball, 0);
-        BallFrameNoGrathics (&ball[1], dt, 1, TX_RED,     ball, 1);
-        BallFrameNoGrathics (&ball[2], dt, 1, TX_RED,     ball, 2);
-        BallFrameNoGrathics (&ball[3], dt, 1, TX_YELLOW,  ball, 3);
-        BallFrameNoGrathics (&ball[4], dt, 1, TX_RED,     ball, 4);
+        PhysicsAllBall (ball);
+        PhysicsAllBall (ball);
+        PhysicsAllBall (ball);
+
+        ControlAllBalls (ball);
+
+        drawAllBall (ball);
 
         txSleep (20);
 
@@ -174,6 +184,31 @@ int main()
     return 0;
 }
 
+void drawAllBall (Ball ball[])
+{
+     for (int i = 0; i < BallLength; i++)
+     {
+         if (ball[i].alive)
+            drawBall(&ball[i], ball->color);
+     }
+}
+
+void PhysicsAllBall (Ball ball[])
+{
+     for (int i = 0; i < BallLength; i++)
+     {
+         if (ball[i].alive)
+             Physics (&ball[i], dt, ball, i, false);
+     }
+}
+
+void drawBall (Ball *ball, COLORREF colorCircle)
+{
+    txSetFillColor (colorCircle);
+    txCircle ((*ball).pos.x, (*ball).pos.y, (*ball).r);
+}
+
+/*
 // x = 100; y = 400; r = 20; vX = 5; vY = 5; dt = 1; g = 0.7
 void BallFrame (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle, Ball balls[], int numberOfFind)
 {
@@ -203,6 +238,24 @@ void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLOR
 
      SwitchColour ();
      (*ball).r = SwitchRadius ((*ball).r);
+}*/
+
+void ControlAllBalls (Ball balls[])
+{
+    for (int i = 0; i < BallLength; i++)
+    {
+        if (balls[i].alive) 
+            Control (&balls[i]);
+    }
+}
+
+void Control (Ball *ball)
+{
+    ball->v.x = SpeedX (ball->v.x);
+    ball->v.y = SpeedY (ball->v.y);
+
+    SwitchColour ();
+    (*ball).r = SwitchRadius ((*ball).r);
 }
 
 //x^2 + x = 0
@@ -210,9 +263,13 @@ void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLOR
 //(x - 1)(x + 1) = 0
 
 // 0 - x; 1 - y; 2 - vX; 3 - vY;
-void Physics (Ball *ball, Rect box, double dt, Ball balls[], int numberOfFind)
+void Physics (Ball *ball, double dt, Ball balls[], int numberOfFind, bool Graphic)
 {
-    ball->DrawHistoryLines ();
+    if (Graphic)
+    {
+        ball->DrawHistoryLines ();
+    }
+    const Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
 
     Vector fGravity  = {.x = 0, .y = 70};
 
@@ -224,6 +281,7 @@ void Physics (Ball *ball, Rect box, double dt, Ball balls[], int numberOfFind)
 
     Vector a = resultantForce / ball->m;
 
+    
     txSetFillColor (TX_YELLOW);
     txSetColor     (TX_YELLOW);
     txCircle (txMousePos ().x, txMousePos ().y, 10);
@@ -269,17 +327,21 @@ void Physics (Ball *ball, Rect box, double dt, Ball balls[], int numberOfFind)
         (*ball).v.y = -((*ball).v.y);
         (*ball).pos.y = box.top() - ((*ball).pos.y - box.top());
     }
+
+    FindColilision (balls, numberOfFind);
         
 }//
-
-void PhysicsNoGrathics (Ball *ball, Rect box, double dt, Ball balls[], int numberOfFind)
+/*
+void PhysicsNoGrathics (Ball *ball, double dt, Ball balls[], int numberOfFind)
 {
     //ball->DrawHistory();
+
+    Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
 
     Vector fGravity  = {.x = 0, .y = 70};
 
     Vector currPosMouse = {txMouseX (), txMouseY ()};
-    Vector mouseForce = (currPosMouse - ball->pos) * 0.5;
+    Vector mouseForce = (currPosMouse - ball->pos) * 2;
     Vector fElectric = findElectricForce (balls, numberOfFind, BallLength);
 
     Vector resultantForce = fGravity + mouseForce + fElectric;
@@ -329,7 +391,43 @@ void PhysicsNoGrathics (Ball *ball, Rect box, double dt, Ball balls[], int numbe
         (*ball).pos.y = box.top() - ((*ball).pos.y - box.top());
     }
         
-}//
+}//*/
+//                    ball1 -> ball2
+
+void FindColilision (Ball balls[], int numberOfFind)
+{
+    for (int i = 0; i < BallLength; i++)
+    {
+        if (i != numberOfFind)
+        {
+            if (balls[i].alive)
+            {
+                Vector distanceV = balls[i].pos - balls[numberOfFind].pos;
+                double distanceS = lengthV (distanceV);
+
+                if (minDistance > distanceS)
+                {
+                    Colision (&balls[i], &balls[numberOfFind]);
+                }
+            }
+        }
+    }
+}
+
+void Colision (Ball *ball1, Ball *ball2)
+{
+    ball2->m = ball2->m + ball1->m;
+    ball1->m = 0;
+
+    double sumSquare = M_PI * ball1->r + M_PI * ball1->r;
+    ball2->r = sumSquare / M_PI;
+    ball1->r = 0;
+
+    ball2->charge = ball2->charge + ball1->charge;
+    ball1->charge = 0;
+
+    ball1->alive = false;
+}
 
 Vector findElectricForce (Ball ball[], int numberOfFind, int length)
 {
@@ -347,7 +445,10 @@ Vector findElectricForce (Ball ball[], int numberOfFind, int length)
             double vectorLength = (ball[j].charge * ball[numberOfFind].charge) / (distance * distance);
             fElectric += vectorNormal (vectorDistance) * vectorLength * ElectricKf;
             
-            Draw ((vectorNormal (vectorDistance) * vectorLength) * 100000, ball[numberOfFind].pos, TX_PINK);
+            if (ball[j].alive)
+            {
+                Draw ((vectorNormal (vectorDistance) * vectorLength) * 100000, ball[numberOfFind].pos, TX_PINK);
+            }
             //printf ("vectorLength: %lg\n", vectorLength);
         }
         
