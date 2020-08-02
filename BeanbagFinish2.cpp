@@ -19,11 +19,11 @@ B = {3, 4}
 */
 
 const int BallHistoryLength = 100;
-const int BallLength = 5;
+const int BallLength = 2;
 const double Precision = 1e-100;
 const double ElectricKf = 800;
-double dt = 0.09;
-const double minDistance = 10;
+const double DT = 0.09;
+const double MinDistance = 5;
 
 struct Vector 
 {
@@ -87,8 +87,8 @@ void drawAllBall (Ball ball[]);
 void PhysicsAllBall (Ball ball[]);
 void drawBall (Ball *ball, COLORREF colorCircle);
 void Control (Ball *ball);
-void Physics (Ball *ball, double dt, Ball balls[], int numberOfFind, bool Graphic);
-void PhysicsNoGrathics (Ball *ball, double dt, Ball balls[], int numberOfFind);
+void Physics (Ball *ball, Ball balls[], int numberOfFind, bool Graphic);
+void PhysicsNoGrathics (Ball *ball, Ball balls[], int numberOfFind);
 Vector findElectricForce (Ball ball[], int numberOfFind, int length);
 void Colision (Ball *ball1, Ball *ball2);
 void FindColilision (Ball balls[], int numberOfFind);
@@ -129,6 +129,7 @@ int main()
     double dt = 1;
     bool flagClearBackground = false;
     for (;;)
+
     {
         BallFrame (&ball1, dt);
         BallFrame (&ball2, dt);
@@ -154,11 +155,8 @@ int main()
     Ball ball[BallLength] = {};
     
 
-    ball[0] = {{100, 100}, {0, 0}, 100, 10, 2, TX_RED};
-    ball[1] = {{500, 100}, {0, 0}, 100, 10, 2, TX_RED};
-    ball[2] = {{300, 300}, {0, 0}, 100, 10, 2, TX_RED};
-    ball[3] = {{700, 300}, {0, 0}, 100,  10, 2, TX_RED};
-    ball[4] = {{100, 300}, {0, 0}, 100, 10, 2, TX_RED};
+    ball[0] = {{400, 300}, {0, 0}, 100000, 10, 2, TX_RED};
+    ball[1] = {{600, 300}, {56, 56}, 100, 10, 2, TX_RED};
 
     bool flagClearBackground = true;
 
@@ -198,7 +196,7 @@ void PhysicsAllBall (Ball ball[])
      for (int i = 0; i < BallLength; i++)
      {
          if (ball[i].alive)
-             Physics (&ball[i], dt, ball, i, false);
+             Physics (&ball[i], ball, i, false);
      }
 }
 
@@ -263,7 +261,7 @@ void Control (Ball *ball)
 //(x - 1)(x + 1) = 0
 
 // 0 - x; 1 - y; 2 - vX; 3 - vY;
-void Physics (Ball *ball, double dt, Ball balls[], int numberOfFind, bool Graphic)
+void Physics (Ball *ball, Ball balls[], int numberOfFind, bool Graphic)
 {
     if (Graphic)
     {
@@ -271,13 +269,13 @@ void Physics (Ball *ball, double dt, Ball balls[], int numberOfFind, bool Graphi
     }
     const Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
 
-    Vector fGravity  = {.x = 0, .y = 70};
+    Vector fGravity  = {.x = 0, .y = 0};
 
     Vector currPosMouse = {txMouseX (), txMouseY ()};
-    Vector mouseForce = (currPosMouse - ball->pos) * 2;
+    //Vector mouseForce = (currPosMouse - ball->pos) * 2;
     Vector fElectric = findElectricForce (balls, numberOfFind, BallLength);
 
-    Vector resultantForce = fGravity + mouseForce + fElectric;
+    Vector resultantForce = fGravity + /*mouseForce*/  fElectric;
 
     Vector a = resultantForce / ball->m;
 
@@ -292,13 +290,13 @@ void Physics (Ball *ball, double dt, Ball balls[], int numberOfFind, bool Graphi
     */
 
 
-    ball->v += (a * dt);
+    ball->v += (a * DT);
     //(*ball).v.y +=  ball->a.y * dt;
     //ball->  v.x +=  ball->a.x * dt;
 
    // Draw (ball->v, ball->pos, TX_GREEN, 3);
 
-    ball->pos += (ball->v * dt);
+    ball->pos += (ball->v * DT);
     //(*ball).pos.x += (*ball).v.x * dt;
     //(*ball).pos.y += (*ball).v.y * dt;
 
@@ -405,7 +403,7 @@ void FindColilision (Ball balls[], int numberOfFind)
                 Vector distanceV = balls[i].pos - balls[numberOfFind].pos;
                 double distanceS = lengthV (distanceV);
 
-                if (minDistance > distanceS)
+                if (MinDistance > distanceS)
                 {
                     Colision (&balls[i], &balls[numberOfFind]);
                 }
@@ -428,6 +426,7 @@ void Colision (Ball *ball1, Ball *ball2)
 
     ball1->alive = false;
 }
+
 
 Vector findElectricForce (Ball ball[], int numberOfFind, int length)
 {
@@ -707,7 +706,7 @@ Vector operator ^ (const Vector &vector, int degree)
     return result;
 }
 
-void Draw_verVector (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, const double thickness, double rad)
+void Draw_verVector (const Vector &vector, const Vector &startPoint, COLORREF /*colorOfMainVector*/, const double thickness, double rad)
 {
     txBegin ();
 
@@ -753,7 +752,7 @@ void drawArrows (const Vector &mainVector, const Vector &startArrowPoint)
     txLine (startArrowPoint.x, startArrowPoint.y, arrow2finishPoint.x, arrow2finishPoint.y);
 }
 
-void drawVectorCircle (const Vector &vector, const Vector &startP, COLORREF color, double thickness)
+void drawVectorCircle (const Vector &/*vector*/, const Vector &startP, COLORREF /*color*/, double /*thickness*/)
 {
     txCircle (startP.x, startP.y, 5);
 }

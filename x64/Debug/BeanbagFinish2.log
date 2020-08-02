@@ -1,11 +1,2 @@
 ﻿  BeanbagFinish2.cpp
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(266,34): warning C4459: объявление "dt" скрывает глобальное объявление
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(25,8): message : см. объявление "dt"
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(276,28): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(276,41): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(710,79): warning C4100: colorOfMainVector: неиспользованный формальный параметр
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(756,91): warning C4100: thickness: неиспользованный формальный параметр
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(756,77): warning C4100: color: неиспользованный формальный параметр
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(756,38): warning C4100: vector: неиспользованный формальный параметр
   BeanbagFinish2.vcxproj -> C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(266): warning C6244: Локальное объявление "dt" скрывает предыдущее объявление в строке "25" файла "c:\users\алехандро\desktop\alexprojects\bagbean\beanbagfinish2.cpp".
