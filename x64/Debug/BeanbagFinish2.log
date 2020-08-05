@@ -1,2 +1,10 @@
 ﻿  BeanbagFinish2.cpp
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(194,46): warning C4838: Преобразование из "LONG" в "double" требует сужающего преобразования.
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(194,63): warning C4838: Преобразование из "LONG" в "double" требует сужающего преобразования.
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(278,46): warning C4838: Преобразование из "LONG" в "double" требует сужающего преобразования.
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(278,63): warning C4838: Преобразование из "LONG" в "double" требует сужающего преобразования.
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(478,26): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(478,43): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(485,26): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
+C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(485,43): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
   BeanbagFinish2.vcxproj -> C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe

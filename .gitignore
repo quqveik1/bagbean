@@ -36,3 +36,4 @@
 Beanbag.vcxproj.filters
 .vs/BeanbagFinish2/v16/.suo
 *.ipch
+*.opendb

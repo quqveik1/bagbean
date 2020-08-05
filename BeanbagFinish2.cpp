@@ -20,8 +20,8 @@ B = {3, 4}
 
 const int BallHistoryLength = 100;
 const int BallLength = 2;
-const double Precision = 1e-100;
-const double ElectricKf = 800;
+const double Precision  = 1e-100;
+const double ElectricKf = 80000000;
 const double DT = 0.09;
 const double MinDistance = 5;
 
@@ -93,6 +93,10 @@ Vector findElectricForce (Ball ball[], int numberOfFind, int length);
 void Colision (Ball *ball1, Ball *ball2);
 void FindColilision (Ball balls[], int numberOfFind);
 void ControlAllBalls (Ball balls[]);
+void ssCircle (double x, double y, double r);
+void ssLine (double StartX, double StartY, double FinishX, double FinishY);
+void solarSystem (Ball balls[]);
+Vector txToss (Vector pos);
 double SpeedX (double vX);
 double SpeedY (double vY);
 bool ClearBackground (bool flagClearBackground);
@@ -146,7 +150,7 @@ int main()
     Draw_verVector (vector, start, TX_RED, 5, DegToRad (1));
     */
     
-    txCreateWindow (800, 600);
+    txCreateWindow (800, 800);
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
 
@@ -155,16 +159,19 @@ int main()
     Ball ball[BallLength] = {};
     
 
-    ball[0] = {{400, 300}, {0, 0}, 100000, 10, 2, TX_RED};
-    ball[1] = {{600, 300}, {56, 56}, 100, 10, 2, TX_RED};
+    ball[0] = {txToss ({0, 0}),    {0, 0},   10000000000000000000, 10, 2, TX_RED};
+    ball[1] = {txToss ({-200, 0}), {56, 56}, 10000, 10, 2, TX_RED};
 
     bool flagClearBackground = true;
 
     txBegin ();
     for (;;)
     {
+        solarSystem (ball);
         PhysicsAllBall (ball);
+        solarSystem (ball);
         PhysicsAllBall (ball);
+        solarSystem (ball);
         PhysicsAllBall (ball);
 
         ControlAllBalls (ball);
@@ -180,6 +187,34 @@ int main()
     txEnd ();
 
     return 0;
+}
+
+void solarSystem (Ball balls[])
+{
+    const Rect box = { {0, 0}, {txGetExtent().x, txGetExtent().y} };
+
+    for (int i = 1; i < BallLength; i++)
+    {
+        if (balls[i].pos.x < 0.5 * box.right () && balls[i].pos.y < 0.5 * box.bottom ())
+        {
+            balls[i].v = {-56, 56};
+        }
+
+        if (balls[i].pos.x < 0.5 * box.right () && balls[i].pos.y > 0.5 * box.bottom ())
+        {
+            balls[i].v = {56, 56};
+        }
+
+        if (balls[i].pos.x > 0.5 * box.right () && balls[i].pos.y > 0.5 * box.bottom ())
+        {
+            balls[i].v = {56, -56};
+        }
+
+        if (balls[i].pos.x > 0.5 * box.right () && balls[i].pos.y < 0.5 * box.bottom ())
+        {
+            balls[i].v = {-56, -56};
+        }
+    }
 }
 
 void drawAllBall (Ball ball[])
@@ -237,6 +272,17 @@ void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLOR
      SwitchColour ();
      (*ball).r = SwitchRadius ((*ball).r);
 }*/
+
+Vector txToss (Vector pos)
+{
+    const Rect box = { {0, 0}, {txGetExtent().x, txGetExtent().y} };
+
+    return Vector 
+    {
+        pos.x += 0.5 * box.right  (),
+        pos.y += 0.5 * box.bottom ()
+    };
+}
 
 void ControlAllBalls (Ball balls[])
 {
@@ -427,6 +473,19 @@ void Colision (Ball *ball1, Ball *ball2)
     ball1->alive = false;
 }
 
+void ssCircle (double x, double y, double r)
+{
+    Rect Box = {{0, 0}, {txGetExtentX (), txGetExtentY ()}} ;
+
+    txCircle (x + 0.5 * Box.right (), y + 0.5 * Box.bottom (), r);
+}
+
+void ssLine (double StartX, double StartY, double FinishX, double FinishY)
+{
+    Rect Box = {{0, 0}, {txGetExtentX (), txGetExtentY ()}} ;
+
+    txLine (StartX + 0.5 * Box.right (), StartY + 0.5 * Box.bottom (), FinishX + 0.5 * Box.right (), FinishY + 0.5 * Box.bottom ());
+}
 
 Vector findElectricForce (Ball ball[], int numberOfFind, int length)
 {
