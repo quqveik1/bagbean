@@ -1,2 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<DEFECTS></DEFECTS>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\bagbean\</FILEPATH>
+      <FILENAME>BeanbagFinish2.cpp</FILENAME>
+      <LINE>175</LINE>
+      <COLUMN>15</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Возвращаемое значение пропущено: "scanf".</DESCRIPTION>
+    <FUNCTION>main</FUNCTION>
+    <DECORATED>main</DECORATED>
+    <FUNCLINE>128</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\bagbean\</FILEPATH>
+      <FILENAME>BeanbagFinish2.cpp</FILENAME>
+      <LINE>178</LINE>
+      <COLUMN>15</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Возвращаемое значение пропущено: "scanf".</DESCRIPTION>
+    <FUNCTION>main</FUNCTION>
+    <DECORATED>main</DECORATED>
+    <FUNCLINE>128</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\bagbean\</FILEPATH>
+      <FILENAME>BeanbagFinish2.cpp</FILENAME>
+      <LINE>248</LINE>
+      <COLUMN>15</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Возвращаемое значение пропущено: "scanf".</DESCRIPTION>
+    <FUNCTION>RunEngineE2</FUNCTION>
+    <DECORATED>?RunEngineE2@@YAXQEBUBall@@@Z</DECORATED>
+    <FUNCLINE>234</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\bagbean\</FILEPATH>
+      <FILENAME>BeanbagFinish2.cpp</FILENAME>
+      <LINE>251</LINE>
+      <COLUMN>15</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Возвращаемое значение пропущено: "scanf".</DESCRIPTION>
+    <FUNCTION>RunEngineE2</FUNCTION>
+    <DECORATED>?RunEngineE2@@YAXQEBUBall@@@Z</DECORATED>
+    <FUNCLINE>234</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

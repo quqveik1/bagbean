@@ -1,4 +1,6 @@
-﻿#include "TXLib.h"
+﻿#define  _CRT_SECURE_NO_WARNINGS
+
+#include "TXLib.h"
 //You must to delete "my" TXLib.h file from the ptoject or you can do not download "my" TXLib.h file, you need to download TXLib from https://sourceforge.net/projects/txlib/files/latest/download and install this	
 
 /*
@@ -21,7 +23,7 @@ B = {3, 4}
 const int BallHistoryLength = 100;
 const int BallLength = 2;
 const double Precision  = 1e-100;
-const double ElectricKf = 80000000;
+const double ElectricKf = 8e7;
 const double DT = 0.09;
 const double MinDistance = 5;
 
@@ -69,6 +71,9 @@ inline Vector  operator /  (const Vector &a, double m);
 inline Vector operator / (const double a, const Vector &b);
 Vector operator ^ (const Vector &vector, int degree);
 
+void RunEngineE2 (const Ball planetsInit[]);
+
+void RunEngineExperiment (Ball ball[]);
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness = 1);
 void drawArrows (const Vector &mainVector, const  Vector &startArrowPoint);
 Vector makePerpendikularLine (const Vector &mainVector);
@@ -150,28 +155,67 @@ int main()
     Draw_verVector (vector, start, TX_RED, 5, DegToRad (1));
     */
     
-    txCreateWindow (800, 800);
+    txCreateWindow (1900, 1000);
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
 
-    
-
     Ball ball[BallLength] = {};
+    Ball planetsInit[BallLength] = {};
     
+    ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2, TX_RED};
+    ball[1] = {txToss ({0, -400}), {56, 56}, 1e4, 10, 2, TX_RED};
 
-    ball[0] = {txToss ({0, 0}),    {0, 0},   10000000000000000000, 10, 2, TX_RED};
-    ball[1] = {txToss ({-200, 0}), {56, 56}, 10000, 10, 2, TX_RED};
+    for (int i = 0; i < BallLength; i++) planetsInit[i] = ball[i];
 
-    bool flagClearBackground = true;
-
-    txBegin ();
     for (;;)
     {
-        solarSystem (ball);
+        for (int i = 0; i < BallLength; i++) ball[i] = planetsInit[i];
+
+        printf ("Vx = ");
+        scanf  ("%lg", &ball[1].v.x);
+
+        printf ("Vy = ");
+        scanf  ("%lg", &ball[1].v.y);
+
+        RunEngineExperiment (ball);
+    }
+
+    return 0;
+}
+
+int main2()
+{
+    txCreateWindow (1900, 1000);
+    txSetColor     (TX_LIGHTRED);
+    txSetFillColor (TX_RED);
+
+    Ball ball[BallLength] = {};
+    Ball planetsInit[BallLength] = {};
+    
+    planetsInit[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2, TX_RED};
+    planetsInit[1] = {txToss ({0, -400}), {56, 56}, 1e4, 10, 2, TX_RED};
+
+    txBegin ();
+
+    RunEngineE2 (planetsInit);
+
+    txEnd ();
+
+
+    return 0;
+}
+
+void RunEngineExperiment (Ball ball[])
+{
+    bool flagClearBackground = true;
+        
+    for (;;)
+    {
+        //solarSystem (ball);
         PhysicsAllBall (ball);
-        solarSystem (ball);
+        //solarSystem (ball);
         PhysicsAllBall (ball);
-        solarSystem (ball);
+        //solarSystem (ball);
         PhysicsAllBall (ball);
 
         ControlAllBalls (ball);
@@ -184,9 +228,49 @@ int main()
 
         flagClearBackground = ClearBackground (flagClearBackground);
     }
-    txEnd ();
 
-    return 0;
+        
+}
+void RunEngineE2 (const Ball planetsInit[])
+{
+    Ball ball[BallLength] = {};
+
+    ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2, TX_RED};
+    ball[1] = {txToss ({0, -400}), {56, 56}, 1e4, 10, 2, TX_RED};
+
+    bool flagClearBackground = true;
+        
+    for (;;)
+    {
+        for (int i = 0; i < BallLength; i++) ball[i] = planetsInit[i];
+
+        printf ("Vx = ");
+        scanf  ("%lg", &ball[1].v.x);
+
+        printf ("Vy = ");
+        scanf  ("%lg", &ball[1].v.y);
+
+        for (;;)
+        {
+            //solarSystem (ball);
+            PhysicsAllBall (ball);
+            //solarSystem (ball);
+            PhysicsAllBall (ball);
+            //solarSystem (ball);
+            PhysicsAllBall (ball);
+
+            ControlAllBalls (ball);
+
+            drawAllBall (ball);
+
+            txSleep (20);
+
+            if (txGetAsyncKeyState('Q')) break;
+
+            flagClearBackground = ClearBackground (flagClearBackground);
+        }
+    }
+    
 }
 
 void solarSystem (Ball balls[])
@@ -231,7 +315,7 @@ void PhysicsAllBall (Ball ball[])
      for (int i = 0; i < BallLength; i++)
      {
          if (ball[i].alive)
-             Physics (&ball[i], ball, i, false);
+             Physics (&ball[i], ball, i, true);
      }
 }
 
@@ -460,8 +544,23 @@ void FindColilision (Ball balls[], int numberOfFind)
 
 void Colision (Ball *ball1, Ball *ball2)
 {
+    /*
+    закон сохранения импулса
+    p1 = m1 * v1
+    p2 = m2 * v2
+    pFinish = p1 + p2
+    =>
+    vFinish = pFinish / mFinish
+    =>
+    скорость = ((масса1 * скорость1) + (масса2 * скорость2)) / масса_итоговоого_объекта
+    */
+    Vector newV = ((ball1->v * ball1->m) + (ball2->v * ball2->m)) / (ball1->m + ball2->m);
+
     ball2->m = ball2->m + ball1->m;
     ball1->m = 0;
+
+    ball2->v = newV;
+    ball1->v = {0, 0};
 
     double sumSquare = M_PI * ball1->r + M_PI * ball1->r;
     ball2->r = sumSquare / M_PI;
