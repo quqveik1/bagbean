@@ -4,56 +4,56 @@
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\bagbean\</FILEPATH>
       <FILENAME>BeanbagFinish2.cpp</FILENAME>
-      <LINE>175</LINE>
+      <LINE>181</LINE>
       <COLUMN>15</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Возвращаемое значение пропущено: "scanf".</DESCRIPTION>
     <FUNCTION>main</FUNCTION>
     <DECORATED>main</DECORATED>
-    <FUNCLINE>128</FUNCLINE>
+    <FUNCLINE>134</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\bagbean\</FILEPATH>
       <FILENAME>BeanbagFinish2.cpp</FILENAME>
-      <LINE>178</LINE>
+      <LINE>184</LINE>
       <COLUMN>15</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Возвращаемое значение пропущено: "scanf".</DESCRIPTION>
     <FUNCTION>main</FUNCTION>
     <DECORATED>main</DECORATED>
-    <FUNCLINE>128</FUNCLINE>
+    <FUNCLINE>134</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\bagbean\</FILEPATH>
       <FILENAME>BeanbagFinish2.cpp</FILENAME>
-      <LINE>248</LINE>
+      <LINE>261</LINE>
       <COLUMN>15</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Возвращаемое значение пропущено: "scanf".</DESCRIPTION>
     <FUNCTION>RunEngineE2</FUNCTION>
     <DECORATED>?RunEngineE2@@YAXQEBUBall@@@Z</DECORATED>
-    <FUNCLINE>234</FUNCLINE>
+    <FUNCLINE>247</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\bagbean\</FILEPATH>
       <FILENAME>BeanbagFinish2.cpp</FILENAME>
-      <LINE>251</LINE>
+      <LINE>264</LINE>
       <COLUMN>15</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Возвращаемое значение пропущено: "scanf".</DESCRIPTION>
     <FUNCTION>RunEngineE2</FUNCTION>
     <DECORATED>?RunEngineE2@@YAXQEBUBall@@@Z</DECORATED>
-    <FUNCLINE>234</FUNCLINE>
+    <FUNCLINE>247</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
 </DEFECTS>

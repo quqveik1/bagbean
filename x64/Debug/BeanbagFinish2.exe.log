@@ -496,3 +496,610 @@ Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinis
 Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
 
 --------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00007FF7BFCB06F3. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF7BFDD9178 (64-bit), Flags: CMdRe0, Thread: 0x2688 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+#11 0x00007FFB440B6FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#12 0x00007FFB4421CEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool __cdecl `anonymous-namespace'::TX::txLine(double,double,double,double,struct HDC__ *) at C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h (12723):
+
+  12721: 
+  12722: $   bool ok  = txGDI ((Win32::MoveToEx (dc, ROUND (x0), ROUND (y0), NULL)), dc);
+=>12723: $        ok &= txGDI ((Win32::LineTo   (dc, ROUND (x1), ROUND (y1)      )), dc);
+  12724: 
+  12725: $   return ok;
+
+# 1 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (838):
+
+    836: 
+    837:         txSetColor (colorOfMainVector, thickness);
+=>  838:         txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+    839:         drawArrows (vector, finishPoint);
+    840:         txSetFillColor (colorOfMainVector);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Aug  9 2020 20:48:00, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Aug  9 2020 20:48:15
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: signal (8, 0x81): SIGFPE: Грубая ошибка в вычислениях. _FPE_INVALID: Результат неверен. 
+
+Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00007FF7BFCB06F3. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF7BFDD9178 (64-bit), Flags: CMdRe0, Thread: 0x2688 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+#11 0x00007FFB440B6FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#12 0x00007FFB4421CEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool __cdecl `anonymous-namespace'::TX::txLine(double,double,double,double,struct HDC__ *) at C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h (12723):
+
+  12721: 
+  12722: $   bool ok  = txGDI ((Win32::MoveToEx (dc, ROUND (x0), ROUND (y0), NULL)), dc);
+=>12723: $        ok &= txGDI ((Win32::LineTo   (dc, ROUND (x1), ROUND (y1)      )), dc);
+  12724: 
+  12725: $   return ok;
+
+# 1 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (838):
+
+    836: 
+    837:         txSetColor (colorOfMainVector, thickness);
+=>  838:         txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+    839:         drawArrows (vector, finishPoint);
+    840:         txSetFillColor (colorOfMainVector);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Aug  9 2020 20:48:00, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Aug  9 2020 20:48:15
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00007FF6219406F3. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF621A69178 (64-bit), Flags: CMdRe0, Thread: 0x774C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+#11 0x00007FFB440B6FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#12 0x00007FFB4421CEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool __cdecl `anonymous-namespace'::TX::txLine(double,double,double,double,struct HDC__ *) at C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h (12723):
+
+  12721: 
+  12722: $   bool ok  = txGDI ((Win32::MoveToEx (dc, ROUND (x0), ROUND (y0), NULL)), dc);
+=>12723: $        ok &= txGDI ((Win32::LineTo   (dc, ROUND (x1), ROUND (y1)      )), dc);
+  12724: 
+  12725: $   return ok;
+
+# 1 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (838):
+
+    836: 
+    837:         txSetColor (colorOfMainVector, thickness);
+=>  838:         txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+    839:         drawArrows (vector, finishPoint);
+    840:         txSetFillColor (colorOfMainVector);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Aug  9 2020 20:50:12, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Aug  9 2020 20:50:27
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: signal (8, 0x81): SIGFPE: Грубая ошибка в вычислениях. _FPE_INVALID: Результат неверен. 
+
+Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00007FF6219406F3. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF621A69178 (64-bit), Flags: CMdRe0, Thread: 0x774C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+#11 0x00007FFB440B6FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#12 0x00007FFB4421CEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool __cdecl `anonymous-namespace'::TX::txLine(double,double,double,double,struct HDC__ *) at C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h (12723):
+
+  12721: 
+  12722: $   bool ok  = txGDI ((Win32::MoveToEx (dc, ROUND (x0), ROUND (y0), NULL)), dc);
+=>12723: $        ok &= txGDI ((Win32::LineTo   (dc, ROUND (x1), ROUND (y1)      )), dc);
+  12724: 
+  12725: $   return ok;
+
+# 1 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (838):
+
+    836: 
+    837:         txSetColor (colorOfMainVector, thickness);
+=>  838:         txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+    839:         drawArrows (vector, finishPoint);
+    840:         txSetFillColor (colorOfMainVector);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Aug  9 2020 20:50:12, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Aug  9 2020 20:50:27
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00007FF6E60607E3. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF6E618A178 (64-bit), Flags: CMdRe0, Thread: 0x1480 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+#11 0x00007FF8AFA36FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#12 0x00007FF8B127CEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool __cdecl `anonymous-namespace'::TX::txLine(double,double,double,double,struct HDC__ *) at C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h (12723):
+
+  12721: 
+  12722: $   bool ok  = txGDI ((Win32::MoveToEx (dc, ROUND (x0), ROUND (y0), NULL)), dc);
+=>12723: $        ok &= txGDI ((Win32::LineTo   (dc, ROUND (x1), ROUND (y1)      )), dc);
+  12724: 
+  12725: $   return ok;
+
+# 1 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (872):
+
+    870: 
+    871:         txSetColor (colorOfMainVector, thickness);
+=>  872:         txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+    873:         drawArrows (vector, finishPoint);
+    874:         txSetFillColor (colorOfMainVector);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Aug 12 2020 20:39:52, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Aug 12 2020 20:40:07
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: signal (8, 0x81): SIGFPE: Грубая ошибка в вычислениях. _FPE_INVALID: Результат неверен. 
+
+Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00007FF6E60607E3. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF6E618A178 (64-bit), Flags: CMdRe0, Thread: 0x1480 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+#11 0x00007FF8AFA36FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#12 0x00007FF8B127CEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool __cdecl `anonymous-namespace'::TX::txLine(double,double,double,double,struct HDC__ *) at C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h (12723):
+
+  12721: 
+  12722: $   bool ok  = txGDI ((Win32::MoveToEx (dc, ROUND (x0), ROUND (y0), NULL)), dc);
+=>12723: $        ok &= txGDI ((Win32::LineTo   (dc, ROUND (x1), ROUND (y1)      )), dc);
+  12724: 
+  12725: $   return ok;
+
+# 1 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (872):
+
+    870: 
+    871:         txSetColor (colorOfMainVector, thickness);
+=>  872:         txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+    873:         drawArrows (vector, finishPoint);
+    874:         txSetFillColor (colorOfMainVector);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Aug 12 2020 20:39:52, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Aug 12 2020 20:40:07
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: signal (8, 0x81): SIGFPE: Грубая ошибка в вычислениях. _FPE_INVALID: Результат неверен. 
+
+Недопустимая операция с плавающей точкой.
+
+#2: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00007FF6E60607E3. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#3: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF6E618A178 (64-bit), Flags: CMdRe0, Thread: 0x1480 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+#11 0x00007FF8AFA36FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#12 0x00007FF8B127CEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool __cdecl `anonymous-namespace'::TX::txLine(double,double,double,double,struct HDC__ *) at C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h (12723):
+
+  12721: 
+  12722: $   bool ok  = txGDI ((Win32::MoveToEx (dc, ROUND (x0), ROUND (y0), NULL)), dc);
+=>12723: $        ok &= txGDI ((Win32::LineTo   (dc, ROUND (x1), ROUND (y1)      )), dc);
+  12724: 
+  12725: $   return ok;
+
+# 1 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (872):
+
+    870: 
+    871:         txSetColor (colorOfMainVector, thickness);
+=>  872:         txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+    873:         drawArrows (vector, finishPoint);
+    874:         txSetFillColor (colorOfMainVector);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Aug 12 2020 20:39:52, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Aug 12 2020 20:40:08
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00007FF6394707E3. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF63959A178 (64-bit), Flags: CMdRe0, Thread: 0x429C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+#11 0x00007FF8AFA36FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#12 0x00007FF8B127CEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool __cdecl `anonymous-namespace'::TX::txLine(double,double,double,double,struct HDC__ *) at C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h (12723):
+
+  12721: 
+  12722: $   bool ok  = txGDI ((Win32::MoveToEx (dc, ROUND (x0), ROUND (y0), NULL)), dc);
+=>12723: $        ok &= txGDI ((Win32::LineTo   (dc, ROUND (x1), ROUND (y1)      )), dc);
+  12724: 
+  12725: $   return ok;
+
+# 1 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (872):
+
+    870: 
+    871:         txSetColor (colorOfMainVector, thickness);
+=>  872:         txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+    873:         drawArrows (vector, finishPoint);
+    874:         txSetFillColor (colorOfMainVector);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Aug 12 2020 20:53:12, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Aug 12 2020 20:53:27
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: signal (8, 0x81): SIGFPE: Грубая ошибка в вычислениях. _FPE_INVALID: Результат неверен. 
+
+Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00007FF6394707E3. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF63959A178 (64-bit), Flags: CMdRe0, Thread: 0x429C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+#11 0x00007FF8AFA36FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#12 0x00007FF8B127CEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool __cdecl `anonymous-namespace'::TX::txLine(double,double,double,double,struct HDC__ *) at C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h (12723):
+
+  12721: 
+  12722: $   bool ok  = txGDI ((Win32::MoveToEx (dc, ROUND (x0), ROUND (y0), NULL)), dc);
+=>12723: $        ok &= txGDI ((Win32::LineTo   (dc, ROUND (x1), ROUND (y1)      )), dc);
+  12724: 
+  12725: $   return ok;
+
+# 1 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (872):
+
+    870: 
+    871:         txSetColor (colorOfMainVector, thickness);
+=>  872:         txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+    873:         drawArrows (vector, finishPoint);
+    874:         txSetFillColor (colorOfMainVector);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Aug 12 2020 20:53:12, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Aug 12 2020 20:53:28
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00007FF61F1607E3. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF61F28A178 (64-bit), Flags: CMdRe0, Thread: 0x561C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+#11 0x00007FF8AFA36FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#12 0x00007FF8B127CEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool __cdecl `anonymous-namespace'::TX::txLine(double,double,double,double,struct HDC__ *) at C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h (12723):
+
+  12721: 
+  12722: $   bool ok  = txGDI ((Win32::MoveToEx (dc, ROUND (x0), ROUND (y0), NULL)), dc);
+=>12723: $        ok &= txGDI ((Win32::LineTo   (dc, ROUND (x1), ROUND (y1)      )), dc);
+  12724: 
+  12725: $   return ok;
+
+# 1 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (872):
+
+    870: 
+    871:         txSetColor (colorOfMainVector, thickness);
+=>  872:         txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+    873:         drawArrows (vector, finishPoint);
+    874:         txSetFillColor (colorOfMainVector);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Aug 12 2020 21:01:54, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Aug 12 2020 21:02:09
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe,
+
+ВНЕЗАПНО: signal (8, 0x81): SIGFPE: Грубая ошибка в вычислениях. _FPE_INVALID: Результат неверен. 
+
+Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x00007FF61F1607E3. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400], Instance: 0x00007FF61F28A178 (64-bit), Flags: CMdRe0, Thread: 0x561C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+#11 0x00007FF8AFA36FD4 in C:\Windows\System32\KERNEL32.dll: BaseThreadInitThunk()
+#12 0x00007FF8B127CEC1 in C:\Windows\SYSTEM32\ntdll.dll: RtlUserThreadStart()
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool __cdecl `anonymous-namespace'::TX::txLine(double,double,double,double,struct HDC__ *) at C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h (12723):
+
+  12721: 
+  12722: $   bool ok  = txGDI ((Win32::MoveToEx (dc, ROUND (x0), ROUND (y0), NULL)), dc);
+=>12723: $        ok &= txGDI ((Win32::LineTo   (dc, ROUND (x1), ROUND (y1)      )), dc);
+  12724: 
+  12725: $   return ok;
+
+# 1 in (null) at C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp (872):
+
+    870: 
+    871:         txSetColor (colorOfMainVector, thickness);
+=>  872:         txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+    873:         drawArrows (vector, finishPoint);
+    874:         txSetFillColor (colorOfMainVector);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 167, Date: 2020-06-13 00:20:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h
+Compiled:	Aug 12 2020 21:01:54, MSVS 1926, std=199711L, MSVC Runtime, 64-bit, DEBUG
+Started:	Aug 12 2020 21:02:09
+
+Run file:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
+Directory:	C:\Users\Алехандро\Desktop\AlexProjects\bagbean
+
+--------------------------------------------------
