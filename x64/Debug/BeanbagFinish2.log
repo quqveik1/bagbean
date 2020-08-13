@@ -1,15 +1,2 @@
 ﻿  BeanbagFinish2.cpp
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(291,46): warning C4838: Преобразование из "LONG" в "double" требует сужающего преобразования.
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(291,63): warning C4838: Преобразование из "LONG" в "double" требует сужающего преобразования.
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(375,46): warning C4838: Преобразование из "LONG" в "double" требует сужающего преобразования.
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(375,63): warning C4838: Преобразование из "LONG" в "double" требует сужающего преобразования.
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(604,26): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(604,43): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(611,26): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(611,43): warning C4838: Преобразование из "int" в "double" требует сужающего преобразования.
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(189): warning C4702: недостижимый код
   BeanbagFinish2.vcxproj -> C:\Users\Алехандро\Desktop\AlexProjects\bagbean\x64\Debug\BeanbagFinish2.exe
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(181): warning C6031: Возвращаемое значение пропущено: "scanf".
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(184): warning C6031: Возвращаемое значение пропущено: "scanf".
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(261): warning C6031: Возвращаемое значение пропущено: "scanf".
-C:\Users\Алехандро\Desktop\AlexProjects\bagbean\BeanbagFinish2.cpp(264): warning C6031: Возвращаемое значение пропущено: "scanf".

@@ -27,6 +27,7 @@ const double GravityKf = 6.67e-11;
 const double DT = 1;
 const double MinDistance = 5;
 const double g = 10;
+const double ScaleKf = 1e39;
 
 struct Vector 
 {
@@ -51,15 +52,18 @@ struct Ball
     double r;
     double charge;
     COLORREF color;
+    const char* name;
     bool alive = 1;
 
     Vector history [BallHistoryLength];
 
     int oldestNum;
+    /*
     void fillHistory ();
 
     void DrawHistory ();
     void DrawHistoryLines ();
+    */
 };
 
 inline Vector  operator +  (const Vector &a, const Vector &b);
@@ -168,8 +172,8 @@ int main()
     Ball ball[BallLength] = {};
     Ball planetsInit[BallLength] = {};
     
-    ball[0] = {txToss ({0, 0}),   {0, 0},                1.9e30, 69634e4,  2, TX_RED};
-    ball[1] = {txToss ({0, 149e9}), {29e3, 29e3}/*m/s*/, 5.9e24, 6371e3,  2, TX_RED};
+    ball[0] = {txToss ({0, 0}),   {0, 0},                1.9e30, 69634e4, 2, TX_RED, "sun"};
+    ball[1] = {txToss ({0, 149e9}), {29e3, 29e3}/*m/s*/, 5.9e24, 6371e3,  2, TX_RED, "earth"};
 
     for (int i = 0; i < BallLength; i++) planetsInit[i] = ball[i];
 
@@ -178,10 +182,12 @@ int main()
         for (int i = 0; i < BallLength; i++) ball[i] = planetsInit[i];
 
         printf ("Vx = ");
-        scanf  ("%lg", &ball[1].v.x);
+        if (scanf  ("%lg", &ball[1].v.x) != 1) break;
 
         printf ("Vy = ");
-        scanf  ("%lg", &ball[1].v.y);
+        if (scanf  ("%lg", &ball[1].v.y) != 1) break;
+
+        if (ball[1].v.x == -1 && ball[1].v.y  == -1) break;
 
         RunEngineExperiment (ball);
     }
@@ -191,7 +197,6 @@ int main()
 
 double metersToPix (double meters)
 {
-    double ScaleKf = (149e9  * 2) / txGetExtent().x; // merers in pix
 
     return meters / ScaleKf;
 }
@@ -220,9 +225,12 @@ int main2()
 void RunEngineExperiment (Ball ball[])  
 {
     bool flagClearBackground = true;
-        
+    
+    int circ = 0;
+
     for (;;)
     {
+        circ++;
         //solarSystem (ball);
         PhysicsAllBall (ball);
         //solarSystem (ball);
@@ -237,6 +245,7 @@ void RunEngineExperiment (Ball ball[])
         txSleep (20);
 
         if (txGetAsyncKeyState('Q')) break;
+
 
         flagClearBackground = ClearBackground (flagClearBackground);
     }
@@ -258,10 +267,10 @@ void RunEngineE2 (const Ball planetsInit[])
         for (int i = 0; i < BallLength; i++) ball[i] = planetsInit[i];
 
         printf ("Vx = ");
-        scanf  ("%lg", &ball[1].v.x);
+        if (scanf  ("%lg", &ball[1].v.x) != 1) break;
 
         printf ("Vy = ");
-        scanf  ("%lg", &ball[1].v.y);
+        if (scanf  ("%lg", &ball[1].v.y) != 1) break;
 
         for (;;)
         {
@@ -288,7 +297,7 @@ void RunEngineE2 (const Ball planetsInit[])
 
 void solarSystem (Ball balls[])
 {
-    const Rect box = { {0, 0}, {txGetExtent().x, txGetExtent().y} };
+    const Rect box = { {0, 0}, {double (txGetExtent().x), double (txGetExtent().y)} };
 
     for (int i = 1; i < BallLength; i++)
     {
@@ -318,8 +327,15 @@ void drawAllBall (Ball ball[])
 {
      for (int i = 0; i < BallLength; i++)
      {
+
+         drawBall(&ball[0], ball[0].color);
+
+         /*
          if (ball[i].alive)
-            drawBall(&ball[i], ball->color);
+         {
+             drawBall(&ball[i], ball->color);
+         }
+         */
      }
 }
 
@@ -335,7 +351,14 @@ void PhysicsAllBall (Ball ball[])
 void drawBall (Ball *ball, COLORREF colorCircle)
 {
     txSetFillColor (colorCircle);
-    txCircle (metersToPix ((*ball).pos.x), metersToPix ((*ball).pos.y), metersToPix ((*ball).r));
+    double x = (*ball).pos.x / ScaleKf;
+    double y = (*ball).pos.y / ScaleKf;
+    double rr = (*ball).r / ScaleKf;
+
+    if (x <= txGetExtentX() && y <= txGetExtentY())
+    {
+        txCircle (x, y, rr);
+    }
 }
 
 /*
@@ -372,7 +395,7 @@ void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLOR
 
 Vector txToss (Vector pos)
 {
-    const Rect box = { {0, 0}, {txGetExtent().x, txGetExtent().y} };
+    const Rect box = { {0, 0}, {double (txGetExtent().x), double (txGetExtent().y)} };
 
     return Vector 
     {
@@ -408,7 +431,7 @@ void Physics (Ball *ball, Ball balls[], int numberOfFind, bool Graphic)
 {
     if (Graphic)
     {
-        ball->DrawHistoryLines ();
+        //ball->DrawHistoryLines ();
     }
     const Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
 
@@ -443,7 +466,7 @@ void Physics (Ball *ball, Ball balls[], int numberOfFind, bool Graphic)
     //(*ball).pos.x += (*ball).v.x * dt;
     //(*ball).pos.y += (*ball).v.y * dt;
 
-    ball->fillHistory ();
+    //ball->fillHistory ();
 
     if (metersToPix ((*ball).pos.x) >= box.right ())
     {
@@ -537,14 +560,12 @@ void PhysicsNoGrathics (Ball *ball, double dt, Ball balls[], int numberOfFind)
 
 Vector pixToMeters (Vector pix)
 {
-    double ScaleKf = (149e9  * 2) / txGetExtent().x; // meters in pix
 
     return pix * ScaleKf;
 }
 
 double pixToMeters (double pix)
 {
-    double ScaleKf = (149e9  * 2) / txGetExtent().x; // meters in pix
 
     return pix * ScaleKf;
 }
@@ -601,14 +622,14 @@ void Colision (Ball *ball1, Ball *ball2)
 
 void ssCircle (double x, double y, double r)
 {
-    Rect Box = {{0, 0}, {txGetExtentX (), txGetExtentY ()}} ;
+    Rect Box = {{0, 0}, {double (txGetExtentX ()), double (txGetExtentY ())}} ;
 
     txCircle (x + 0.5 * Box.right (), y + 0.5 * Box.bottom (), r);
 }
 
 void ssLine (double StartX, double StartY, double FinishX, double FinishY)
 {
-    Rect Box = {{0, 0}, {txGetExtentX (), txGetExtentY ()}} ;
+    Rect Box = {{0, 0}, {double (txGetExtentX ()), double (txGetExtentY ())}} ;
 
     txLine (StartX + 0.5 * Box.right (), StartY + 0.5 * Box.bottom (), FinishX + 0.5 * Box.right (), FinishY + 0.5 * Box.bottom ());
 }
@@ -636,7 +657,7 @@ Vector findElectricForce (Ball ball[], int numberOfFind, int length)
             
             if (ball[j].alive)
             {
-                Draw ((metersToPix ((vectorNormal * vectorLength))) * 100000, ball[numberOfFind].pos, TX_PINK);
+                //Draw ((metersToPix ((vectorNormal * vectorLength))) * 100000, ball[numberOfFind].pos, TX_PINK);
             }
             //printf ("vectorLength: %lg\n", vectorLength);
         }
@@ -648,8 +669,6 @@ Vector findElectricForce (Ball ball[], int numberOfFind, int length)
 
 Vector metersToPix (Vector meters)
 {
-    double ScaleKf = (149e9  * 2) / txGetExtent().x; // merers in pix
-
     return meters / ScaleKf;
 }
 
@@ -657,7 +676,7 @@ Vector vectorNormal (Vector vector)
 {
     return vector / lengthV (vector);
 }
-
+/*
 void Ball::fillHistory ()
 {
     history [oldestNum] = pos;
@@ -730,6 +749,7 @@ void Ball::DrawHistoryLines ()
     txSetColor     (TX_PINK);
     txCircle (metersToPix (history[oldestNum].x), metersToPix (history[oldestNum].y), 3);
 }
+*/
 
 double SpeedX (double vX)
 {
