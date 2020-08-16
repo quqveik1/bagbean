@@ -10,7 +10,7 @@ a + b = a.x + b.x; a.y + b.y
 ->
 a  * k = a.x * k; a.y * k
 ->  ->
-a   b
+a   b 
 a.y * b.y + a.x * b.x = 0
 ->
 |a| = sqrt (a.x^2 + a.y^2)(
@@ -21,8 +21,8 @@ B = {3, 4}
 |AB| = {b.x - a.x, b.y - a.y};
 */
 
-const int BallHistoryLength = 100;
-const int BallLength = 4;
+const int BallHistoryLength = 200;
+const int BallLength = 3;
 const double Precision  = 1e-100;
 const double ElectricKf = 6e3;
 const double DT = 0.09;
@@ -162,29 +162,37 @@ int main()
     Ball ball[BallLength] = {};
     Ball planetsInit[BallLength] = {};
     
+    /*
     ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED};
     ball[1] = {txToss ({0,    -400}),  {7, 7}, 1e4, 10, 2, TX_RED};
     ball[2] = {txToss ({0,    +400}), {18, 17}, 1e4, 10, 5, TX_RED};
     ball[3] = {txToss ({400,  -400}), {7, 7}, 1e4, 10, 2, TX_RED};
+    */
+
+    ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED};
+    ball[1] = {txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_RED};
+    ball[2] = {txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED};
+    //ball[3] = {txToss ({0, -100}),  {10, 0}, 1e4, 10, 2, TX_RED};
 
     for (int i = 0; i < BallLength; i++) planetsInit[i] = ball[i];
 
+    txBegin ();
     for (;;)
     {
         for (int i = 0; i < BallLength; i++) ball[i] = planetsInit[i];
 
-        /*
+        txEnd ();
         printf ("Vx = ");
-        if (scanf  ("%lg", &ball[1].v.x) != 1) break;
+        if (scanf  ("%lg", &ball[2].v.x) != 1) break;
 
-        printf ("Vy = ");
-        if (scanf  ("%lg", &ball[1].v.y) != 1) break;
-
-        if (ball[1].v.x == -1 && ball[1].v.y  == -1) break;
-        */
-
+        if (ball[2].v.x == -1 && ball[2].v.y  == -1) break;
+        txBegin ();
+        
+        
         RunEngineExperiment (ball);
     }
+
+    txEnd ();
 
     return 0;
 }
@@ -223,6 +231,8 @@ void RunEngineExperiment (Ball ball[])
         PhysicsAllBall (ball);
         //solarSystem (ball);
         PhysicsAllBall (ball);
+
+        
 
         ControlAllBalls (ball);
 
