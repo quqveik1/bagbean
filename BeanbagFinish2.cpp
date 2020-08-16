@@ -1,4 +1,5 @@
-﻿#define  _CRT_SECURE_NO_WARNINGS
+﻿
+#define  _CRT_SECURE_NO_WARNINGS
 
 #include "TXLib.h"
 //You must to delete "my" TXLib.h file from the ptoject or you can do not download "my" TXLib.h file, you need to download TXLib from https://sourceforge.net/projects/txlib/files/latest/download and install this	
