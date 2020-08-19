@@ -22,11 +22,12 @@ B = {3, 4}
 */
 
 const int BallHistoryLength = 200;
-const int BallLength = 3;
+int BallLength = 3;
 const double Precision  = 1e-100;
 const double ElectricKf = 6e3;
 const double DT = 0.09;
 const double MinDistance = 5;
+int LastComet = 0;
 
 struct Vector 
 {
@@ -95,13 +96,14 @@ void drawBall (Ball *ball, COLORREF colorCircle);
 void Control (Ball *ball);
 void Physics (Ball *ball, Ball balls[], int numberOfFind, bool Graphic);
 void PhysicsNoGrathics (Ball *ball, Ball balls[], int numberOfFind);
+void cometShooting (Ball ball[]);
 Vector findElectricForce (Ball ball[], int numberOfFind, int length);
 void Colision (Ball *ball1, Ball *ball2);
 void FindColilision (Ball balls[], int numberOfFind);
 void ControlAllBalls (Ball balls[]);
 void ssCircle (double x, double y, double r);
 void ssLine (double StartX, double StartY, double FinishX, double FinishY);
-void solarSystem (Ball balls[]);
+//void solarSystem (Ball balls[]);
 Vector txToss (Vector pos);
 double SpeedX (double vX);
 double SpeedY (double vY);
@@ -159,8 +161,12 @@ int main()
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
 
-    Ball ball[BallLength] = {};
-    Ball planetsInit[BallLength] = {};
+    const int per = BallLength;
+
+    const int arrL = 10;
+
+    Ball ball[arrL] = {};
+    Ball planetsInit[arrL] = {};
     
     /*
     ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED};
@@ -172,9 +178,15 @@ int main()
     ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED};
     ball[1] = {txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_RED};
     ball[2] = {txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED};
+
+    for (int i = 3; i < arrL; i++)
+    {
+        ball[i] = {txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED};
+    }
+
     //ball[3] = {txToss ({0, -100}),  {10, 0}, 1e4, 10, 2, TX_RED};
 
-    for (int i = 0; i < BallLength; i++) planetsInit[i] = ball[i];
+    for (int i = 0; i < 10; i++) planetsInit[i] = ball[i];
 
     txBegin ();
     for (;;)
@@ -197,6 +209,7 @@ int main()
     return 0;
 }
 
+/*
 int main2()
 {
     txCreateWindow (1900, 1000);
@@ -218,6 +231,7 @@ int main2()
 
     return 0;
 }
+*/
 
 void RunEngineExperiment (Ball ball[])
 {
@@ -247,6 +261,7 @@ void RunEngineExperiment (Ball ball[])
 
         
 }
+/*
 void RunEngineE2 (const Ball planetsInit[])
 {
     Ball ball[BallLength] = {};
@@ -288,7 +303,10 @@ void RunEngineE2 (const Ball planetsInit[])
     }
     
 }
+*/
 
+
+/*
 void solarSystem (Ball balls[])
 {
     const Rect box = { {0, 0}, {txGetExtent().x, txGetExtent().y} };
@@ -316,6 +334,34 @@ void solarSystem (Ball balls[])
         }
     }
 }
+*/
+
+void cometShooting (Ball ball[])
+{
+    if (txMouseButtons () == 1)
+    {
+        Vector startPos = {txMouseX(), txMouseY()};
+
+        printf ("Вектор\n");
+
+        txSleep (5e3);
+
+        if (txMouseButtons () == 2)
+        {
+            Vector finishPos = {txMouseX(), txMouseY()};
+
+            Vector speed = startPos - finishPos;
+
+            ball[BallLength].pos = finishPos;
+            ball[BallLength].v = speed;
+            ball[BallLength].m = 1e4;
+            ball[BallLength].charge = 2e1;
+            ball[BallLength].r = 10;
+            
+            BallLength++;
+        }
+    }
+}
 
 void drawAllBall (Ball ball[])
 {
@@ -328,6 +374,7 @@ void drawAllBall (Ball ball[])
 
 void PhysicsAllBall (Ball ball[])
 {
+    cometShooting (ball);
      for (int i = 0; i < BallLength; i++)
      {
          if (ball[i].alive)
