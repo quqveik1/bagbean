@@ -97,6 +97,7 @@ void Control (Ball *ball);
 void Physics (Ball *ball, Ball balls[], int numberOfFind, bool Graphic);
 void PhysicsNoGrathics (Ball *ball, Ball balls[], int numberOfFind);
 void cometShooting (Ball ball[]);
+void addBall (Ball ball[], int *lastBall, Ball newBall);
 Vector findElectricForce (Ball ball[], int numberOfFind, int length);
 void Colision (Ball *ball1, Ball *ball2);
 void FindColilision (Ball balls[], int numberOfFind);
@@ -352,15 +353,32 @@ void cometShooting (Ball ball[])
 
             Vector speed = startPos - finishPos;
 
-            ball[BallLength].pos = finishPos;
-            ball[BallLength].v = speed;
-            ball[BallLength].m = 1e4;
-            ball[BallLength].charge = 2e1;
-            ball[BallLength].r = 10;
+            /*
             
-            BallLength++;
+            */
+
+            
+            Ball comet   = {};
+            comet.pos    = finishPos;
+            comet.v      = speed;
+            comet.m      = 1e4;
+            comet.charge = 2e1;
+            comet.r      = 10;
+            
+            addBall (ball, &BallLength, comet);
         }
     }
+}
+
+void addBall (Ball ball[], int *lastBall, Ball newBall)
+{
+    ball[*lastBall].pos = newBall.pos;
+    ball[*lastBall].v = newBall.v;
+    ball[*lastBall].m = newBall.m;
+    ball[*lastBall].charge = newBall.charge;
+    ball[*lastBall].r = newBall.r;
+
+    (*lastBall)++;
 }
 
 void drawAllBall (Ball ball[])
@@ -388,7 +406,7 @@ void drawBall (Ball *ball, COLORREF colorCircle)
 
     if (ball->pos.x <= txGetExtentX() && ball->pos.y <= txGetExtentY())
     {
-    txCircle ((*ball).pos.x, (*ball).pos.y, (*ball).r);
+        txCircle ((*ball).pos.x, (*ball).pos.y, (*ball).r);
     }
 }
 
@@ -492,6 +510,7 @@ void Physics (Ball *ball, Ball balls[], int numberOfFind, bool Graphic)
 
     ball->fillHistory ();
 
+    /*
     if ((*ball).pos.x >= box.right ())
     {
         (*ball).v.x = -((*ball).v.x);
@@ -515,6 +534,7 @@ void Physics (Ball *ball, Ball balls[], int numberOfFind, bool Graphic)
         (*ball).v.y = -((*ball).v.y);
         (*ball).pos.y = box.top() - ((*ball).pos.y - box.top());
     }
+    */
 
     FindColilision (balls, numberOfFind);
         
