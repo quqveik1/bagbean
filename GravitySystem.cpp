@@ -28,6 +28,7 @@ const double ElectricKf = 6e3;
 const double DT = 0.09;
 const double MinDistance = 5;
 int LastComet = 0;
+const int BallMax = 10;
 
 struct Vector 
 {
@@ -44,6 +45,7 @@ struct Rect
     double right () const { return this->size.x + this->pos.x; }
     double bottom() const { return this->size.y + this->pos.y; }
 };
+
 struct Ball 
 {
     Vector pos;
@@ -61,6 +63,15 @@ struct Ball
 
     void DrawHistory ();
     void DrawHistoryLines ();
+};
+
+struct BallSystem
+{
+    Ball ball[BallMax];
+
+    int currlength = 0;
+
+    void addBall (Ball newBall);
 };
 
 inline Vector  operator +  (const Vector &a, const Vector &b);
@@ -97,7 +108,7 @@ void Control (Ball *ball);
 void Physics (Ball *ball, Ball balls[], int numberOfFind, bool Graphic);
 void PhysicsNoGrathics (Ball *ball, Ball balls[], int numberOfFind);
 void cometShooting (Ball ball[]);
-void addBall (Ball ball[], int *lastBall, Ball newBall);
+//void addBall (Ball ball[], int *lastBall, Ball newBall);
 Vector findElectricForce (Ball ball[], int numberOfFind, int length);
 void Colision (Ball *ball1, Ball *ball2);
 void FindColilision (Ball balls[], int numberOfFind);
@@ -162,12 +173,8 @@ int main()
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
 
-    const int per = BallLength;
-
-    const int arrL = 10;
-
-    Ball ball[arrL] = {};
-    Ball planetsInit[arrL] = {};
+    BallSystem ballS = {};
+    Ball planetsInit[BallMax] = {};
     
     /*
     ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED};
@@ -176,13 +183,20 @@ int main()
     ball[3] = {txToss ({400,  -400}), {7, 7}, 1e4, 10, 2, TX_RED};
     */
 
-    ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED};
-    ball[1] = {txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_RED};
-    ball[2] = {txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED};
+    ballS.ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED};
+    ballS.ball[1] = {txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_RED};
+    ballS.ball[2] = {txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED};
+    ballS.currlength = 3;
 
-    for (int i = 3; i < arrL; i++)
+    /*
+    ballS.addBall ({txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED});
+    ballS.addBall ({txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_RED});
+    ballS.addBall ({txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED}};
+    */
+
+    for (int i = 3; i < BallMax; i++)
     {
-        ball[i] = {txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED};
+        ballS.addBall ({txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED});
     }
 
     //ball[3] = {txToss ({0, -100}),  {10, 0}, 1e4, 10, 2, TX_RED};
@@ -370,15 +384,15 @@ void cometShooting (Ball ball[])
     }
 }
 
-void addBall (Ball ball[], int *lastBall, Ball newBall)
+void BallSystem::addBall (Ball newBall)
 {
-    ball[*lastBall].pos = newBall.pos;
-    ball[*lastBall].v = newBall.v;
-    ball[*lastBall].m = newBall.m;
-    ball[*lastBall].charge = newBall.charge;
-    ball[*lastBall].r = newBall.r;
+    ball[currlength].pos = newBall.pos;
+    ball[currlength].v = newBall.v;
+    ball[currlength].m = newBall.m;
+    ball[currlength].charge = newBall.charge;
+    ball[currlength].r = newBall.r;
 
-    (*lastBall)++;
+    currlength++;
 }
 
 void drawAllBall (Ball ball[])
