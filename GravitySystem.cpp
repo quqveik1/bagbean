@@ -86,7 +86,7 @@ Vector operator ^ (const Vector &vector, int degree);
 
 void RunEngineE2 (const Ball planetsInit[]);
 
-void RunEngineExperiment (Ball ball[]);
+void RunEngineExperiment (BallSystem &ball);
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness = 1);
 void drawArrows (const Vector &mainVector, const  Vector &startArrowPoint);
 Vector makePerpendikularLine (const Vector &mainVector);
@@ -101,18 +101,18 @@ Vector vectorNormal (Vector vector);
 double elDeg (const double number, const double deg);
 double degreesOfDouble (const double number, int degree);
 
-void drawAllBall (Ball ball[]);
-void PhysicsAllBall (Ball ball[]);
+void drawAllBall (BallSystem &ballS);
+void PhysicsAllBall (BallSystem &ball);
 void drawBall (Ball *ball, COLORREF colorCircle);
 void Control (Ball *ball);
-void Physics (Ball *ball, Ball balls[], int numberOfFind, bool Graphic);
+void Physics (Ball *ball, BallSystem &ballS, int numberOfFind, bool Graphic);
 void PhysicsNoGrathics (Ball *ball, Ball balls[], int numberOfFind);
-void cometShooting (Ball ball[]);
+void cometShooting (BallSystem &ballS);
 //void addBall (Ball ball[], int *lastBall, Ball newBall);
 Vector findElectricForce (Ball ball[], int numberOfFind, int length);
 void Colision (Ball *ball1, Ball *ball2);
-void FindColilision (Ball balls[], int numberOfFind);
-void ControlAllBalls (Ball balls[]);
+void FindColilision (BallSystem &ballS, int numberOfFind);
+void ControlAllBalls (BallSystem &ballS);
 void ssCircle (double x, double y, double r);
 void ssLine (double StartX, double StartY, double FinishX, double FinishY);
 //void solarSystem (Ball balls[]);
@@ -183,9 +183,9 @@ int main()
     ball[3] = {txToss ({400,  -400}), {7, 7}, 1e4, 10, 2, TX_RED};
     */
 
-    ballS.ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED};
-    ballS.ball[1] = {txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_RED};
-    ballS.ball[2] = {txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED};
+    ballS.ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_YELLOW};
+    ballS.ball[1] = {txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_CYAN};
+    ballS.ball[2] = {txToss ({0, -200}),  {32, 0}, 1e4, 10, 2, TX_RED};
     ballS.currlength = 3;
 
     /*
@@ -194,29 +194,29 @@ int main()
     ballS.addBall ({txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED}};
     */
 
-    for (int i = 3; i < BallMax; i++)
+    for (int i = ballS.currlength; i < BallMax; i++)
     {
-        ballS.addBall ({txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED});
+        ballS.ball[i] = {txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED};
     }
 
     //ball[3] = {txToss ({0, -100}),  {10, 0}, 1e4, 10, 2, TX_RED};
 
-    for (int i = 0; i < 10; i++) planetsInit[i] = ball[i];
+    for (int i = 0; i < BallMax; i++) planetsInit[i] = ballS.ball[i];
 
     txBegin ();
     for (;;)
     {
-        for (int i = 0; i < BallLength; i++) ball[i] = planetsInit[i];
+        for (int i = 0; i < ballS.currlength; i++) ballS.ball[i] = planetsInit[i];
 
-        txEnd ();
-        printf ("Vx = ");
-        if (scanf  ("%lg", &ball[2].v.x) != 1) break;
+        //txEnd ();
+        ///printf ("Vx = ");
+        //if (scanf  ("%lg", &ballS.ball[2].v.x) != 1) break;
 
-        if (ball[2].v.x == -1 && ball[2].v.y  == -1) break;
-        txBegin ();
+        //if (ballS.ball[2].v.x == -1 && ballS.ball[2].v.y  == -1) break;
+        //txBegin ();
         
         
-        RunEngineExperiment (ball);
+        RunEngineExperiment (ballS);
     }
 
     txEnd ();
@@ -248,24 +248,24 @@ int main2()
 }
 */
 
-void RunEngineExperiment (Ball ball[])
+void RunEngineExperiment (BallSystem &ballS)
 {
     bool flagClearBackground = true;
         
     for (;;)
     {
         //solarSystem (ball);
-        PhysicsAllBall (ball);
+        PhysicsAllBall (ballS);
         //solarSystem (ball);
-        PhysicsAllBall (ball);
+        PhysicsAllBall (ballS);
         //solarSystem (ball);
-        PhysicsAllBall (ball);
+        PhysicsAllBall (ballS);
 
         
 
-        ControlAllBalls (ball);
+        ControlAllBalls (ballS);
 
-        drawAllBall (ball);
+        drawAllBall (ballS);
 
         txSleep (20);
 
@@ -351,7 +351,7 @@ void solarSystem (Ball balls[])
 }
 */
 
-void cometShooting (Ball ball[])
+void cometShooting (BallSystem &ballS)
 {
     if (txMouseButtons () == 1)
     {
@@ -371,7 +371,6 @@ void cometShooting (Ball ball[])
             
             */
 
-            
             Ball comet   = {};
             comet.pos    = finishPos;
             comet.v      = speed;
@@ -379,39 +378,41 @@ void cometShooting (Ball ball[])
             comet.charge = 2e1;
             comet.r      = 10;
             
-            addBall (ball, &BallLength, comet);
+            ballS.addBall (comet);
         }
     }
 }
 
 void BallSystem::addBall (Ball newBall)
 {
-    ball[currlength].pos = newBall.pos;
-    ball[currlength].v = newBall.v;
-    ball[currlength].m = newBall.m;
+    ball[currlength].pos    = newBall.pos;
+    ball[currlength].v      = newBall.v;
+    ball[currlength].m      = newBall.m;
     ball[currlength].charge = newBall.charge;
-    ball[currlength].r = newBall.r;
+    ball[currlength].r      = newBall.r;
+    ball[currlength].color  = newBall.color;
 
     currlength++;
 }
 
-void drawAllBall (Ball ball[])
+void drawAllBall (BallSystem &ballS)
 {
-     for (int i = 0; i < BallLength; i++)
+     for (int i = 0; i < ballS.currlength; i++)
      {
-         if (ball[i].alive)
-            drawBall(&ball[i], ball->color);
+
+         if (ballS.ball[i].alive)
+            drawBall(&ballS.ball[i], ballS.ball[i].color);
      }
 }
 
-void PhysicsAllBall (Ball ball[])
+void PhysicsAllBall (BallSystem &ballS)
 {
-    cometShooting (ball);
-     for (int i = 0; i < BallLength; i++)
-     {
-         if (ball[i].alive)
-             Physics (&ball[i], ball, i, true);
-     }
+    cometShooting (ballS);
+    for (int i = 0; i < ballS.currlength; i++)
+    {
+        if (ballS.ball[i].alive)
+            Physics (&ballS.ball[i], ballS, i, true);
+    }
 }
 
 void drawBall (Ball *ball, COLORREF colorCircle)
@@ -460,12 +461,12 @@ Vector txToss (Vector pos)
     };
 }
 
-void ControlAllBalls (Ball balls[])
+void ControlAllBalls (BallSystem &ballS)
 {
-    for (int i = 0; i < BallLength; i++)
+    for (int i = 0; i < ballS.currlength; i++)
     {
-        if (balls[i].alive) 
-            Control (&balls[i]);
+        if (ballS.ball[i].alive) 
+            Control (&ballS.ball[i]);
     }
 }
 
@@ -483,7 +484,7 @@ void Control (Ball *ball)
 //(x - 1)(x + 1) = 0
 
 // 0 - x; 1 - y; 2 - vX; 3 - vY;
-void Physics (Ball *ball, Ball balls[], int numberOfFind, bool Graphic)
+void Physics (Ball *ball, BallSystem &ballS, int numberOfFind, bool Graphic)
 {
     if (Graphic)
     {
@@ -495,7 +496,7 @@ void Physics (Ball *ball, Ball balls[], int numberOfFind, bool Graphic)
 
     Vector currPosMouse = {txMouseX (), txMouseY ()};
     //Vector mouseForce = (currPosMouse - ball->pos) * 2;
-    Vector fElectric = findElectricForce (balls, numberOfFind, BallLength);
+    Vector fElectric = findElectricForce (ballS.ball, numberOfFind, ballS.currlength);
 
     Vector resultantForce = fGravity + /*mouseForce*/  fElectric;
 
@@ -504,7 +505,7 @@ void Physics (Ball *ball, Ball balls[], int numberOfFind, bool Graphic)
     
     txSetFillColor (TX_YELLOW);
     txSetColor     (TX_YELLOW);
-    txCircle (txMousePos ().x, txMousePos ().y, 10);
+    //txCircle (txMousePos ().x, txMousePos ().y, 10);
     /*
     Draw (resultantForce, ball->pos, TX_LIGHTRED,  5);
     Draw (mouseForce,     ball->pos, TX_LIGHTCYAN, 3);
@@ -550,9 +551,10 @@ void Physics (Ball *ball, Ball balls[], int numberOfFind, bool Graphic)
     }
     */
 
-    FindColilision (balls, numberOfFind);
+    FindColilision (ballS, numberOfFind);
         
-}//
+}
+//
 /*
 void PhysicsNoGrathics (Ball *ball, double dt, Ball balls[], int numberOfFind)
 {
@@ -602,20 +604,20 @@ void PhysicsNoGrathics (Ball *ball, double dt, Ball balls[], int numberOfFind)
 }//*/
 //                    ball1 -> ball2
 
-void FindColilision (Ball balls[], int numberOfFind)
+void FindColilision (BallSystem &ballS, int numberOfFind)
 {
-    for (int i = 0; i < BallLength; i++)
+    for (int i = 0; i < ballS.currlength; i++)
     {
         if (i != numberOfFind)
         {
-            if (balls[i].alive)
+            if (ballS.ball[i].alive)
             {
-                Vector distanceV = balls[i].pos - balls[numberOfFind].pos;
+                Vector distanceV = ballS.ball[i].pos - ballS.ball[numberOfFind].pos;
                 double distanceS = lengthV (distanceV);
 
                 if (MinDistance > distanceS)
                 {
-                    Colision (&balls[i], &balls[numberOfFind]);
+                    Colision (&ballS.ball[i], &ballS.ball[numberOfFind]);
                 }
             }
         }
@@ -636,6 +638,8 @@ void Colision (Ball *ball1, Ball *ball2)
     */
     Vector newV = ((ball1->v * ball1->m) + (ball2->v * ball2->m)) / (ball1->m + ball2->m);
 
+    //ball2->color = 
+
     ball2->m = ball2->m + ball1->m;
     ball1->m = 0;
 
@@ -650,6 +654,39 @@ void Colision (Ball *ball1, Ball *ball2)
     ball1->charge = 0;
 
     ball1->alive = false;
+}
+
+COLORREF sumColors (COLORREF a, COLORREF b)
+{
+    //int aRed =
+    int aGreen = a & 0b1111111100000000;   // 
+    int aBlue = a & 0b11111111;      // = a & 0xff
+
+    //00000000_00000001_00000000
+    //& 0b1111111100000000 =   00_00_0xff
+                   a & 100000000
+    /*
+    0   0000  0    
+    1   0001  1    
+    2   0010  2    
+    3   0011  3
+    4   0100  4
+    5   0101  5
+    6   0110  6
+    7   0111  7
+    8   1000  8
+    9   1001  9
+    10  1010  a
+    11  1011  b
+    12  1100  c
+    13  1101  d
+    14  1110  e
+    15  1111  f
+    */
+    
+    //int bRed =
+    //int bGreen =
+   // int bBlue = 
 }
 
 void ssCircle (double x, double y, double r)
