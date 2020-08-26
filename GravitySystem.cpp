@@ -112,6 +112,7 @@ void cometShooting (BallSystem &ballS);
 Vector findElectricForce (Ball ball[], int numberOfFind, int length);
 void Colision (Ball *ball1, Ball *ball2);
 void FindColilision (BallSystem &ballS, int numberOfFind);
+COLORREF sumColors (COLORREF a, COLORREF b);
 void ControlAllBalls (BallSystem &ballS);
 void ssCircle (double x, double y, double r);
 void ssLine (double StartX, double StartY, double FinishX, double FinishY);
@@ -653,18 +654,20 @@ void Colision (Ball *ball1, Ball *ball2)
     ball2->charge = ball2->charge + ball1->charge;
     ball1->charge = 0;
 
+    ball2->color = sumColors (ball1->color, ball2->color);
+
     ball1->alive = false;
 }
 
 COLORREF sumColors (COLORREF a, COLORREF b)
 {
-    //int aRed =
+    int aRed   = a & 0b111111110000000000000000;
     int aGreen = a & 0b1111111100000000;   // 
-    int aBlue = a & 0b11111111;      // = a & 0xff
+    int aBlue  = a & 0b11111111;      // = a & 0xff
 
     //00000000_00000001_00000000
     //& 0b1111111100000000 =   00_00_0xff
-                   a & 100000000
+    //               a & 100000000
     /*
     0   0000  0    
     1   0001  1    
@@ -683,10 +686,28 @@ COLORREF sumColors (COLORREF a, COLORREF b)
     14  1110  e
     15  1111  f
     */
+
+    /*
+    int aRed   = GetRValue (a);
+    int aGreen = GetGValue (a);   // 
+    int aBlue  = GetBValue (a);
+
+    int bRed   = GetRValue (b);
+    int bGreen = GetGValue (b);   // 
+    int bBlue  = GetBValue (b);
+    */
     
-    //int bRed =
-    //int bGreen =
-   // int bBlue = 
+    int bRed   = b & 0b111111110000000000000000;
+    int bGreen = b & 0b1111111100000000;   // 
+    int bBlue  = b & 0b11111111;
+
+    int finishRed = int ((bRed + aRed) / 2);
+    int finishGreen = int ((bGreen + aGreen) / 2);
+    int finishBlue = int ((bBlue + aBlue) / 2);
+
+    COLORREF finishColor = RGB (finishRed, finishGreen, finishBlue);
+
+    return finishColor;
 }
 
 void ssCircle (double x, double y, double r)
