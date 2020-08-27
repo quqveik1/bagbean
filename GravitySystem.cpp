@@ -113,6 +113,7 @@ Vector findElectricForce (Ball ball[], int numberOfFind, int length);
 void Colision (Ball *ball1, Ball *ball2);
 void FindColilision (BallSystem &ballS, int numberOfFind);
 COLORREF sumColors (COLORREF a, COLORREF b);
+void sumColorsUnitTest ();
 void ControlAllBalls (BallSystem &ballS);
 void ssCircle (double x, double y, double r);
 void ssLine (double StartX, double StartY, double FinishX, double FinishY);
@@ -138,6 +139,21 @@ double SwitchRadius (double r);
 1|0000 0000 =>
   0000 0000
 */ 
+
+/*
+mkdir ("C:/realFolders/Name");  //create folder
+FILE* myFile = fopen ("C:/ALexProjects/Name.txt", "w");
+
+fprintf (myFile, "Sth = %i", number);
+
+fclose (myFile);
+
+mode r
+
+fscanf (myFile, "Sth = %d", &newNumber);
+char str[size];
+fgets (str, size, myfile);
+*/
 
 
 //New
@@ -173,6 +189,10 @@ int main()
     txCreateWindow (1900, 1000);
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
+
+    //sumColorsUnitTest();
+
+    //(void) (_getch ());
 
     BallSystem ballS = {};
     Ball planetsInit[BallMax] = {};
@@ -661,9 +681,9 @@ void Colision (Ball *ball1, Ball *ball2)
 
 COLORREF sumColors (COLORREF a, COLORREF b)
 {
-    int aRed   = a & 0b111111110000000000000000;
-    int aGreen = a & 0b1111111100000000;   // 
-    int aBlue  = a & 0b11111111;      // = a & 0xff
+    int aRed   = (a & 0x0000ff);
+    int aGreen = (a & 0x00ff00) >> 8;   // 
+    int aBlue  = (a & 0xff0000) >> 16;      // = a & 0xff
 
     //00000000_00000001_00000000
     //& 0b1111111100000000 =   00_00_0xff
@@ -697,17 +717,30 @@ COLORREF sumColors (COLORREF a, COLORREF b)
     int bBlue  = GetBValue (b);
     */
     
-    int bRed   = b & 0b111111110000000000000000;
-    int bGreen = b & 0b1111111100000000;   // 
-    int bBlue  = b & 0b11111111;
+    int bRed   = (b & 0x0000ff);
+    int bGreen = (b & 0x00ff00) >> 8;   // 
+    int bBlue  = (b & 0xff0000) >> 16;
 
-    int finishRed = int ((bRed + aRed) / 2);
-    int finishGreen = int ((bGreen + aGreen) / 2);
-    int finishBlue = int ((bBlue + aBlue) / 2);
-
+    int finishRed   = int ((bRed   + aRed)    /2);
+    int finishGreen = int ((bGreen + aGreen) / 2);      
+    int finishBlue  = int ((bBlue  + aBlue) /  2);
+                                   
     COLORREF finishColor = RGB (finishRed, finishGreen, finishBlue);
 
     return finishColor;
+}
+
+void sumColorsUnitTest ()
+{
+     $unittest (sumColors (
+                           RGB (20, 30, 50),
+                           RGB (30, 40, 60)),
+                RGB (25, 35, 55));
+     $unittest (sumColors (
+                           RGB (0,   0,  0),
+                           RGB (30, 40, 60)),
+                RGB (15, 20, 30));
+
 }
 
 void ssCircle (double x, double y, double r)
