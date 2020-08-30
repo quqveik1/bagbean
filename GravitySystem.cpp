@@ -97,6 +97,8 @@ double DegToRad (double degrees);
 double lengthV (const Vector &vector);
 Vector vectorNormal (Vector vector);
 
+void writeAllBall (const BallSystem &ballS, FILE *ballFile);
+void writeBall (const Ball &ball, FILE *ballFile);
 
 double elDeg (const double number, const double deg);
 double degreesOfDouble (const double number, int degree);
@@ -144,7 +146,7 @@ double SwitchRadius (double r);
 mkdir ("C:/realFolders/Name");  //create folder
 FILE* myFile = fopen ("C:/ALexProjects/Name.txt", "w");
 
-fprintf (myFile, "Sth = %i", number);
+fprintf (myFile, "Sth = %i", number);                                                             
 
 fclose (myFile);
 
@@ -163,6 +165,8 @@ int main()
     //txSetColor     (TX_LIGHTRED);
     //txSetFillColor (TX_RED);
     
+    _mkdir ("C:/Users/Алехандро/Desktop/AlexProjects/GravitySystemFolder");
+
     /*
     Ball ball1 = {{100, 400}, {5, 5}, {0, 0.7}, 20};
     Ball ball2 = {{300, 100}, {5, 5}, {0, 0.7}, 10};
@@ -238,9 +242,13 @@ int main()
         
         
         RunEngineExperiment (ballS);
+
+        if (txGetAsyncKeyState('O')) break;
     }
 
     txEnd ();
+
+    txDisableAutoPause ();
 
     return 0;
 }
@@ -269,9 +277,31 @@ int main2()
 }
 */
 
+void writeBall (const Ball &ball, FILE *ballFile)
+{
+    fprintf (ballFile, "{{%7.2f, %7.2f}, color: %7u, r: %5.2f, alive: %u} ||| ", ball.pos.x , ball.pos.y, ball.color, ball.r, ball.alive);
+}
+
+void writeAllBall (const BallSystem &ballS, FILE *ballFile)
+{
+    for (int i = 0; i < BallMax; i++)
+    {
+        writeBall (ballS.ball[i], ballFile);
+    }
+    
+    fprintf (ballFile, "\n");
+}
+
+void readBall (Ball *ball, FILE *ballFile)
+{
+    fscanf (ballFile, "{{%f, %f}, color: %u, r: %f, alive: %u} ||| ", &ball->pos.x , ball.pos.y, ball.color, ball.r, ball.alive);
+} 
+
 void RunEngineExperiment (BallSystem &ballS)
 {
     bool flagClearBackground = true;
+
+    FILE *ballSystemRecording = fopen ("C:/Users/Алехандро/Desktop/AlexProjects/GravitySystemFolder/EngineExperiment.txt", "w");
         
     for (;;)
     {
@@ -282,20 +312,20 @@ void RunEngineExperiment (BallSystem &ballS)
         //solarSystem (ball);
         PhysicsAllBall (ballS);
 
-        
-
         ControlAllBalls (ballS);
 
         drawAllBall (ballS);
 
+        writeAllBall (ballS, ballSystemRecording);
+
         txSleep (20);
 
-        if (txGetAsyncKeyState('Q')) break;
+        if (txGetAsyncKeyState('O')) break;
 
         flagClearBackground = ClearBackground (flagClearBackground);
     }
 
-        
+    fclose (ballSystemRecording);    
 }
 /*
 void RunEngineE2 (const Ball planetsInit[])
@@ -340,6 +370,9 @@ void RunEngineE2 (const Ball planetsInit[])
     
 }
 */
+
+
+
 
 
 /*
