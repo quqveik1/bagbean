@@ -77,6 +77,7 @@ struct BallSystem
 inline Vector  operator +  (const Vector &a, const Vector &b);
 inline Vector &operator += (Vector &a, const Vector &b);
 inline Vector  operator -  (const Vector &a, const Vector &b);
+inline void lining ();
 inline Vector  operator *  (const Vector &a, const double b);
 inline Vector  operator *  (const Vector &a, const Vector &b);
 inline Vector &operator *= (Vector &a, const Vector &b);
@@ -100,6 +101,11 @@ Vector vectorNormal (Vector vector);
 void writeAllBall (const BallSystem &ballS, FILE *ballFile);
 void writeBall (const Ball &ball, FILE *ballFile);
 
+void playSystem ();
+void drawFrameReplay (BallSystem *ballS);
+void readAllBall (BallSystem *ballS, FILE *ballFile);
+void readBall (Ball *ball, FILE *ballFile);
+
 double elDeg (const double number, const double deg);
 double degreesOfDouble (const double number, int degree);
 
@@ -119,6 +125,7 @@ void sumColorsUnitTest ();
 void ControlAllBalls (BallSystem &ballS);
 void ssCircle (double x, double y, double r);
 void ssLine (double StartX, double StartY, double FinishX, double FinishY);
+void dynamicSleeping ();
 //void solarSystem (Ball balls[]);
 Vector txToss (Vector pos);
 double SpeedX (double vX);
@@ -198,6 +205,12 @@ int main()
 
     //(void) (_getch ());
 
+    int mode = 0;
+    printf ("mode(read0/write1):\n");
+    scanf  ("%u", &mode);
+
+    if (mode == 1)
+    {
     BallSystem ballS = {};
     Ball planetsInit[BallMax] = {};
     
@@ -249,6 +262,12 @@ int main()
     txEnd ();
 
     txDisableAutoPause ();
+    }
+
+    if (mode == 0)
+    {
+        playSystem ();
+    }
 
     return 0;
 }
@@ -277,6 +296,52 @@ int main2()
 }
 */
 
+void playSystem ()
+{
+    FILE *ballSystemRecording = fopen ("C:/Users/Алехандро/Desktop/AlexProjects/GravitySystemFolder/EngineExperiment.txt", "r");
+    BallSystem currBallS = {};
+     
+
+    for (;;)
+    {
+        dynamicSleeping ();
+
+        readAllBall (&currBallS, ballSystemRecording);
+
+        drawFrameReplay (&currBallS);
+
+        if (txGetAsyncKeyState ('O')) break;
+    }
+
+    fclose (ballSystemRecording);
+
+}
+
+void dynamicSleeping ()
+{
+    static int timesleep = 1000;
+
+    if (txGetAsyncKeyState (VK_F1)) timesleep = 10;
+    if (txGetAsyncKeyState (VK_F2)) timesleep = 50;
+    if (txGetAsyncKeyState (VK_F3)) timesleep = 100;
+    if (txGetAsyncKeyState (VK_F4)) timesleep = 200;
+    if (txGetAsyncKeyState (VK_F5)) timesleep = 500;
+    if (txGetAsyncKeyState (VK_F6)) timesleep = 1000;
+
+    printf ("%i", timesleep);
+
+    txSleep (timesleep);
+}
+
+void drawFrameReplay (BallSystem *ballS)
+{
+    for (int i = 0; i < BallMax; i++)
+    {
+        if (ballS->ball[i].alive)
+            drawBall ( &(ballS->ball[i]), ballS->ball[i].color);    
+    }
+}
+
 void writeBall (const Ball &ball, FILE *ballFile)
 {
     fprintf (ballFile, "{{%7.2f, %7.2f}, color: %7u, r: %5.2f, alive: %u} ||| ", ball.pos.x , ball.pos.y, ball.color, ball.r, ball.alive);
@@ -292,10 +357,27 @@ void writeAllBall (const BallSystem &ballS, FILE *ballFile)
     fprintf (ballFile, "\n");
 }
 
+void readAllBall (BallSystem *ballS, FILE *ballFile)
+{
+    for (int i = 0; i < BallMax; i++)
+    {
+        readBall ( &(ballS->ball[i]), ballFile);
+    }
+
+    //lining ();
+}
+
 void readBall (Ball *ball, FILE *ballFile)
 {
-    fscanf (ballFile, "{{%f, %f}, color: %u, r: %f, alive: %u} ||| ", &ball->pos.x , ball.pos.y, ball.color, ball.r, ball.alive);
-} 
+    fscanf (ballFile, "{{%lf, %lf}, color: %u, r: %lf, alive: %u} ||| ", &ball->pos.x , &ball->pos.y, &ball->color, &ball->r, (unsigned int*) &ball->alive);
+    //printf (          "{{%lf, %lf}, color: %u, r: %lf, alive: %u}\n ",    ball->pos.x ,  ball->pos.y,  ball->color,  ball->r,                  ball->alive);
+    //_getch();
+}
+
+inline void lining ()
+{
+    printf ("////////////////////////////////////\n");
+}
 
 void RunEngineExperiment (BallSystem &ballS)
 {
