@@ -85,7 +85,7 @@ inline Vector  operator /  (const Vector &a, double m);
 inline Vector operator / (const double a, const Vector &b);
 Vector operator ^ (const Vector &vector, int degree);
 
-void RunEngineE2 (const Ball planetsInit[]);
+//void RunEngineE2 (const Ball planetsInit[]);
 
 void RunEngineExperiment (BallSystem &ball);
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness = 1);
@@ -97,6 +97,8 @@ void Draw_verVector (const Vector &vector, const Vector &startPoint, COLORREF co
 double DegToRad (double degrees);
 double lengthV (const Vector &vector);
 Vector vectorNormal (Vector vector);
+
+void unitTest (Ball balls[], FILE *ballFile);
 
 void writeAllBall (const BallSystem &ballS, FILE *ballFile);
 void writeBall (const Ball &ball, FILE *ballFile);
@@ -172,7 +174,7 @@ int main()
     //txSetColor     (TX_LIGHTRED);
     //txSetFillColor (TX_RED);
     
-    _mkdir ("C:/Users/Алехандро/Desktop/AlexProjects/GravitySystemFolder");
+    (void) _mkdir ("C:/Users/Алехандро/Desktop/AlexProjects/GravitySystemFolder");
 
     /*
     Ball ball1 = {{100, 400}, {5, 5}, {0, 0.7}, 20};
@@ -207,7 +209,7 @@ int main()
 
     int mode = 0;
     printf ("mode(read0/write1):\n");
-    scanf  ("%u", &mode);
+    (void) scanf  ("%i", &mode);
 
     if (mode == 1)
     {
@@ -296,6 +298,63 @@ int main2()
 }
 */
 
+void unitTest (Ball balls[], FILE *ballFile)
+{
+    txClearConsole ();
+
+    bool correctInput = true;
+    Vector pos = {};
+    unsigned int color = 0;
+    double  r = 0;
+    unsigned int alive = 0;
+
+    for (int i = 0; i < BallMax; i++)
+    {
+        (void) fscanf (ballFile, "{{%lf, %lf}, color: %u, r: %lg, alive: %u} ||| ", &pos.x , &pos.y, &color, &r, &alive);
+        /*if (balls[i].pos.x != pos.x || balls[i].pos.y != pos.y || balls[i].r != r || (unsigned int) balls[i].color != color || (unsigned int) balls[i].alive != alive)
+        {
+            correctInput = false;
+        }
+        */
+
+        if (balls[i].pos.x != pos.x || balls[i].pos.y != pos.y)
+        {
+            correctInput = false;
+            $se;
+            printf ("Error: pos ({%lg, %lg}, {%lg, %lg}) ", balls[i].pos.x, balls[i].pos.y, pos.x, pos.y);
+        }
+        
+        if (balls[i].r != r)
+        {
+            correctInput = false;
+            $se;
+            printf ("Error: r (%lg, %lg) ", balls[i].r, r);
+        }
+
+        if ((unsigned int) balls[i].color != color)
+        {
+            correctInput = false;
+            $se;
+            printf ("Error: color (%u, %u) ", balls[i].color, color);
+        }
+
+        if ((unsigned int) balls[i].alive != alive)
+        {
+            correctInput = false;
+            $se;
+            printf ("Error: alive (%u, %u) ", balls[i].alive, alive);
+        }
+
+        printf ("\n");
+    }
+
+    printf ("\n");
+
+    (void) _getch ();
+
+    //void (printf ("Correct: %u\n", (unsigned int) correctInput));
+}
+
 void playSystem ()
 {
     FILE *ballSystemRecording = fopen ("C:/Users/Алехандро/Desktop/AlexProjects/GravitySystemFolder/EngineExperiment.txt", "r");
@@ -328,7 +387,7 @@ void dynamicSleeping ()
     if (txGetAsyncKeyState (VK_F5)) timesleep = 500;
     if (txGetAsyncKeyState (VK_F6)) timesleep = 1000;
 
-    printf ("%i", timesleep);
+    //printf ("%i", timesleep);
 
     txSleep (timesleep);
 }
@@ -369,7 +428,7 @@ void readAllBall (BallSystem *ballS, FILE *ballFile)
 
 void readBall (Ball *ball, FILE *ballFile)
 {
-    fscanf (ballFile, "{{%lf, %lf}, color: %u, r: %lf, alive: %u} ||| ", &ball->pos.x , &ball->pos.y, &ball->color, &ball->r, (unsigned int*) &ball->alive);
+    (void) fscanf (ballFile, "{{%lf, %lf}, color: %u, r: %lf, alive: %u} ||| ", &ball->pos.x , &ball->pos.y, &ball->color, &ball->r, (unsigned int*) &ball->alive);
     //printf (          "{{%lf, %lf}, color: %u, r: %lf, alive: %u}\n ",    ball->pos.x ,  ball->pos.y,  ball->color,  ball->r,                  ball->alive);
     //_getch();
 }
@@ -399,6 +458,9 @@ void RunEngineExperiment (BallSystem &ballS)
         drawAllBall (ballS);
 
         writeAllBall (ballS, ballSystemRecording);
+
+        unitTest (ballS.ball, ballSystemRecording);
+
 
         txSleep (20);
 
@@ -588,7 +650,7 @@ void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLOR
 
 Vector txToss (Vector pos)
 {
-    const Rect box = { {0, 0}, {txGetExtent().x, txGetExtent().y} };
+    const Rect box = { {0, 0}, {double (txGetExtent().x), double (txGetExtent().y)} };
 
     return Vector 
     {
@@ -860,14 +922,14 @@ void sumColorsUnitTest ()
 
 void ssCircle (double x, double y, double r)
 {
-    Rect Box = {{0, 0}, {txGetExtentX (), txGetExtentY ()}} ;
+    Rect Box = {{0, 0}, {double (txGetExtentX ()), double (txGetExtentY ())}} ;
 
     txCircle (x + 0.5 * Box.right (), y + 0.5 * Box.bottom (), r);
 }
 
 void ssLine (double StartX, double StartY, double FinishX, double FinishY)
 {
-    Rect Box = {{0, 0}, {txGetExtentX (), txGetExtentY ()}} ;
+    Rect Box = {{0, 0}, {double (txGetExtentX ()), double (txGetExtentY ())}} ;
 
     txLine (StartX + 0.5 * Box.right (), StartY + 0.5 * Box.bottom (), FinishX + 0.5 * Box.right (), FinishY + 0.5 * Box.bottom ());
 }
