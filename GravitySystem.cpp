@@ -1,7 +1,7 @@
-﻿
-#define  _CRT_SECURE_NO_WARNINGS
+﻿#define  _CRT_SECURE_NO_WARNINGS
 
 #include "TXLib.h"
+#include "Config.h"
 //You must to delete "my" TXLib.h file from the ptoject or you can do not download "my" TXLib.h file, you need to download TXLib from https://sourceforge.net/projects/txlib/files/latest/download and install this	
 
 /*
@@ -28,7 +28,7 @@ const double ElectricKf = 6e3;
 const double DT = 0.09;
 const double MinDistance = 5;
 int LastComet = 0;
-const int BallMax = 10;
+const int BallMax = 3;
 
 struct Vector 
 {
@@ -98,7 +98,7 @@ double DegToRad (double degrees);
 double lengthV (const Vector &vector);
 Vector vectorNormal (Vector vector);
 
-void unitTest (Ball balls[], FILE *ballFile);
+void unitTest (BallSystem ballS, FILE *ballFile);
 
 void writeAllBall (const BallSystem &ballS, FILE *ballFile);
 void writeBall (const Ball &ball, FILE *ballFile);
@@ -154,13 +154,9 @@ double SwitchRadius (double r);
 /*
 mkdir ("C:/realFolders/Name");  //create folder
 FILE* myFile = fopen ("C:/ALexProjects/Name.txt", "w");
-
 fprintf (myFile, "Sth = %i", number);                                                             
-
 fclose (myFile);
-
 mode r
-
 fscanf (myFile, "Sth = %d", &newNumber);
 char str[size];
 fgets (str, size, myfile);
@@ -170,11 +166,13 @@ fgets (str, size, myfile);
 //New
 int main()
 {
+
+
     //txCreateWindow (800, 600);
     //txSetColor     (TX_LIGHTRED);
     //txSetFillColor (TX_RED);
     
-    (void) _mkdir ("C:/Users/Алехандро/Desktop/AlexProjects/GravitySystemFolder");
+    (void) _mkdir ("GravitySystemFolder");
 
     /*
     Ball ball1 = {{100, 400}, {5, 5}, {0, 0.7}, 20};
@@ -199,7 +197,7 @@ int main()
     Draw_verVector (vector, start, TX_RED, 5, DegToRad (1));
     */
     
-    txCreateWindow (1900, 1000);
+    txCreateWindow (1800, 1000);
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
 
@@ -207,63 +205,75 @@ int main()
 
     //(void) (_getch ());
 
-    int mode = 0;
+    int mode = 1;
     printf ("mode(read0/write1):\n");
     (void) scanf  ("%i", &mode);
 
     if (mode == 1)
     {
-    BallSystem ballS = {};
-    Ball planetsInit[BallMax] = {};
+        BallSystem ballS = {};
+        Ball planetsInit[BallMax] = {};
     
-    /*
-    ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED};
-    ball[1] = {txToss ({0,    -400}),  {7, 7}, 1e4, 10, 2, TX_RED};
-    ball[2] = {txToss ({0,    +400}), {18, 17}, 1e4, 10, 5, TX_RED};
-    ball[3] = {txToss ({400,  -400}), {7, 7}, 1e4, 10, 2, TX_RED};
-    */
+        /*
+        ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED};
+        ball[1] = {txToss ({0,    -400}),  {7, 7}, 1e4, 10, 2, TX_RED};
+        ball[2] = {txToss ({0,    +400}), {18, 17}, 1e4, 10, 5, TX_RED};
+        ball[3] = {txToss ({400,  -400}), {7, 7}, 1e4, 10, 2, TX_RED};
+        */
 
-    ballS.ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_YELLOW};
-    ballS.ball[1] = {txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_CYAN};
-    ballS.ball[2] = {txToss ({0, -200}),  {32, 0}, 1e4, 10, 2, TX_RED};
-    ballS.currlength = 3;
+        ballS.currlength = 0;
+        ballS.ball [ballS.currlength++] = {txToss ({0, 0}),     {0, 0},  1e17, 10, 2e5, TX_YELLOW};
+        ballS.ball [ballS.currlength++] = {txToss ({0, -400}),  {24, 0}, 1e4,  10, 2,   TX_CYAN};
+        ballS.ball [ballS.currlength++] = {txToss ({0, -200}),  {32, 0}, 1e4,  10, 2,   TX_RED};
+        
 
-    /*
-    ballS.addBall ({txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED});
-    ballS.addBall ({txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_RED});
-    ballS.addBall ({txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED}};
-    */
+        /*
+        ballS.addBall ({txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED});
+        ballS.addBall ({txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_RED});
+        ballS.addBall ({txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED}};
+        */
 
-    for (int i = ballS.currlength; i < BallMax; i++)
-    {
-        ballS.ball[i] = {txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED};
-    }
+        for (int i = ballS.currlength; i < BallMax; i++)
+        {
+            assert (0 <= i && i < BallMax);
 
-    //ball[3] = {txToss ({0, -100}),  {10, 0}, 1e4, 10, 2, TX_RED};
+            ballS.ball[i] = {txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED};
+        }
 
-    for (int i = 0; i < BallMax; i++) planetsInit[i] = ballS.ball[i];
+        //ball[3] = {txToss ({0, -100}),  {10, 0}, 1e4, 10, 2, TX_RED};
 
-    txBegin ();
-    for (;;)
-    {
-        for (int i = 0; i < ballS.currlength; i++) ballS.ball[i] = planetsInit[i];
+        for (int i = 0; i < BallMax; i++)
+        {
+            assert (0 <= i && i < BallMax);
 
-        //txEnd ();
-        ///printf ("Vx = ");
-        //if (scanf  ("%lg", &ballS.ball[2].v.x) != 1) break;
+            planetsInit[i] = ballS.ball[i];
+        }
 
-        //if (ballS.ball[2].v.x == -1 && ballS.ball[2].v.y  == -1) break;
-        //txBegin ();
+        txBegin ();
+        for (int n = 0; n < 1; n++)
+        {
+            for (int i = 0; i < ballS.currlength; i++)
+            {
+                assert (0 <= i && i < BallMax);
+                ballS.ball[i] = planetsInit[i];
+            }
+
+            //txEnd ();
+            ///printf ("Vx = ");
+            //if (scanf  ("%lg", &ballS.ball[2].v.x) != 1) break;
+
+            //if (ballS.ball[2].v.x == -1 && ballS.ball[2].v.y  == -1) break;
+            //txBegin ();
         
         
-        RunEngineExperiment (ballS);
+            RunEngineExperiment (ballS);
 
-        if (txGetAsyncKeyState('O')) break;
-    }
+            if (txGetAsyncKeyState('O')) break;
+        }
 
-    txEnd ();
+        txEnd ();
 
-    txDisableAutoPause ();
+        txDisableAutoPause ();
     }
 
     if (mode == 0)
@@ -280,69 +290,82 @@ int main2()
     txCreateWindow (1900, 1000);
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
-
     Ball ball[BallLength] = {};
     Ball planetsInit[BallLength] = {};
     
     planetsInit[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2, TX_RED};
     planetsInit[1] = {txToss ({0, -400}), {56, 56}, 1e4, 10, 2, TX_RED};
-
     txBegin ();
-
     RunEngineE2 (planetsInit);
-
     txEnd ();
-
-
     return 0;
 }
 */
 
-void unitTest (Ball balls[], FILE *ballFile)
+void unitTest (BallSystem ballS, FILE *ballFile)
 {
+    static int frameCount = 1;
     txClearConsole ();
 
     bool correctInput = true;
-    Vector pos = {};
+    double posX = 0;
+    double posY = 0;
     unsigned int color = 0;
     double  r = 0;
     unsigned int alive = 0;
 
+    printf ("Frame: %i\n", frameCount);
+    frameCount++;
+
     for (int i = 0; i < BallMax; i++)
     {
-        (void) fscanf (ballFile, "{{%lf, %lf}, color: %u, r: %lg, alive: %u} ||| ", &pos.x , &pos.y, &color, &r, &alive);
+        assert (0 <= i && i < BallMax);
+        
+        //OFF static char str[500] = "";
+
+        //fgets (str, sizeof (str), ballFile);
+        //printf ("//%s//\n", str);
+        //(void) _getch ();
+
+        printf ("Readed elements: %i////", fscanf (ballFile, " { { %lf , %lf } , color: %u , r: %lf , alive: %u } | | |", &posX, &posY, &color, &r, &alive));
+        (void) _getch ();
         /*if (balls[i].pos.x != pos.x || balls[i].pos.y != pos.y || balls[i].r != r || (unsigned int) balls[i].color != color || (unsigned int) balls[i].alive != alive)
         {
             correctInput = false;
         }
         */
+        printf ("Ball: %i:", i + 1);
 
-        if (balls[i].pos.x != pos.x || balls[i].pos.y != pos.y)
+        assert (0 <= i && i < BallMax);
+        if (ballS.ball[i].pos.x != posX || ballS.ball[i].pos.y != posY)
         {
             correctInput = false;
             $se;
-            printf ("Error: pos ({%lg, %lg}, {%lg, %lg}) ", balls[i].pos.x, balls[i].pos.y, pos.x, pos.y);
+            printf ("Error: pos ({%lg, %lg}, {%lg, %lg}) ", ballS.ball[i].pos.x, ballS.ball[i].pos.y, posX, posY);
         }
         
-        if (balls[i].r != r)
+        assert (0 <= i && i < BallMax);
+        if (ballS.ball[i].r != r)
         {
             correctInput = false;
             $se;
-            printf ("Error: r (%lg, %lg) ", balls[i].r, r);
+            printf ("Error: r (%lg, %lg) ", ballS.ball[i].r, r);
         }
 
-        if ((unsigned int) balls[i].color != color)
+        assert (0 <= i && i < BallMax);
+        if ((unsigned int) ballS.ball[i].color != color)
         {
             correctInput = false;
             $se;
-            printf ("Error: color (%u, %u) ", balls[i].color, color);
+            printf ("Error: color (%u, %u) ", ballS.ball[i].color, color);
         }
 
-        if ((unsigned int) balls[i].alive != alive)
+        assert (0 <= i && i < BallMax);
+        if ((unsigned int) ballS.ball[i].alive != alive)
         {
             correctInput = false;
             $se;
-            printf ("Error: alive (%u, %u) ", balls[i].alive, alive);
+            printf ("Error: alive (%u, %u) ", ballS.ball[i].alive, alive);
         }
 
         printf ("\n");
@@ -350,14 +373,14 @@ void unitTest (Ball balls[], FILE *ballFile)
 
     printf ("\n");
 
-    (void) _getch ();
+    OFF (void) _getch ();
 
     //void (printf ("Correct: %u\n", (unsigned int) correctInput));
 }
 
 void playSystem ()
 {
-    FILE *ballSystemRecording = fopen ("C:/Users/Алехандро/Desktop/AlexProjects/GravitySystemFolder/EngineExperiment.txt", "r");
+    FILE *ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.txt", "r");
     BallSystem currBallS = {};
      
 
@@ -396,6 +419,8 @@ void drawFrameReplay (BallSystem *ballS)
 {
     for (int i = 0; i < BallMax; i++)
     {
+        assert (0 <= i && i < BallMax);
+
         if (ballS->ball[i].alive)
             drawBall ( &(ballS->ball[i]), ballS->ball[i].color);    
     }
@@ -403,13 +428,17 @@ void drawFrameReplay (BallSystem *ballS)
 
 void writeBall (const Ball &ball, FILE *ballFile)
 {
-    fprintf (ballFile, "{{%7.2f, %7.2f}, color: %7u, r: %5.2f, alive: %u} ||| ", ball.pos.x , ball.pos.y, ball.color, ball.r, ball.alive);
+    fprintf (ballFile, "{{%7.2lf, %7.2lf}, color: %7u, r: %5.2lf, alive: %u} ||| ", ball.pos.x , ball.pos.y, ball.color, ball.r, ball.alive);
 }
 
 void writeAllBall (const BallSystem &ballS, FILE *ballFile)
 {
+    OFF fprintf (ballFile, "/BEGIN  :::  ");
+
     for (int i = 0; i < BallMax; i++)
     {
+        assert (0 <= i && i < BallMax);
+
         writeBall (ballS.ball[i], ballFile);
     }
     
@@ -420,6 +449,8 @@ void readAllBall (BallSystem *ballS, FILE *ballFile)
 {
     for (int i = 0; i < BallMax; i++)
     {
+        assert (0 <= i && i < BallMax);
+
         readBall ( &(ballS->ball[i]), ballFile);
     }
 
@@ -442,9 +473,10 @@ void RunEngineExperiment (BallSystem &ballS)
 {
     bool flagClearBackground = true;
 
-    FILE *ballSystemRecording = fopen ("C:/Users/Алехандро/Desktop/AlexProjects/GravitySystemFolder/EngineExperiment.txt", "w");
+    FILE *ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.txt", "w+");
+    assert (ballSystemRecording);
         
-    for (;;)
+    for (int i = 0; i < 15; i++)
     {
         //solarSystem (ball);
         PhysicsAllBall (ballS);
@@ -457,9 +489,13 @@ void RunEngineExperiment (BallSystem &ballS)
 
         drawAllBall (ballS);
 
+        long startFilePos = ftell (ballSystemRecording);
+        //fprintf (ballSystemRecording, "//f%i//", i);
         writeAllBall (ballS, ballSystemRecording);
 
-        unitTest (ballS.ball, ballSystemRecording);
+        fseek (ballSystemRecording, startFilePos, SEEK_SET);
+
+        unitTest (ballS, ballSystemRecording);
 
 
         txSleep (20);
@@ -475,22 +511,17 @@ void RunEngineExperiment (BallSystem &ballS)
 void RunEngineE2 (const Ball planetsInit[])
 {
     Ball ball[BallLength] = {};
-
     ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2, TX_RED};
     ball[1] = {txToss ({0, -400}), {56, 56}, 1e4, 10, 2, TX_RED};
-
     bool flagClearBackground = true;
         
     for (;;)
     {
         for (int i = 0; i < BallLength; i++) ball[i] = planetsInit[i];
-
         printf ("Vx = ");
         scanf  ("%lg", &ball[1].v.x);
-
         printf ("Vy = ");
         scanf  ("%lg", &ball[1].v.y);
-
         for (;;)
         {
             //solarSystem (ball);
@@ -499,15 +530,10 @@ void RunEngineE2 (const Ball planetsInit[])
             PhysicsAllBall (ball);
             //solarSystem (ball);
             PhysicsAllBall (ball);
-
             ControlAllBalls (ball);
-
             drawAllBall (ball);
-
             txSleep (20);
-
             if (txGetAsyncKeyState('Q')) break;
-
             flagClearBackground = ClearBackground (flagClearBackground);
         }
     }
@@ -523,24 +549,20 @@ void RunEngineE2 (const Ball planetsInit[])
 void solarSystem (Ball balls[])
 {
     const Rect box = { {0, 0}, {txGetExtent().x, txGetExtent().y} };
-
     for (int i = 1; i < BallLength; i++)
     {
         if (balls[i].pos.x < 0.5 * box.right () && balls[i].pos.y < 0.5 * box.bottom ())
         {
             balls[i].v = {-56, 56};
         }
-
         if (balls[i].pos.x < 0.5 * box.right () && balls[i].pos.y > 0.5 * box.bottom ())
         {
             balls[i].v = {56, 56};
         }
-
         if (balls[i].pos.x > 0.5 * box.right () && balls[i].pos.y > 0.5 * box.bottom ())
         {
             balls[i].v = {56, -56};
         }
-
         if (balls[i].pos.x > 0.5 * box.right () && balls[i].pos.y < 0.5 * box.bottom ())
         {
             balls[i].v = {-56, -56};
@@ -583,6 +605,8 @@ void cometShooting (BallSystem &ballS)
 
 void BallSystem::addBall (Ball newBall)
 {
+    assert (0 <= currlength && currlength < BallMax);
+
     ball[currlength].pos    = newBall.pos;
     ball[currlength].v      = newBall.v;
     ball[currlength].m      = newBall.m;
@@ -597,6 +621,7 @@ void drawAllBall (BallSystem &ballS)
 {
      for (int i = 0; i < ballS.currlength; i++)
      {
+         assert (0 <= i && i < BallMax);
 
          if (ballS.ball[i].alive)
             drawBall(&ballS.ball[i], ballS.ball[i].color);
@@ -608,6 +633,8 @@ void PhysicsAllBall (BallSystem &ballS)
     cometShooting (ballS);
     for (int i = 0; i < ballS.currlength; i++)
     {
+        assert (0 <= i && i < BallMax);
+
         if (ballS.ball[i].alive)
             Physics (&ballS.ball[i], ballS, i, true);
     }
@@ -663,6 +690,8 @@ void ControlAllBalls (BallSystem &ballS)
 {
     for (int i = 0; i < ballS.currlength; i++)
     {
+        assert (0 <= i && i < BallMax);
+
         if (ballS.ball[i].alive) 
             Control (&ballS.ball[i]);
     }
@@ -729,19 +758,16 @@ void Physics (Ball *ball, BallSystem &ballS, int numberOfFind, bool Graphic)
         (*ball).v.x = -((*ball).v.x);
         (*ball).pos.x = box.right() - ((*ball).pos.x - box.right());
     }
-
     if ((*ball).pos.y >= box.bottom())
     {
         (*ball).v.y = -((*ball).v.y);
         (*ball).pos.y = box.bottom() - ((*ball).pos.y - box.bottom());
     }
-
     if ((*ball).pos.x <= box.left())
     {
         (*ball).v.x = -((*ball).v.x);
         (*ball).pos.x = box.left() - ((*ball).pos.x - box.left());
     }
-
     if ((*ball).pos.y <= box.top())
     {
         (*ball).v.y = -((*ball).v.y);
@@ -806,6 +832,8 @@ void FindColilision (BallSystem &ballS, int numberOfFind)
 {
     for (int i = 0; i < ballS.currlength; i++)
     {
+        assert (0 <= i && i < BallMax);
+
         if (i != numberOfFind)
         {
             if (ballS.ball[i].alive)
@@ -888,7 +916,6 @@ COLORREF sumColors (COLORREF a, COLORREF b)
     int aRed   = GetRValue (a);
     int aGreen = GetGValue (a);   // 
     int aBlue  = GetBValue (a);
-
     int bRed   = GetRValue (b);
     int bGreen = GetGValue (b);   // 
     int bBlue  = GetBValue (b);
@@ -940,6 +967,8 @@ Vector findElectricForce (Ball ball[], int numberOfFind, int length)
         
     for (int j = 0; j < length; j++)
     {
+        assert (0 <= j && j < BallMax);
+
         if (j != numberOfFind)
         {
             Vector vectorDistance = ball[j].pos - ball[numberOfFind].pos;
@@ -969,6 +998,8 @@ Vector vectorNormal (Vector vector)
 
 void Ball::fillHistory ()
 {
+    assert (0 <= oldestNum && oldestNum < BallHistoryLength);
+
     history [oldestNum] = pos;
     oldestNum++;
 
@@ -985,6 +1016,8 @@ void Ball::DrawHistory ()
 
     for (int i = oldestNum; i < BallHistoryLength; i++)
     {
+        assert (0 <= i && i < BallHistoryLength);
+
         txSetFillColor (RGB (nColor, nColor, nColor));
         txSetColor     (RGB (nColor, nColor, nColor));
         txCircle (history[i].x, history[i].y, 2);
@@ -993,6 +1026,8 @@ void Ball::DrawHistory ()
 
     for (int i = 0; i < oldestNum; i++)
     {
+        assert (0 <= i && i < BallHistoryLength);
+
         txSetFillColor (RGB (nColor, nColor, nColor));
         txSetColor     (RGB (nColor, nColor, nColor));
         txCircle (history[i].x, history[i].y, 2);
@@ -1016,17 +1051,24 @@ void Ball::DrawHistoryLines ()
         txSetFillColor (RGB (nColor, nColor, nColor));
         txSetColor     (RGB (nColor, nColor, nColor));
       // txCircle (history[i].x, history[i].y, 2);
+        assert (0 <= i     && i     < BallHistoryLength);
+        assert (0 <= i + 1 && i + 1 < BallHistoryLength);
+
         txLine   (history[i].x, history[i].y, history[i + 1].x, history[i + 1].y);
         nColor += kRgb;
     }
 
     if (oldestNum != 0)
     {
+        assert (0 <= BallHistoryLength - 1 && BallHistoryLength - 1 < BallHistoryLength);
+
+
         txLine (history[BallHistoryLength - 1].x, history[BallHistoryLength - 1].y, history[0].x, history[0].y);
     }
 
     for (int i = 0; i < oldestNum - 1; i++)
     {
+        assert (0 <= i && i < BallHistoryLength);
         //cout << i;
         txSetFillColor (RGB (nColor, nColor, nColor));
         txSetColor     (RGB (nColor, nColor, nColor));
@@ -1037,6 +1079,8 @@ void Ball::DrawHistoryLines ()
 
     txSetFillColor (TX_PINK);
     txSetColor     (TX_PINK);
+
+    assert (0 <= oldestNum && oldestNum < BallHistoryLength);
     txCircle (history[oldestNum].x, history[oldestNum].y, 3);
 }
 
@@ -1165,6 +1209,7 @@ double elDeg (const double number, const double deg)
     double result = 1;
     for (int i = 0; i < deg; i++)
     {
+        assert (0 <= i && i < BallMax);
         result = result * number;
     }
 
@@ -1204,6 +1249,7 @@ Vector operator ^ (const Vector &vector, int degree)
     Vector result = {};
     for (int i = 1; i <= degree; i++)
     {
+        assert (0 <= i && i < BallMax);
         result.x = vector.x * vector.x;
         result.y = vector.y * vector.y;
     }
@@ -1217,6 +1263,7 @@ void Draw_verVector (const Vector &vector, const Vector &startPoint, COLORREF /*
 
     for (int i = 0; i < 360; i++)
     {
+        assert (0 <= i && i < BallMax);
         txSetFillColor (TX_BLACK);
         txClear ();
 
