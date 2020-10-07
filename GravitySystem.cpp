@@ -23,12 +23,14 @@ B = {3, 4}
 
 const int BallHistoryLength = 200;
 int BallLength = 3;
-const double Precision  = 1e-100;
+const double DivisionPrecision  = 1e-100;
 const double ElectricKf = 6e3;
 const double DT = 0.09;
 const double MinDistance = 5;
 int LastComet = 0;
 const int BallMax = 3;
+const int RoundingPrecision = 7;
+const double MaxDeltaPrecision = 0.1;
 
 struct Vector 
 {
@@ -99,7 +101,8 @@ double lengthV (const Vector &vector);
 Vector vectorNormal (Vector vector);
 
 void unitTest (BallSystem ballS, FILE *ballFile);
-
+bool compareNearlyNum (double a, double b);
+void copyFrame (BallSystem copyOfMainBallS[], BallSystem ballS, int currFrame);//currFrame(started from 0)
 void writeAllBall (const BallSystem &ballS, FILE *ballFile);
 void writeBall (const Ball &ball, FILE *ballFile);
 
@@ -305,7 +308,7 @@ int main2()
 void unitTest (BallSystem ballS, FILE *ballFile)
 {
     static int frameCount = 1;
-    txClearConsole ();
+    //txClearConsole ();
 
     bool correctInput = true;
     double posX = 0;
@@ -314,7 +317,7 @@ void unitTest (BallSystem ballS, FILE *ballFile)
     double  r = 0;
     unsigned int alive = 0;
 
-    printf ("Frame: %i\n", frameCount);
+    //printf ("Frame: %i\n", frameCount);
     frameCount++;
 
     for (int i = 0; i < BallMax; i++)
@@ -327,8 +330,12 @@ void unitTest (BallSystem ballS, FILE *ballFile)
         //printf ("//%s//\n", str);
         //(void) _getch ();
 
-        printf ("Readed elements: %i////", fscanf (ballFile, " { { %lf , %lf } , color: %u , r: %lf , alive: %u } | | |", &posX, &posY, &color, &r, &alive));
-        (void) _getch ();
+        printf ("Readed elements: %i////", fscanf (ballFile, " { { %lf , %lf } , color: %u , r: %lf , alive: %u } | | |", &posX, &posY, &color, &r, &alive)); //!!!!!!!!!!!
+        
+        
+        
+        
+        //(void) _getch ();
         /*if (balls[i].pos.x != pos.x || balls[i].pos.y != pos.y || balls[i].r != r || (unsigned int) balls[i].color != color || (unsigned int) balls[i].alive != alive)
         {
             correctInput = false;
@@ -337,7 +344,9 @@ void unitTest (BallSystem ballS, FILE *ballFile)
         printf ("Ball: %i:", i + 1);
 
         assert (0 <= i && i < BallMax);
-        if (ballS.ball[i].pos.x != posX || ballS.ball[i].pos.y != posY)
+        printf ("Error: pos ({%lf, %lf}, {%lf, %lf})\n", ballS.ball[0].pos.x, ballS.ball[0].pos.y, posX, posY);
+        printf ("Error: pos ({%d, %d}, {%d, %d})\n", (int) ballS.ball[0].pos.x, (int) ballS.ball[0].pos.y, (int) posX, (int) posY);
+        if (!(compareNearlyNum (ballS.ball[i].pos.x, posX)) || !(compareNearlyNum (ballS.ball[i].pos.y, posY)))
         {
             correctInput = false;
             $se;
@@ -345,7 +354,7 @@ void unitTest (BallSystem ballS, FILE *ballFile)
         }
         
         assert (0 <= i && i < BallMax);
-        if (ballS.ball[i].r != r)
+        if ((int) ballS.ball[i].r != (int) r)
         {
             correctInput = false;
             $se;
@@ -373,9 +382,15 @@ void unitTest (BallSystem ballS, FILE *ballFile)
 
     printf ("\n");
 
-    OFF (void) _getch ();
+    (void) _getch ();
 
     //void (printf ("Correct: %u\n", (unsigned int) correctInput));
+}
+
+bool compareNearlyNum (double a, double b)
+{
+    double moduleDelta = fabs (a - b);
+    return (moduleDelta <= MaxDeltaPrecision);
 }
 
 void playSystem ()
@@ -428,7 +443,7 @@ void drawFrameReplay (BallSystem *ballS)
 
 void writeBall (const Ball &ball, FILE *ballFile)
 {
-    fprintf (ballFile, "{{%7.2lf, %7.2lf}, color: %7u, r: %5.2lf, alive: %u} ||| ", ball.pos.x , ball.pos.y, ball.color, ball.r, ball.alive);
+    fprintf (ballFile, "{{%7.*lf, %7.*lf}, color: %7u, r: %5.2lf, alive: %u} ||| ", RoundingPrecision, ball.pos.x, RoundingPrecision, ball.pos.y, ball.color, ball.r, ball.alive);
 }
 
 void writeAllBall (const BallSystem &ballS, FILE *ballFile)
@@ -472,11 +487,14 @@ inline void lining ()
 void RunEngineExperiment (BallSystem &ballS)
 {
     bool flagClearBackground = true;
+    const int MaxFrame = 15;
 
-    FILE *ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.txt", "w+");
+    BallSystem copyOfMainBallS[MaxFrame];
+
+    FILE *ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.txt", "w");
     assert (ballSystemRecording);
         
-    for (int i = 0; i < 15; i++)
+    for (int i = 0; i < MaxFrame; i++)
     {
         //solarSystem (ball);
         PhysicsAllBall (ballS);
@@ -489,13 +507,14 @@ void RunEngineExperiment (BallSystem &ballS)
 
         drawAllBall (ballS);
 
-        long startFilePos = ftell (ballSystemRecording);
+        //long startFilePos = ftell (ballSystemRecording);
         //fprintf (ballSystemRecording, "//f%i//", i);
-        writeAllBall (ballS, ballSystemRecording);
+        writeAllBall               (ballS, ballSystemRecording);
+        copyFrame (copyOfMainBallS, ballS, i);
 
-        fseek (ballSystemRecording, startFilePos, SEEK_SET);
+        //fseek (ballSystemRecording, startFilePos, SEEK_SET);
 
-        unitTest (ballS, ballSystemRecording);
+        //unitTest (ballS, ballSystemRecording);
 
 
         txSleep (20);
@@ -505,8 +524,26 @@ void RunEngineExperiment (BallSystem &ballS)
         flagClearBackground = ClearBackground (flagClearBackground);
     }
 
-    fclose (ballSystemRecording);    
+    fclose (ballSystemRecording); 
+
+    FILE *ballSystemRecordingTesting = fopen ("GravitySystemFolder/EngineExperiment.txt", "r");
+
+    for (int i = 0; i < MaxFrame; i++)
+    {
+        unitTest (copyOfMainBallS[i], ballSystemRecordingTesting);
+        txSleep (10);
+    }
+
+    fclose (ballSystemRecordingTesting);
+
+     (void) _getch ();
 }
+
+void copyFrame (BallSystem copyOfMainBallS[], BallSystem ballS, int currFrame)//currFrame(started from 0)
+{
+    copyOfMainBallS[currFrame] = ballS;
+}
+
 /*
 void RunEngineE2 (const Ball planetsInit[])
 {
@@ -974,7 +1011,7 @@ Vector findElectricForce (Ball ball[], int numberOfFind, int length)
             Vector vectorDistance = ball[j].pos - ball[numberOfFind].pos;
             double distance = lengthV (vectorDistance);
 
-            if (distance * distance < Precision) continue;
+            if (distance * distance < DivisionPrecision) continue;
 
             double vectorLength = (ball[j].charge * ball[numberOfFind].charge) / (distance * distance);
             fElectric += vectorNormal (vectorDistance) * vectorLength * ElectricKf;
