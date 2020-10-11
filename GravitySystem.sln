@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GravitySystem", "GravitySys
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestPrintF", "..\TestPrintF\TestPrintF.vcxproj", "{DAC73C07-20DD-4F47-AF32-9C81E6A1481A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestingApp", "TestingApp\TestingApp.vcxproj", "{7EA587C5-3479-4A2E-B76D-28457E398574}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{DAC73C07-20DD-4F47-AF32-9C81E6A1481A}.Release|x64.Build.0 = Release|x64
 		{DAC73C07-20DD-4F47-AF32-9C81E6A1481A}.Release|x86.ActiveCfg = Release|Win32
 		{DAC73C07-20DD-4F47-AF32-9C81E6A1481A}.Release|x86.Build.0 = Release|Win32
+		{7EA587C5-3479-4A2E-B76D-28457E398574}.Debug|x64.ActiveCfg = Debug|x64
+		{7EA587C5-3479-4A2E-B76D-28457E398574}.Debug|x64.Build.0 = Debug|x64
+		{7EA587C5-3479-4A2E-B76D-28457E398574}.Debug|x86.ActiveCfg = Debug|Win32
+		{7EA587C5-3479-4A2E-B76D-28457E398574}.Debug|x86.Build.0 = Debug|Win32
+		{7EA587C5-3479-4A2E-B76D-28457E398574}.Release|x64.ActiveCfg = Release|x64
+		{7EA587C5-3479-4A2E-B76D-28457E398574}.Release|x64.Build.0 = Release|x64
+		{7EA587C5-3479-4A2E-B76D-28457E398574}.Release|x86.ActiveCfg = Release|Win32
+		{7EA587C5-3479-4A2E-B76D-28457E398574}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

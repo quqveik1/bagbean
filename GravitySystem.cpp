@@ -2,6 +2,7 @@
 
 #include "TXLib.h"
 #include "Config.h"
+#include "Q_Vector.h"
 //You must to delete "my" TXLib.h file from the ptoject or you can do not download "my" TXLib.h file, you need to download TXLib from https://sourceforge.net/projects/txlib/files/latest/download and install this	
 
 /*
@@ -28,15 +29,18 @@ const double ElectricKf = 6e3;
 const double DT = 0.09;
 const double MinDistance = 5;
 int LastComet = 0;
-const int BallMax = 3;
+const int BallMax = 10;
 const int RoundingPrecision = 7;
 const double MaxDeltaPrecision = 0.1;
+const COLORREF CometColor = TX_PINK;
 
+/*
 struct Vector 
 {
     double x;
     double y;
 };
+*/
 struct Rect
 {
     Vector pos;
@@ -76,6 +80,7 @@ struct BallSystem
     void addBall (Ball newBall);
 };
 
+/*
 inline Vector  operator +  (const Vector &a, const Vector &b);
 inline Vector &operator += (Vector &a, const Vector &b);
 inline Vector  operator -  (const Vector &a, const Vector &b);
@@ -86,6 +91,8 @@ inline Vector &operator *= (Vector &a, const Vector &b);
 inline Vector  operator /  (const Vector &a, double m);
 inline Vector operator / (const double a, const Vector &b);
 Vector operator ^ (const Vector &vector, int degree);
+*/
+ 
 
 //void RunEngineE2 (const Ball planetsInit[]);
 
@@ -116,7 +123,7 @@ double degreesOfDouble (const double number, int degree);
 
 void drawAllBall (BallSystem &ballS);
 void PhysicsAllBall (BallSystem &ball);
-void drawBall (Ball *ball, COLORREF colorCircle);
+void drawBall (const Ball *ball, COLORREF colorCircle);
 void Control (Ball *ball);
 void Physics (Ball *ball, BallSystem &ballS, int numberOfFind, bool Graphic);
 void PhysicsNoGrathics (Ball *ball, Ball balls[], int numberOfFind);
@@ -135,7 +142,7 @@ void dynamicSleeping ();
 Vector txToss (Vector pos);
 double SpeedX (double vX);
 double SpeedY (double vY);
-bool ClearBackground (bool flagClearBackground);
+void ClearBackground ();
 void   SwitchColour ();
 double SwitchRadius (double r);
 
@@ -322,6 +329,7 @@ void unitTest (BallSystem ballS, FILE *ballFile)
 
     for (int i = 0; i < BallMax; i++)
     {
+
         assert (0 <= i && i < BallMax);
         
         //OFF static char str[500] = "";
@@ -344,17 +352,21 @@ void unitTest (BallSystem ballS, FILE *ballFile)
         printf ("Ball: %i:", i + 1);
 
         assert (0 <= i && i < BallMax);
-        printf ("Error: pos ({%lf, %lf}, {%lf, %lf})\n", ballS.ball[0].pos.x, ballS.ball[0].pos.y, posX, posY);
-        printf ("Error: pos ({%d, %d}, {%d, %d})\n", (int) ballS.ball[0].pos.x, (int) ballS.ball[0].pos.y, (int) posX, (int) posY);
-        if (!(compareNearlyNum (ballS.ball[i].pos.x, posX)) || !(compareNearlyNum (ballS.ball[i].pos.y, posY)))
+
+        double deltaOfPosX = fabs (ballS.ball[i].pos.x - posX);
+
+        //printf ("Error: pos ({%e, %e}, {%e, %e})\n", ballS.ball[0].pos.x, ballS.ball[0].pos.y, posX, posY);
+       // printf ("ERROR: Delta = %e /// pos ({%d, %d}, {%d, %d})\n", deltaOfPosX, (int) ballS.ball[i].pos.x, (int) ballS.ball[i].pos.y, (int) posX, (int) posY);
+        if (!(compareNearlyNum (ballS.ball[i].pos.x, posX)) || !(compareNearlyNum (ballS.ball[i].pos.y, posY)) )
         {
             correctInput = false;
             $se;
-            printf ("Error: pos ({%lg, %lg}, {%lg, %lg}) ", ballS.ball[i].pos.x, ballS.ball[i].pos.y, posX, posY);
+            printf ("Error: Delta = %e /// pos ({%e, %e}, {%e, %e}) ", deltaOfPosX, ballS.ball[i].pos.x, ballS.ball[i].pos.y, posX, posY);
+            //DebugBreak ();
         }
         
         assert (0 <= i && i < BallMax);
-        if ((int) ballS.ball[i].r != (int) r)
+        if ( !(compareNearlyNum (ballS.ball[i].r, r)) )
         {
             correctInput = false;
             $se;
@@ -408,6 +420,7 @@ void playSystem ()
         drawFrameReplay (&currBallS);
 
         if (txGetAsyncKeyState ('O')) break;
+        ClearBackground ();
     }
 
     fclose (ballSystemRecording);
@@ -478,23 +491,25 @@ void readBall (Ball *ball, FILE *ballFile)
     //printf (          "{{%lf, %lf}, color: %u, r: %lf, alive: %u}\n ",    ball->pos.x ,  ball->pos.y,  ball->color,  ball->r,                  ball->alive);
     //_getch();
 }
-
+/*
 inline void lining ()
 {
     printf ("////////////////////////////////////\n");
 }
+*/
+
 
 void RunEngineExperiment (BallSystem &ballS)
 {
-    bool flagClearBackground = true;
-    const int MaxFrame = 15;
+    //static bool flagClearBackground = true;
+    //const int MaxFrame = 1000;
 
-    BallSystem copyOfMainBallS[MaxFrame];
+    //BallSystem copyOfMainBallS[MaxFrame];
 
     FILE *ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.txt", "w");
     assert (ballSystemRecording);
         
-    for (int i = 0; i < MaxFrame; i++)
+    for (int i = 0; i > -1; i++)
     {
         //solarSystem (ball);
         PhysicsAllBall (ballS);
@@ -510,7 +525,7 @@ void RunEngineExperiment (BallSystem &ballS)
         //long startFilePos = ftell (ballSystemRecording);
         //fprintf (ballSystemRecording, "//f%i//", i);
         writeAllBall               (ballS, ballSystemRecording);
-        copyFrame (copyOfMainBallS, ballS, i);
+        //copyFrame (copyOfMainBallS, ballS, i);
 
         //fseek (ballSystemRecording, startFilePos, SEEK_SET);
 
@@ -521,18 +536,20 @@ void RunEngineExperiment (BallSystem &ballS)
 
         if (txGetAsyncKeyState('O')) break;
 
-        flagClearBackground = ClearBackground (flagClearBackground);
+        ClearBackground ();
     }
 
     fclose (ballSystemRecording); 
 
     FILE *ballSystemRecordingTesting = fopen ("GravitySystemFolder/EngineExperiment.txt", "r");
 
+    /*
     for (int i = 0; i < MaxFrame; i++)
     {
         unitTest (copyOfMainBallS[i], ballSystemRecordingTesting);
         txSleep (10);
     }
+    */
 
     fclose (ballSystemRecordingTesting);
 
@@ -634,10 +651,30 @@ void cometShooting (BallSystem &ballS)
             comet.m      = 1e4;
             comet.charge = 2e1;
             comet.r      = 10;
+            $s
+            comet.color = CometColor;
             
+            //txSleep (0);
             ballS.addBall (comet);
+            //txSleep (0);
+            //$$p;
         }
     }
+}
+
+Vector returnMouseVector ()
+{
+    Vector startPos = {txMouseX(), txMouseY()};
+
+    for (;;)
+    {
+        Vector currMousePos = {txMouseX(), txMouseY()};
+        Vector speed = startPos - currMousePos;
+        //DrawVect
+
+        if (txMouseButtons () != 1) break;
+    }
+
 }
 
 void BallSystem::addBall (Ball newBall)
@@ -677,7 +714,7 @@ void PhysicsAllBall (BallSystem &ballS)
     }
 }
 
-void drawBall (Ball *ball, COLORREF colorCircle)
+void drawBall (const Ball *ball, COLORREF colorCircle)
 {
     txSetFillColor (colorCircle);
 
@@ -1191,8 +1228,10 @@ double SwitchRadius (double r)
     return r;
 }
 
-bool ClearBackground (bool flagClearBackground)
+void ClearBackground ()
 {
+    static bool flagClearBackground = true;
+
      if (txGetAsyncKeyState ('C'))
      {
          flagClearBackground = true;
@@ -1208,7 +1247,6 @@ bool ClearBackground (bool flagClearBackground)
      if (flagClearBackground == true) txClear();
      txSetFillColor (color);
 
-     return flagClearBackground;
 }
 
 
@@ -1281,6 +1319,7 @@ double lengthV (const Vector &vector)
     return sqrt (vector.x * vector.x + vector.y * vector.y);
 }
 
+/*
 Vector operator ^ (const Vector &vector, int degree)    
 {
     Vector result = {};
@@ -1293,6 +1332,7 @@ Vector operator ^ (const Vector &vector, int degree)
 
     return result;
 }
+*/
 
 void Draw_verVector (const Vector &vector, const Vector &startPoint, COLORREF /*colorOfMainVector*/, const double thickness, double rad)
 {
@@ -1316,6 +1356,7 @@ double DegToRad (double degrees)
 {
     return (degrees * M_PI / 180);
 }
+
 
 Vector rotateVector (const Vector &vector, double rad)
 {
@@ -1355,6 +1396,7 @@ Vector makePerpendikularLine(const Vector &mainVector)
     return perpendikularLine;
 }
 
+/*
 inline Vector operator * (const Vector &a, const double b)
 {
     Vector result = {};
@@ -1415,3 +1457,5 @@ inline Vector operator / (const Vector &a, double m)
             .y = a.y / m
     };
 }
+*/
+
