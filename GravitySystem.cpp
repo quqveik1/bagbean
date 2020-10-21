@@ -22,7 +22,7 @@ B = {3, 4}
 |AB| = {b.x - a.x, b.y - a.y};
 */
 
-const int BallHistoryLength = 200;
+const int BallHistoryLength = 20;
 int BallLength = 3;
 const double DivisionPrecision  = 1e-100;
 const double ElectricKf = 6e3;
@@ -33,6 +33,7 @@ const int BallMax = 10;
 const int RoundingPrecision = 7;
 const double MaxDeltaPrecision = 0.1;
 const COLORREF CometColor = TX_PINK;
+const int SLEEPINGTIME = 20;
 
 /*
 struct Vector 
@@ -96,7 +97,7 @@ Vector operator ^ (const Vector &vector, int degree);
 
 //void RunEngineE2 (const Ball planetsInit[]);
 
-void RunEngineExperiment (BallSystem &ball);
+void RunEngineExperiment (BallSystem &ball, HDC image = NULL);
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness = 1);
 void drawArrows (const Vector &mainVector, const  Vector &startArrowPoint);
 Vector makePerpendikularLine (const Vector &mainVector);
@@ -128,6 +129,7 @@ void Control (Ball *ball);
 void Physics (Ball *ball, BallSystem &ballS, int numberOfFind, bool Graphic);
 void PhysicsNoGrathics (Ball *ball, Ball balls[], int numberOfFind);
 void cometShooting (BallSystem &ballS);
+Vector returnMouseVector (Vector *finishPos);
 //void addBall (Ball ball[], int *lastBall, Ball newBall);
 Vector findElectricForce (Ball ball[], int numberOfFind, int length);
 void Colision (Ball *ball1, Ball *ball2);
@@ -142,7 +144,7 @@ void dynamicSleeping ();
 Vector txToss (Vector pos);
 double SpeedX (double vX);
 double SpeedY (double vY);
-void ClearBackground ();
+void ClearBackground (HDC image = NULL);
 void   SwitchColour ();
 double SwitchRadius (double r);
 
@@ -210,6 +212,9 @@ int main()
     txCreateWindow (1800, 1000);
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
+    HDC HUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud3.bmp");
+
+
 
     //sumColorsUnitTest();
 
@@ -276,7 +281,7 @@ int main()
             //txBegin ();
         
         
-            RunEngineExperiment (ballS);
+            RunEngineExperiment (ballS, HUD);
 
             if (txGetAsyncKeyState('O')) break;
         }
@@ -413,14 +418,14 @@ void playSystem ()
 
     for (;;)
     {
-        dynamicSleeping ();
+        ClearBackground ();
 
         readAllBall (&currBallS, ballSystemRecording);
 
         drawFrameReplay (&currBallS);
 
         if (txGetAsyncKeyState ('O')) break;
-        ClearBackground ();
+        dynamicSleeping ();
     }
 
     fclose (ballSystemRecording);
@@ -499,7 +504,7 @@ inline void lining ()
 */
 
 
-void RunEngineExperiment (BallSystem &ballS)
+void RunEngineExperiment (BallSystem &ballS, HDC image)
 {
     //static bool flagClearBackground = true;
     //const int MaxFrame = 1000;
@@ -532,11 +537,11 @@ void RunEngineExperiment (BallSystem &ballS)
         //unitTest (ballS, ballSystemRecording);
 
 
-        txSleep (20);
+        txSleep (SLEEPINGTIME);
 
         if (txGetAsyncKeyState('O')) break;
 
-        ClearBackground ();
+        ClearBackground (image);
     }
 
     fclose (ballSystemRecording); 
@@ -629,52 +634,54 @@ void cometShooting (BallSystem &ballS)
 {
     if (txMouseButtons () == 1)
     {
-        Vector startPos = {txMouseX(), txMouseY()};
+        Vector finishPos = {};
+        Vector speed     = returnMouseVector (&finishPos);
 
-        printf ("Вектор\n");
-
-        txSleep (5e3);
-
-        if (txMouseButtons () == 2)
+        Ball comet   = {};
+        comet.pos    = finishPos;
+        comet.v      = speed;
+        comet.m      = 1e4;
+        comet.charge = 2e1;
+        comet.r      = 10;
+        $s
+        comet.color = CometColor;
+            
+        //txSleep (0);
+        if (ballS.currlength + 1 < BallMax)
         {
-            Vector finishPos = {txMouseX(), txMouseY()};
-
-            Vector speed = startPos - finishPos;
-
-            /*
-            
-            */
-
-            Ball comet   = {};
-            comet.pos    = finishPos;
-            comet.v      = speed;
-            comet.m      = 1e4;
-            comet.charge = 2e1;
-            comet.r      = 10;
-            $s
-            comet.color = CometColor;
-            
-            //txSleep (0);
             ballS.addBall (comet);
-            //txSleep (0);
-            //$$p;
         }
+        if (ballS.currlength + 1 >= BallMax)
+        {
+            txMessageBox ("Невозможно добавить новую планету", "Предупреждение", MB_OK);
+        }
+
+        
+        //txSleep (0);
+        //$$p;
     }
 }
 
-Vector returnMouseVector ()
+Vector returnMouseVector (Vector *finishPos)
 {
     Vector startPos = {txMouseX(), txMouseY()};
+    Vector currMousePos = {};
+    Vector speed = {};
 
     for (;;)
     {
-        Vector currMousePos = {txMouseX(), txMouseY()};
-        Vector speed = startPos - currMousePos;
-        //DrawVect
+        currMousePos = {txMouseX(), txMouseY()};
+        speed        = startPos - currMousePos;
+        Draw (speed, currMousePos, TX_CYAN, 5);
+        txSleep (SLEEPINGTIME);
 
         if (txMouseButtons () != 1) break;
+        ClearBackground ();
     }
 
+    *finishPos = currMousePos;
+
+    return speed;
 }
 
 void BallSystem::addBall (Ball newBall)
@@ -1228,7 +1235,7 @@ double SwitchRadius (double r)
     return r;
 }
 
-void ClearBackground ()
+void ClearBackground (HDC image)
 {
     static bool flagClearBackground = true;
 
@@ -1244,7 +1251,9 @@ void ClearBackground ()
 
      COLORREF color = txGetFillColor();
      txSetFillColor (TX_BLACK);
-     if (flagClearBackground == true) txClear();
+     if (flagClearBackground == true && image != NULL) txBitBlt (0, 0, image);
+     if (flagClearBackground == true && image == NULL) txClear();
+     //txClear();
      txSetFillColor (color);
 
 }
@@ -1369,7 +1378,7 @@ Vector rotateVector (const Vector &vector, double rad)
 
 void drawArrows (const Vector &mainVector, const Vector &startArrowPoint)
 {
-    Vector perpendicular1 = makePerpendikularLine(mainVector);
+    Vector perpendicular1 = makePerpendikularLine (mainVector);
     Vector perpendicular2 = perpendicular1 * -1;
 
     Vector arrow1 = perpendicular1 * 0.1 - mainVector * 0.2;
