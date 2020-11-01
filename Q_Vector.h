@@ -1,9 +1,13 @@
 #pragma once
 
+#include "TXLib.h"
+
 struct Vector 
 {
     double x;
     double y;
+
+    explicit operator double ();
 };
 
 inline Vector  operator +  (const Vector &a, const Vector &b);
@@ -93,4 +97,9 @@ Vector operator ^ (const Vector &vector, int degree)
 inline void lining ()
 {
     printf ("////////////////////////////////////\n");
+}
+
+Vector::operator double ()
+{
+    return sqrt (x * x + y * y);
 }

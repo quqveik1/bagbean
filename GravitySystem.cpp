@@ -1,10 +1,11 @@
 ﻿#define  _CRT_SECURE_NO_WARNINGS
 
-#include "TXLib.h"
-#include "Config.h"
+//#include "TXLib.h"
 #include "Q_Vector.h"
-//You must to delete "my" TXLib.h file from the ptoject or you can do not download "my" TXLib.h file, you need to download TXLib from https://sourceforge.net/projects/txlib/files/latest/download and install this	
-
+#include "Config.h"
+#include "Q_Ball.h"
+#include "Q_CoordinatSystem.h"
+//You must to delete "my" TXLib.h file from the ptoject or you can do not download "my" TXLib.h file, you need to download TXLib from https://sourceforge.net/projects/txlib/files/latest/download and install this	1
 /*
 -   -
 a + b = a.x + b.x; a.y + b.y
@@ -22,18 +23,16 @@ B = {3, 4}
 |AB| = {b.x - a.x, b.y - a.y};
 */
 
-const int BallHistoryLength = 20;
-int BallLength = 3;
-const double DivisionPrecision  = 1e-100;
-const double ElectricKf = 6e3;
-const double DT = 0.09;
-const double MinDistance = 5;
-int LastComet = 0;
-const int BallMax = 10;
-const int RoundingPrecision = 7;
-const double MaxDeltaPrecision = 0.1;
-const COLORREF CometColor = TX_PINK;
-const int SLEEPINGTIME = 20;
+//const int BallHistoryLength = 20;
+
+
+const Rect miniMap =   {.pos = {25,  685}, .size = {375,  285}};
+const Rect sysInfo =   {.pos = {25,  25},  .size = {400,  375}};
+const Rect mainPlace = {.pos = {450, 0},   .size = {1350, 1000}};
+
+//const Rect hud;
+//hud.pos = {25, 685};
+//hud.size = {375, 285}
 
 /*
 struct Vector 
@@ -42,6 +41,7 @@ struct Vector
     double y;
 };
 */
+/*
 struct Rect
 {
     Vector pos;
@@ -52,6 +52,8 @@ struct Rect
     double right () const { return this->size.x + this->pos.x; }
     double bottom() const { return this->size.y + this->pos.y; }
 };
+
+
 
 struct Ball 
 {
@@ -72,6 +74,9 @@ struct Ball
     void DrawHistoryLines ();
 };
 
+
+
+
 struct BallSystem
 {
     Ball ball[BallMax];
@@ -80,6 +85,7 @@ struct BallSystem
 
     void addBall (Ball newBall);
 };
+*/
 
 /*
 inline Vector  operator +  (const Vector &a, const Vector &b);
@@ -97,7 +103,7 @@ Vector operator ^ (const Vector &vector, int degree);
 
 //void RunEngineE2 (const Ball planetsInit[]);
 
-void RunEngineExperiment (BallSystem &ball, HDC image = NULL);
+void RunEngineExperiment (BallSystem &ball, coordinatSys miniMap, HDC image = NULL);
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness = 1);
 void drawArrows (const Vector &mainVector, const  Vector &startArrowPoint);
 Vector makePerpendikularLine (const Vector &mainVector);
@@ -122,6 +128,9 @@ void readBall (Ball *ball, FILE *ballFile);
 double elDeg (const double number, const double deg);
 double degreesOfDouble (const double number, int degree);
 
+void drawMiniMap (BallSystem ballS, coordinatSys miniMap);
+void drawSysInfo (BallSystem ballS);
+
 void drawAllBall (BallSystem &ballS);
 void PhysicsAllBall (BallSystem &ball);
 void drawBall (const Ball *ball, COLORREF colorCircle);
@@ -137,7 +146,7 @@ void FindColilision (BallSystem &ballS, int numberOfFind);
 COLORREF sumColors (COLORREF a, COLORREF b);
 void sumColorsUnitTest ();
 void ControlAllBalls (BallSystem &ballS);
-void ssCircle (double x, double y, double r);
+void ssCircle (Ball ball, Rect Box);
 void ssLine (double StartX, double StartY, double FinishX, double FinishY);
 void dynamicSleeping ();
 //void solarSystem (Ball balls[]);
@@ -223,6 +232,7 @@ int main()
     int mode = 1;
     printf ("mode(read0/write1):\n");
     (void) scanf  ("%i", &mode);
+    system ("cls");
 
     if (mode == 1)
     {
@@ -235,6 +245,8 @@ int main()
         ball[2] = {txToss ({0,    +400}), {18, 17}, 1e4, 10, 5, TX_RED};
         ball[3] = {txToss ({400,  -400}), {7, 7}, 1e4, 10, 2, TX_RED};
         */
+
+        coordinatSys mainMap ({25,  685}, {375,  285}, {(double) txGetExtentX (), (double) txGetExtentY ()}); 
 
         ballS.currlength = 0;
         ballS.ball [ballS.currlength++] = {txToss ({0, 0}),     {0, 0},  1e17, 10, 2e5, TX_YELLOW};
@@ -281,7 +293,7 @@ int main()
             //txBegin ();
         
         
-            RunEngineExperiment (ballS, HUD);
+            RunEngineExperiment (ballS, mainMap, HUD);
 
             if (txGetAsyncKeyState('O')) break;
         }
@@ -504,18 +516,29 @@ inline void lining ()
 */
 
 
-void RunEngineExperiment (BallSystem &ballS, HDC image)
+void RunEngineExperiment (BallSystem &ballS, coordinatSys miniMap, HDC image)
 {
     //static bool flagClearBackground = true;
     //const int MaxFrame = 1000;
 
     //BallSystem copyOfMainBallS[MaxFrame];
+   
+   
+    //Rect hud;
+    //hud.pos = {25, 685};
+    //hud.size = {375, 285}
+
+    //_getch ();
 
     FILE *ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.txt", "w");
     assert (ballSystemRecording);
         
     for (int i = 0; i > -1; i++)
     {
+        //txTextOut (25, 25, "sth");
+        //txTextOut (25, 300, "sth");
+        //txCircle (440, 10, 1);
+
         //solarSystem (ball);
         PhysicsAllBall (ballS);
         //solarSystem (ball);
@@ -526,6 +549,10 @@ void RunEngineExperiment (BallSystem &ballS, HDC image)
         ControlAllBalls (ballS);
 
         drawAllBall (ballS);
+
+        drawMiniMap (ballS, miniMap);
+
+        drawSysInfo (ballS);
 
         //long startFilePos = ftell (ballSystemRecording);
         //fprintf (ballSystemRecording, "//f%i//", i);
@@ -560,6 +587,37 @@ void RunEngineExperiment (BallSystem &ballS, HDC image)
 
      (void) _getch ();
 }
+
+void drawMiniMap (BallSystem ballS, coordinatSys miniMap)
+{
+    for (int i = 0; i < ballS.currlength; i++)
+    {
+        //Vector b;
+        //double s = (double) b; 
+        assert (0 <= i && i < BallMax);
+
+        if (ballS.ball[i].alive)
+        {
+            miniMap.drawCircle (ballS.ball[i]);    
+        }
+    }
+
+}
+
+void drawSysInfo (BallSystem ballS)
+{
+    char info[200];
+    for (int i = 0; i < ballS.currlength; i++)
+    {
+        if (ballS.ball[i].alive)
+        {
+            sprintf (info, "Ball %i = {%f, %f}\n", i, ballS.ball[i].pos.x, ballS.ball[i].pos.y);
+
+            txTextOut (0 + sysInfo.pos.x, (0 + sysInfo.pos.x) + 25 * i, info);
+        }
+    }
+}
+
 
 void copyFrame (BallSystem copyOfMainBallS[], BallSystem ballS, int currFrame)//currFrame(started from 0)
 {
@@ -684,6 +742,7 @@ Vector returnMouseVector (Vector *finishPos)
     return speed;
 }
 
+/*
 void BallSystem::addBall (Ball newBall)
 {
     assert (0 <= currlength && currlength < BallMax);
@@ -697,15 +756,23 @@ void BallSystem::addBall (Ball newBall)
 
     currlength++;
 }
+*/
 
 void drawAllBall (BallSystem &ballS)
 {
      for (int i = 0; i < ballS.currlength; i++)
      {
          assert (0 <= i && i < BallMax);
+         
 
-         if (ballS.ball[i].alive)
-            drawBall(&ballS.ball[i], ballS.ball[i].color);
+         if (ballS.ball[i].pos.x + ballS.ball[i].r < mainPlace.right () && ballS.ball[i].pos.x - ballS.ball[i].r > mainPlace.left ())
+         {
+            if (ballS.ball[i].pos.y + ballS.ball[i].r < mainPlace.bottom () && ballS.ball[i].pos.y - ballS.ball[i].r > mainPlace.top ()) 
+            {
+                if (ballS.ball[i].alive)
+                    drawBall(&ballS.ball[i], ballS.ball[i].color);
+            }
+         } 
      }
 }
 
@@ -796,7 +863,7 @@ void Physics (Ball *ball, BallSystem &ballS, int numberOfFind, bool Graphic)
 {
     if (Graphic)
     {
-        ball->DrawHistoryLines ();
+        //ball->DrawHistoryLines ();
     }
     const Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
 
@@ -1028,11 +1095,18 @@ void sumColorsUnitTest ()
 
 }
 
-void ssCircle (double x, double y, double r)
+void ssCircle (Ball ball, Rect Box)
 {
-    Rect Box = {{0, 0}, {double (txGetExtentX ()), double (txGetExtentY ())}} ;
+    //Rect Box = {{0, 0}, {double (txGetExtentX ()), double (txGetExtentY ())}} ;
 
-    txCircle (x + 0.5 * Box.right (), y + 0.5 * Box.bottom (), r);
+    ball.pos.x += 0.5 * Box.right ()  + Box.pos.x;
+    ball.pos.y += 0.5 * Box.bottom () + Box.pos.y;
+
+
+
+    //txCircle (x + 0.5 * Box.right (), y + 0.5 * Box.bottom (), r);
+
+    drawBall (&ball, ball.color);
 }
 
 void ssLine (double StartX, double StartY, double FinishX, double FinishY)
@@ -1062,7 +1136,13 @@ Vector findElectricForce (Ball ball[], int numberOfFind, int length)
             
             if (ball[j].alive)
             {
-                Draw ((vectorNormal (vectorDistance) * vectorLength), ball[numberOfFind].pos, TX_PINK);
+                if (ball[j].pos.x + ball[j].r < mainPlace.right () && ball[j].pos.x - ball[j].r > mainPlace.left ())
+                {
+                    if (ball[j].pos.y + ball[j].r < mainPlace.bottom () && ball[j].pos.y - ball[j].r > mainPlace.top ()) 
+                    {
+                        //Draw ((vectorNormal (vectorDistance) * vectorLength), ball[numberOfFind].pos, TX_PINK);
+                    }
+                }
             }
             //printf ("vectorLength: %lg\n", vectorLength);
         }
@@ -1077,6 +1157,7 @@ Vector vectorNormal (Vector vector)
     return vector / lengthV (vector);
 }
 
+/*
 void Ball::fillHistory ()
 {
     assert (0 <= oldestNum && oldestNum < BallHistoryLength);
@@ -1164,6 +1245,7 @@ void Ball::DrawHistoryLines ()
     assert (0 <= oldestNum && oldestNum < BallHistoryLength);
     txCircle (history[oldestNum].x, history[oldestNum].y, 3);
 }
+*/
 
 double SpeedX (double vX)
 {

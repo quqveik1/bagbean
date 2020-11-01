@@ -1,4 +1,7 @@
-﻿//#include "TXLib.h"
+﻿#include "TXLib.h"
+#include "Q_CoordinatSystem.h"
+
+/*
 #include <stdio.h>
 #include <string.h>
 #include <Windows.h>
@@ -45,4 +48,23 @@ void _PRINT (const char *x, const char *name, const char *file, int line, const 
 
     printf ("%s == <%s>\n", name, x);
 }
+ */
 
+int main ()
+{
+    txCreateWindow (1000, 1000);
+    txSetFillColor (TX_BLACK);
+
+    coordinatSys cSystem;
+
+    cSystem.startPosPix = {200, 200};
+    cSystem.coorSize = {100, 200};
+    cSystem.scalePix = {200, 200};
+
+    Vector newPos = cSystem.drawCCircle ({-100, -100}, 5);
+
+    cout << newPos.x << "    " << newPos.y; 
+
+
+    return 0;
+}

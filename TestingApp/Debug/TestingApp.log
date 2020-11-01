@@ -1,2 +1,3 @@
-﻿  TestingApp.cpp
-  TestingApp.vcxproj -> C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\Debug\TestingApp.exe
+﻿cl : командная строка warning D9002: пропуск неизвестного параметра "/std:latest"
+  TestingApp.cpp
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\TestingApp\TestingApp.cpp(2,10): fatal error C1083: Не удается открыть файл включение: Q_CoordinatSystem.h: No such file or directory,
