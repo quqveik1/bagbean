@@ -10,16 +10,18 @@ struct Vector
     explicit operator double ();
 };
 
-inline Vector  operator +  (const Vector &a, const Vector &b);
+inline Vector operator +  (const Vector &a, const Vector &b);
 inline Vector &operator += (Vector &a, const Vector &b);
-inline Vector  operator -  (const Vector &a, const Vector &b);
+inline Vector operator -  (const Vector &a, const Vector &b);
 inline void lining ();
-inline Vector  operator *  (const Vector &a, const double b);
-inline Vector  operator *  (const Vector &a, const Vector &b);
+inline Vector operator *  (const Vector &a, const double b);
+inline Vector operator *  (const Vector &a, const Vector &b);
 inline Vector &operator *= (Vector &a, const Vector &b);
-inline Vector  operator /  (const Vector &a, double m);
+inline Vector operator /  (const Vector &a, double m);
 inline Vector operator / (const double a, const Vector &b);
-Vector operator ^ (const Vector &vector, int degree);
+       Vector operator ^ (const Vector &vector, int degree);
+       bool   operator > (const Vector &a, const Vector &b);
+       bool   operator < (const Vector &a, const Vector &b);
 
 inline Vector operator * (const Vector &a, const double b)
 {
@@ -97,6 +99,34 @@ Vector operator ^ (const Vector &vector, int degree)
 inline void lining ()
 {
     printf ("////////////////////////////////////\n");
+}
+
+bool operator > (const Vector &a, const Vector &b)
+{
+    if (a.x > b.x)
+    {
+        if (a.y > b.y)
+        {
+            return true;
+        }
+
+        else return false;
+    }
+    else return false;
+}
+
+bool operator < (const Vector &a, const Vector &b)
+{
+    if (a.x < b.x)
+    {
+        if (a.y < b.y)
+        {
+            return true;
+        }
+
+        else return false;
+    }
+    else return false;
 }
 
 Vector::operator double ()

@@ -1,10 +1,12 @@
-﻿#define  _CRT_SECURE_NO_WARNINGS
+﻿
+#define  _CRT_SECURE_NO_WARNINGS
 
 //#include "TXLib.h"
 #include "Q_Vector.h"
 #include "Config.h"
 #include "Q_Ball.h"
 #include "Q_CoordinatSystem.h"
+#include "Q_Console.h"
 //You must to delete "my" TXLib.h file from the ptoject or you can do not download "my" TXLib.h file, you need to download TXLib from https://sourceforge.net/projects/txlib/files/latest/download and install this	1
 /*
 -   -
@@ -26,7 +28,7 @@ B = {3, 4}
 //const int BallHistoryLength = 20;
 
 
-const Rect miniMap =   {.pos = {25,  685}, .size = {375,  285}};
+//const Rect miniMap =   {.pos = {25,  685}, .size = {375,  285}};
 const Rect sysInfo =   {.pos = {25,  25},  .size = {400,  375}};
 const Rect mainPlace = {.pos = {450, 0},   .size = {1350, 1000}};
 
@@ -156,6 +158,8 @@ double SpeedY (double vY);
 void ClearBackground (HDC image = NULL);
 void   SwitchColour ();
 double SwitchRadius (double r);
+
+void drawConsole ();
 
 /*
 0000 1101 (2) = +13 (10)
@@ -416,6 +420,7 @@ void unitTest (BallSystem ballS, FILE *ballFile)
     //void (printf ("Correct: %u\n", (unsigned int) correctInput));
 }
 
+
 bool compareNearlyNum (double a, double b)
 {
     double moduleDelta = fabs (a - b);
@@ -529,6 +534,7 @@ void RunEngineExperiment (BallSystem &ballS, coordinatSys miniMap, HDC image)
     //hud.size = {375, 285}
 
     //_getch ();
+    //Console console;
 
     FILE *ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.txt", "w");
     assert (ballSystemRecording);
@@ -548,9 +554,12 @@ void RunEngineExperiment (BallSystem &ballS, coordinatSys miniMap, HDC image)
 
         ControlAllBalls (ballS);
 
+
         drawAllBall (ballS);
 
         drawMiniMap (ballS, miniMap);
+
+        drawConsole ();
 
         drawSysInfo (ballS);
 
@@ -588,19 +597,23 @@ void RunEngineExperiment (BallSystem &ballS, coordinatSys miniMap, HDC image)
      (void) _getch ();
 }
 
+void drawConsole()
+{
+
+}
+
 void drawMiniMap (BallSystem ballS, coordinatSys miniMap)
 {
-    for (int i = 0; i < ballS.currlength; i++)
-    {
-        //Vector b;
-        //double s = (double) b; 
-        assert (0 <= i && i < BallMax);
-
-        if (ballS.ball[i].alive)
+        for (int i = 0; i < ballS.currlength; i++)
         {
-            miniMap.drawCircle (ballS.ball[i]);    
+            if (ballS.ball[i].alive)
+            {
+               miniMap.drawCircle (ballS.ball[i]);
+            }
         }
-    }
+
+        //miniMap.drawCircle (pos);
+        //txSleep (100);
 
 }
 

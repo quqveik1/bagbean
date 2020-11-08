@@ -21,7 +21,8 @@ class coordinatSys
 
 
 
-	public: Vector drawCircle (Ball ball);
+	public: Vector drawCircle (Ball ball); 
+    public: Vector drawCircle (Vector vector, double r = 10);
     public: void drawLine (Vector startLPos, Vector finishLPos, COLORREF color = CometColor);
     public: Vector interpret (Vector vector);
 };
@@ -55,10 +56,20 @@ Vector coordinatSys::drawCircle (Ball ball)
 
 	Vector pixPos = interpret (ball.pos);
 
-    int rScale = ROUND ((intepretK_.x + intepretK_.y) / 2);
+    double rScale = (intepretK_.x + intepretK_.y) / 2;
 
-    if (pixPos.x > sysBorderPix_.left () && pixPos.y > sysBorderPix_.top () && pixPos.x < sysBorderPix_.right () && pixPos.y < sysBorderPix_.bottom ())
-	    txCircle (pixPos.x, pixPos.y, ball.r * rScale);
+    //$s
+    txSetFillColor (ball.color);
+
+    //if (pixPos.x > sysBorderPix_.left () && pixPos.y > sysBorderPix_.top () && pixPos.x < sysBorderPix_.right () && pixPos.y < sysBorderPix_.bottom ())
+    if (pixPos.x < (startPosPix_.x + scalePix_.x) && pixPos.x > startPosPix_.x)
+    {
+        if (pixPos.y < (startPosPix_.y + scalePix_.y) && pixPos.y > startPosPix_.y)
+        {
+            txCircle (pixPos.x, pixPos.y, ball.r * rScale);
+        }
+    }
+    //_getch ();
 
     return pixPos;
 
@@ -77,6 +88,26 @@ void coordinatSys::drawLine (Vector startLPos, Vector finishLPos, COLORREF color
     txLine (startLPos.x, startLPos.y, finishLPos.x, finishLPos.y);
 
 }
+
+Vector coordinatSys::drawCircle (Vector vector, double r)
+{
+    //Vector intepretK = {}; //= scalePix / coorSize;
+
+    //intepretK.x = scalePix.x / coorSize.x;
+    //intepretK.y = scalePix.y / coorSize.y;
+
+    Vector pixPos = interpret(vector);
+
+    double rScale = (intepretK_.x + intepretK_.y) / 2;
+
+    //if (pixPos.x > sysBorderPix_.left() && pixPos.y > sysBorderPix_.top() && pixPos.x < sysBorderPix_.right() && pixPos.y < sysBorderPix_.bottom())
+    txCircle(pixPos.x, pixPos.y, r * rScale);
+
+    return pixPos;
+
+}
+
+
 
 Vector coordinatSys::interpret (Vector vector)
 {
