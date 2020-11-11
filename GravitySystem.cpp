@@ -7,6 +7,8 @@
 #include "Q_Ball.h"
 #include "Q_CoordinatSystem.h"
 #include "Q_Console.h"
+#include <io.h>
+#include "Q_App.h"
 //You must to delete "my" TXLib.h file from the ptoject or you can do not download "my" TXLib.h file, you need to download TXLib from https://sourceforge.net/projects/txlib/files/latest/download and install this	1
 /*
 -   -
@@ -31,6 +33,8 @@ B = {3, 4}
 //const Rect miniMap =   {.pos = {25,  685}, .size = {375,  285}};
 const Rect sysInfo =   {.pos = {25,  25},  .size = {400,  375}};
 const Rect mainPlace = {.pos = {450, 0},   .size = {1350, 1000}};
+
+App* TheGS = 0;
 
 //const Rect hud;
 //hud.pos = {25, 685};
@@ -105,7 +109,7 @@ Vector operator ^ (const Vector &vector, int degree);
 
 //void RunEngineE2 (const Ball planetsInit[]);
 
-void RunEngineExperiment (BallSystem &ball, coordinatSys miniMap, HDC image = NULL);
+void RunEngineExperiment (BallSystem &ball, Console console, coordinatSys miniMap, HDC image = NULL);
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness = 1);
 void drawArrows (const Vector &mainVector, const  Vector &startArrowPoint);
 Vector makePerpendikularLine (const Vector &mainVector);
@@ -134,12 +138,12 @@ void drawMiniMap (BallSystem ballS, coordinatSys miniMap);
 void drawSysInfo (BallSystem ballS);
 
 void drawAllBall (BallSystem &ballS);
-void PhysicsAllBall (BallSystem &ball);
+void PhysicsAllBall (BallSystem &ballS, Console console);
 void drawBall (const Ball *ball, COLORREF colorCircle);
 void Control (Ball *ball);
 void Physics (Ball *ball, BallSystem &ballS, int numberOfFind, bool Graphic);
 void PhysicsNoGrathics (Ball *ball, Ball balls[], int numberOfFind);
-void cometShooting (BallSystem &ballS);
+void cometShooting (BallSystem &ballS, Console console);
 Vector returnMouseVector (Vector *finishPos);
 //void addBall (Ball ball[], int *lastBall, Ball newBall);
 Vector findElectricForce (Ball ball[], int numberOfFind, int length);
@@ -159,7 +163,7 @@ void ClearBackground (HDC image = NULL);
 void   SwitchColour ();
 double SwitchRadius (double r);
 
-void drawConsole ();
+void drawConsole (Console console);
 
 /*
 0000 1101 (2) = +13 (10)
@@ -240,8 +244,6 @@ int main()
 
     if (mode == 1)
     {
-        BallSystem ballS = {};
-        Ball planetsInit[BallMax] = {};
     
         /*
         ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED};
@@ -249,13 +251,14 @@ int main()
         ball[2] = {txToss ({0,    +400}), {18, 17}, 1e4, 10, 5, TX_RED};
         ball[3] = {txToss ({400,  -400}), {7, 7}, 1e4, 10, 2, TX_RED};
         */
+        App gravitySys;
+        TheGS = &gravitySys;
 
-        coordinatSys mainMap ({25,  685}, {375,  285}, {(double) txGetExtentX (), (double) txGetExtentY ()}); 
 
-        ballS.currlength = 0;
-        ballS.ball [ballS.currlength++] = {txToss ({0, 0}),     {0, 0},  1e17, 10, 2e5, TX_YELLOW};
-        ballS.ball [ballS.currlength++] = {txToss ({0, -400}),  {24, 0}, 1e4,  10, 2,   TX_CYAN};
-        ballS.ball [ballS.currlength++] = {txToss ({0, -200}),  {32, 0}, 1e4,  10, 2,   TX_RED};
+        TheGS->ballS.currlength = 0;
+        TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, 0}),     {0, 0},  1e17, 10, 2e5, TX_YELLOW};
+        TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -400}),  {24, 0}, 1e4,  10, 2,   TX_CYAN};
+        TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -200}),  {32, 0}, 1e4,  10, 2,   TX_RED};
         
 
         /*
@@ -297,7 +300,7 @@ int main()
             //txBegin ();
         
         
-            RunEngineExperiment (ballS, mainMap, HUD);
+            RunEngineExperiment (ballS, cons, mainMap, HUD);
 
             if (txGetAsyncKeyState('O')) break;
         }
@@ -521,7 +524,7 @@ inline void lining ()
 */
 
 
-void RunEngineExperiment (BallSystem &ballS, coordinatSys miniMap, HDC image)
+void RunEngineExperiment (BallSystem &ballS, Console console, coordinatSys miniMap, HDC image)
 {
     //static bool flagClearBackground = true;
     //const int MaxFrame = 1000;
@@ -534,23 +537,31 @@ void RunEngineExperiment (BallSystem &ballS, coordinatSys miniMap, HDC image)
     //hud.size = {375, 285}
 
     //_getch ();
-    //Console console;
+    //txClear();
+    
+    //txSleep (10000);
+    //txClear();
+    //_getch ();
+
+    //Console console (;
 
     FILE *ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.txt", "w");
     assert (ballSystemRecording);
         
     for (int i = 0; i > -1; i++)
     {
+        //txCircle (400, 645, 5);
+        //getch ();
         //txTextOut (25, 25, "sth");
         //txTextOut (25, 300, "sth");
         //txCircle (440, 10, 1);
 
         //solarSystem (ball);
-        PhysicsAllBall (ballS);
+        PhysicsAllBall (ballS, console);
         //solarSystem (ball);
-        PhysicsAllBall (ballS);
+        PhysicsAllBall (ballS, console);
         //solarSystem (ball);
-        PhysicsAllBall (ballS);
+        PhysicsAllBall (ballS, console);
 
         ControlAllBalls (ballS);
 
@@ -559,7 +570,7 @@ void RunEngineExperiment (BallSystem &ballS, coordinatSys miniMap, HDC image)
 
         drawMiniMap (ballS, miniMap);
 
-        drawConsole ();
+        drawConsole (console);
 
         drawSysInfo (ballS);
 
@@ -597,9 +608,11 @@ void RunEngineExperiment (BallSystem &ballS, coordinatSys miniMap, HDC image)
      (void) _getch ();
 }
 
-void drawConsole()
+void drawConsole(Console console)
 {
-
+    console.print ("Ваша реклама\n gfdgf");
+    console.print ("За ваши деньги");
+    //console.reDraw ();
 }
 
 void drawMiniMap (BallSystem ballS, coordinatSys miniMap)
@@ -701,7 +714,7 @@ void solarSystem (Ball balls[])
 }
 */
 
-void cometShooting (BallSystem &ballS)
+void cometShooting (BallSystem &ballS, Console &console)
 {
     if (txMouseButtons () == 1)
     {
@@ -721,6 +734,7 @@ void cometShooting (BallSystem &ballS)
         if (ballS.currlength + 1 < BallMax)
         {
             ballS.addBall (comet);
+            console.print ("Комета успешно добавилась");
         }
         if (ballS.currlength + 1 >= BallMax)
         {
@@ -789,9 +803,9 @@ void drawAllBall (BallSystem &ballS)
      }
 }
 
-void PhysicsAllBall (BallSystem &ballS)
+void PhysicsAllBall (BallSystem &ballS, Console console)
 {
-    cometShooting (ballS);
+    cometShooting (ballS, console);
     for (int i = 0; i < ballS.currlength; i++)
     {
         assert (0 <= i && i < BallMax);
