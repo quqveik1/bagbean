@@ -22,7 +22,7 @@ public:
 private:
 	void privatePrint (const int line);
 
-	static const int nLines_ = 12;
+	static const int nLines_ = 18;
 
 	string consoleText_[nLines_]; 
 	int lastLine_;
@@ -62,10 +62,12 @@ void Console::reDraw ()
 	{
 		privatePrint (i);
 	}
+	//printf ("--------------------------------\n");
 }
 
 void Console::privatePrint (const int line)
 {
 
-	txTextOut (startPosPix_.x, startPosPix_.y + (letterSizeY_ * line), consoleText_[line].c_str());			
+	txTextOut (startPosPix_.x, startPosPix_.y + (letterSizeY_ * line), consoleText_[line].c_str());	
+	//printf ("%s\n", consoleText_[line].c_str ());
 }

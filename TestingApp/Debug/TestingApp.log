@@ -1,3 +1,7 @@
-﻿cl : командная строка warning D9002: пропуск неизвестного параметра "/std:latest"
+﻿cl : command line warning D9002: ignoring unknown option '/std:latest'
   TestingApp.cpp
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\TestingApp\TestingApp.cpp(2,10): fatal error C1083: Не удается открыть файл включение: Q_CoordinatSystem.h: No such file or directory,
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\TestingApp\TestingApp.cpp(6,1): warning C4005: 'txCircle': macro redefinition
+C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h(15454): message : see previous definition of 'txCircle'
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\TestingApp\TestingApp.cpp(7,1): warning C4005: 'txSetColor': macro redefinition
+C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h(15522): message : see previous definition of 'txSetColor'
+  TestingApp.vcxproj -> C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\Debug\TestingApp.exe

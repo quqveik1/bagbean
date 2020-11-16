@@ -31,8 +31,8 @@ B = {3, 4}
 
 
 //const Rect miniMap =   {.pos = {25,  685}, .size = {375,  285}};
-const Rect sysInfo =   {.pos = {25,  25},  .size = {400,  375}};
-const Rect mainPlace = {.pos = {450, 0},   .size = {1350, 1000}};
+
+
 
 App* TheGS = 0;
 
@@ -109,7 +109,7 @@ Vector operator ^ (const Vector &vector, int degree);
 
 //void RunEngineE2 (const Ball planetsInit[]);
 
-void RunEngineExperiment (BallSystem &ball, Console console, coordinatSys miniMap, HDC image = NULL);
+void RunEngineExperiment ();
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness = 1);
 void drawArrows (const Vector &mainVector, const  Vector &startArrowPoint);
 Vector makePerpendikularLine (const Vector &mainVector);
@@ -134,16 +134,17 @@ void readBall (Ball *ball, FILE *ballFile);
 double elDeg (const double number, const double deg);
 double degreesOfDouble (const double number, int degree);
 
-void drawMiniMap (BallSystem ballS, coordinatSys miniMap);
-void drawSysInfo (BallSystem ballS);
+void drawMiniMap ();
+void drawSysInfo ();
+void drawConsole ();
 
-void drawAllBall (BallSystem &ballS);
-void PhysicsAllBall (BallSystem &ballS, Console console);
+void drawAllBall ();
+void PhysicsAllBall ();
 void drawBall (const Ball *ball, COLORREF colorCircle);
 void Control (Ball *ball);
-void Physics (Ball *ball, BallSystem &ballS, int numberOfFind, bool Graphic);
+void Physics (Ball *ball, int numberOfFind, bool Graphic);
 void PhysicsNoGrathics (Ball *ball, Ball balls[], int numberOfFind);
-void cometShooting (BallSystem &ballS, Console console);
+void cometShooting ();
 Vector returnMouseVector (Vector *finishPos);
 //void addBall (Ball ball[], int *lastBall, Ball newBall);
 Vector findElectricForce (Ball ball[], int numberOfFind, int length);
@@ -151,7 +152,7 @@ void Colision (Ball *ball1, Ball *ball2);
 void FindColilision (BallSystem &ballS, int numberOfFind);
 COLORREF sumColors (COLORREF a, COLORREF b);
 void sumColorsUnitTest ();
-void ControlAllBalls (BallSystem &ballS);
+void ControlAllBalls ();
 void ssCircle (Ball ball, Rect Box);
 void ssLine (double StartX, double StartY, double FinishX, double FinishY);
 void dynamicSleeping ();
@@ -159,11 +160,12 @@ void dynamicSleeping ();
 Vector txToss (Vector pos);
 double SpeedX (double vX);
 double SpeedY (double vY);
-void ClearBackground (HDC image = NULL);
+void ClearBackground ();
+void ClearBackground (HDC HUD);
 void   SwitchColour ();
 double SwitchRadius (double r);
 
-void drawConsole (Console console);
+
 
 /*
 0000 1101 (2) = +13 (10)
@@ -267,11 +269,11 @@ int main()
         ballS.addBall ({txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED}};
         */
 
-        for (int i = ballS.currlength; i < BallMax; i++)
+        for (int i = TheGS->ballS.currlength; i < BallMax; i++)
         {
             assert (0 <= i && i < BallMax);
 
-            ballS.ball[i] = {txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED};
+            TheGS->ballS.ball[i] = {txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED};
         }
 
         //ball[3] = {txToss ({0, -100}),  {10, 0}, 1e4, 10, 2, TX_RED};
@@ -280,16 +282,16 @@ int main()
         {
             assert (0 <= i && i < BallMax);
 
-            planetsInit[i] = ballS.ball[i];
+            TheGS->planetsInit[i] = TheGS->ballS.ball[i];
         }
 
         txBegin ();
         for (int n = 0; n < 1; n++)
         {
-            for (int i = 0; i < ballS.currlength; i++)
+            for (int i = 0; i < TheGS->ballS.currlength; i++)
             {
                 assert (0 <= i && i < BallMax);
-                ballS.ball[i] = planetsInit[i];
+                TheGS->ballS.ball[i] = TheGS->planetsInit[i];
             }
 
             //txEnd ();
@@ -300,7 +302,7 @@ int main()
             //txBegin ();
         
         
-            RunEngineExperiment (ballS, cons, mainMap, HUD);
+            RunEngineExperiment ();
 
             if (txGetAsyncKeyState('O')) break;
         }
@@ -434,11 +436,12 @@ void playSystem ()
 {
     FILE *ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.txt", "r");
     BallSystem currBallS = {};
+    HDC HUD = NULL;
      
 
     for (;;)
     {
-        ClearBackground ();
+        ClearBackground (HUD);
 
         readAllBall (&currBallS, ballSystemRecording);
 
@@ -454,7 +457,7 @@ void playSystem ()
 
 void dynamicSleeping ()
 {
-    static int timesleep = 1000;
+    static int timesleep = SLEEPINGTIME;
 
     if (txGetAsyncKeyState (VK_F1)) timesleep = 10;
     if (txGetAsyncKeyState (VK_F2)) timesleep = 50;
@@ -484,7 +487,7 @@ void writeBall (const Ball &ball, FILE *ballFile)
     fprintf (ballFile, "{{%7.*lf, %7.*lf}, color: %7u, r: %5.2lf, alive: %u} ||| ", RoundingPrecision, ball.pos.x, RoundingPrecision, ball.pos.y, ball.color, ball.r, ball.alive);
 }
 
-void writeAllBall (const BallSystem &ballS, FILE *ballFile)
+void writeAllBall (FILE *ballFile)
 {
     OFF fprintf (ballFile, "/BEGIN  :::  ");
 
@@ -492,7 +495,7 @@ void writeAllBall (const BallSystem &ballS, FILE *ballFile)
     {
         assert (0 <= i && i < BallMax);
 
-        writeBall (ballS.ball[i], ballFile);
+        writeBall (TheGS->ballS.ball[i], ballFile);
     }
     
     fprintf (ballFile, "\n");
@@ -524,7 +527,7 @@ inline void lining ()
 */
 
 
-void RunEngineExperiment (BallSystem &ballS, Console console, coordinatSys miniMap, HDC image)
+void RunEngineExperiment ()
 {
     //static bool flagClearBackground = true;
     //const int MaxFrame = 1000;
@@ -557,38 +560,40 @@ void RunEngineExperiment (BallSystem &ballS, Console console, coordinatSys miniM
         //txCircle (440, 10, 1);
 
         //solarSystem (ball);
-        PhysicsAllBall (ballS, console);
+        PhysicsAllBall ();
         //solarSystem (ball);
-        PhysicsAllBall (ballS, console);
+        PhysicsAllBall ();
         //solarSystem (ball);
-        PhysicsAllBall (ballS, console);
+        PhysicsAllBall ();
 
-        ControlAllBalls (ballS);
+        ControlAllBalls ();
 
 
-        drawAllBall (ballS);
+        drawAllBall ();
 
-        drawMiniMap (ballS, miniMap);
+        drawMiniMap ();
 
-        drawConsole (console);
 
-        drawSysInfo (ballS);
+        drawSysInfo ();
+
+        drawConsole ();
 
         //long startFilePos = ftell (ballSystemRecording);
         //fprintf (ballSystemRecording, "//f%i//", i);
-        writeAllBall               (ballS, ballSystemRecording);
+        writeAllBall (ballSystemRecording);
         //copyFrame (copyOfMainBallS, ballS, i);
 
         //fseek (ballSystemRecording, startFilePos, SEEK_SET);
 
         //unitTest (ballS, ballSystemRecording);
+        
 
 
         txSleep (SLEEPINGTIME);
 
         if (txGetAsyncKeyState('O')) break;
 
-        ClearBackground (image);
+        ClearBackground ();
     }
 
     fclose (ballSystemRecording); 
@@ -608,20 +613,52 @@ void RunEngineExperiment (BallSystem &ballS, Console console, coordinatSys miniM
      (void) _getch ();
 }
 
-void drawConsole(Console console)
+void drawConsole ()
 {
-    console.print ("Ваша реклама\n gfdgf");
-    console.print ("За ваши деньги");
-    //console.reDraw ();
+    char str[100] = "";
+    
+    if (txGetAsyncKeyState (VK_CONTROL)) sprintf (str, "Нажата клавиша: ctrl");
+    if (txGetAsyncKeyState (VK_TAB)) sprintf (str, "Нажата клавиша: tab");
+
+    if (strcmp (str, "") != 0)
+    {
+        TheGS->console.print (str);
+        //oprintf ("djaifawoifjioawf");
+    }
+    //Какой оператор си инвертирует число!
+    //!(т) (любое число неравное нулю)
+    //false
+    //!(0) true
+    //0 - ложь, все кроме нуля правда
+    //n | n != 0: !(n) = 0
+    //!(0) = 1
+    //n | n != 0: !!(n) = 1
+    //!!(0) = 0
+    //!!0 = 0
+    //!!1 = 1
+    //!!2 = 1
+    //!!3 = 1
+    
+    //printf ("%с", "tf")
+    //Чем отличчается %s %c
+
+
+    TheGS->console.reDraw ();
+
+
+        
+
+
 }
 
-void drawMiniMap (BallSystem ballS, coordinatSys miniMap)
+
+void drawMiniMap ()
 {
-        for (int i = 0; i < ballS.currlength; i++)
+        for (int i = 0; i < TheGS->ballS.currlength; i++)
         {
-            if (ballS.ball[i].alive)
+            if (TheGS->ballS.ball[i].alive)
             {
-               miniMap.drawCircle (ballS.ball[i]);
+               TheGS->miniMap.drawCircle (TheGS->ballS.ball[i]);
             }
         }
 
@@ -630,16 +667,16 @@ void drawMiniMap (BallSystem ballS, coordinatSys miniMap)
 
 }
 
-void drawSysInfo (BallSystem ballS)
+void drawSysInfo ()
 {
     char info[200];
-    for (int i = 0; i < ballS.currlength; i++)
+    for (int i = 0; i < TheGS->ballS.currlength; i++)
     {
-        if (ballS.ball[i].alive)
+        if (TheGS->ballS.ball[i].alive)
         {
-            sprintf (info, "Ball %i = {%f, %f}\n", i, ballS.ball[i].pos.x, ballS.ball[i].pos.y);
+            sprintf (info, "Ball %i = {%f, %f}\n", i, TheGS->ballS.ball[i].pos.x, TheGS->ballS.ball[i].pos.y);
 
-            txTextOut (0 + sysInfo.pos.x, (0 + sysInfo.pos.x) + 25 * i, info);
+            txTextOut (0 + TheGS->sysInfo.pos.x, (0 + TheGS->sysInfo.pos.x) + 25 * i, info);
         }
     }
 }
@@ -714,7 +751,7 @@ void solarSystem (Ball balls[])
 }
 */
 
-void cometShooting (BallSystem &ballS, Console &console)
+void cometShooting ()
 {
     if (txMouseButtons () == 1)
     {
@@ -731,12 +768,13 @@ void cometShooting (BallSystem &ballS, Console &console)
         comet.color = CometColor;
             
         //txSleep (0);
-        if (ballS.currlength + 1 < BallMax)
+        if (TheGS->ballS.currlength + 1 < BallMax)
         {
-            ballS.addBall (comet);
-            console.print ("Комета успешно добавилась");
+            TheGS->ballS.addBall (comet);
+            TheGS->console.print ("Комета успешно добавилась");
+            
         }
-        if (ballS.currlength + 1 >= BallMax)
+        if (TheGS->ballS.currlength + 1 >= BallMax)
         {
             txMessageBox ("Невозможно добавить новую планету", "Предупреждение", MB_OK);
         }
@@ -785,33 +823,33 @@ void BallSystem::addBall (Ball newBall)
 }
 */
 
-void drawAllBall (BallSystem &ballS)
+void drawAllBall ()
 {
-     for (int i = 0; i < ballS.currlength; i++)
+     for (int i = 0; i < TheGS->ballS.currlength; i++)
      {
          assert (0 <= i && i < BallMax);
          
 
-         if (ballS.ball[i].pos.x + ballS.ball[i].r < mainPlace.right () && ballS.ball[i].pos.x - ballS.ball[i].r > mainPlace.left ())
+         if (TheGS->ballS.ball[i].pos.x + TheGS->ballS.ball[i].r < TheGS->mainPlace.right () && TheGS->ballS.ball[i].pos.x - TheGS->ballS.ball[i].r > TheGS->mainPlace.left ())
          {
-            if (ballS.ball[i].pos.y + ballS.ball[i].r < mainPlace.bottom () && ballS.ball[i].pos.y - ballS.ball[i].r > mainPlace.top ()) 
+            if (TheGS->ballS.ball[i].pos.y + TheGS->ballS.ball[i].r < TheGS->mainPlace.bottom () && TheGS->ballS.ball[i].pos.y - TheGS->ballS.ball[i].r > TheGS->mainPlace.top ()) 
             {
-                if (ballS.ball[i].alive)
-                    drawBall(&ballS.ball[i], ballS.ball[i].color);
+                if (TheGS->ballS.ball[i].alive)
+                    drawBall(&TheGS->ballS.ball[i], TheGS->ballS.ball[i].color);
             }
          } 
      }
 }
 
-void PhysicsAllBall (BallSystem &ballS, Console console)
+void PhysicsAllBall ()
 {
-    cometShooting (ballS, console);
-    for (int i = 0; i < ballS.currlength; i++)
+    cometShooting ();
+    for (int i = 0; i < TheGS->ballS.currlength; i++)
     {
         assert (0 <= i && i < BallMax);
 
-        if (ballS.ball[i].alive)
-            Physics (&ballS.ball[i], ballS, i, true);
+        if (TheGS->ballS.ball[i].alive)
+            Physics (&TheGS->ballS.ball[i],  i, true);
     }
 }
 
@@ -861,14 +899,14 @@ Vector txToss (Vector pos)
     };
 }
 
-void ControlAllBalls (BallSystem &ballS)
+void ControlAllBalls ()
 {
-    for (int i = 0; i < ballS.currlength; i++)
+    for (int i = 0; i < TheGS->ballS.currlength; i++)
     {
         assert (0 <= i && i < BallMax);
 
-        if (ballS.ball[i].alive) 
-            Control (&ballS.ball[i]);
+        if (TheGS->ballS.ball[i].alive) 
+            Control (&TheGS->ballS.ball[i]);
     }
 }
 
@@ -886,7 +924,7 @@ void Control (Ball *ball)
 //(x - 1)(x + 1) = 0
 
 // 0 - x; 1 - y; 2 - vX; 3 - vY;
-void Physics (Ball *ball, BallSystem &ballS, int numberOfFind, bool Graphic)
+void Physics (Ball *ball, int numberOfFind, bool Graphic)
 {
     if (Graphic)
     {
@@ -898,7 +936,7 @@ void Physics (Ball *ball, BallSystem &ballS, int numberOfFind, bool Graphic)
 
     Vector currPosMouse = {txMouseX (), txMouseY ()};
     //Vector mouseForce = (currPosMouse - ball->pos) * 2;
-    Vector fElectric = findElectricForce (ballS.ball, numberOfFind, ballS.currlength);
+    Vector fElectric = findElectricForce (TheGS->ballS.ball, numberOfFind, TheGS->ballS.currlength);
 
     Vector resultantForce = fGravity + /*mouseForce*/  fElectric;
 
@@ -922,6 +960,7 @@ void Physics (Ball *ball, BallSystem &ballS, int numberOfFind, bool Graphic)
    // Draw (ball->v, ball->pos, TX_GREEN, 3);
 
     ball->pos += (ball->v * DT);
+    //txDrawMan ();
     //(*ball).pos.x += (*ball).v.x * dt;
     //(*ball).pos.y += (*ball).v.y * dt;
 
@@ -950,7 +989,7 @@ void Physics (Ball *ball, BallSystem &ballS, int numberOfFind, bool Graphic)
     }
     */
 
-    FindColilision (ballS, numberOfFind);
+    FindColilision (TheGS->ballS, numberOfFind);
         
 }
 //
@@ -1163,9 +1202,9 @@ Vector findElectricForce (Ball ball[], int numberOfFind, int length)
             
             if (ball[j].alive)
             {
-                if (ball[j].pos.x + ball[j].r < mainPlace.right () && ball[j].pos.x - ball[j].r > mainPlace.left ())
+                if (ball[j].pos.x + ball[j].r < TheGS->mainPlace.right () && ball[j].pos.x - ball[j].r > TheGS->mainPlace.left ())
                 {
-                    if (ball[j].pos.y + ball[j].r < mainPlace.bottom () && ball[j].pos.y - ball[j].r > mainPlace.top ()) 
+                    if (ball[j].pos.y + ball[j].r < TheGS->mainPlace.bottom () && ball[j].pos.y - ball[j].r > TheGS->mainPlace.top ()) 
                     {
                         //Draw ((vectorNormal (vectorDistance) * vectorLength), ball[numberOfFind].pos, TX_PINK);
                     }
@@ -1344,7 +1383,7 @@ double SwitchRadius (double r)
     return r;
 }
 
-void ClearBackground (HDC image)
+void ClearBackground ()
 {
     static bool flagClearBackground = true;
 
@@ -1360,8 +1399,31 @@ void ClearBackground (HDC image)
 
      COLORREF color = txGetFillColor();
      txSetFillColor (TX_BLACK);
-     if (flagClearBackground == true && image != NULL) txBitBlt (0, 0, image);
-     if (flagClearBackground == true && image == NULL) txClear();
+     if (flagClearBackground == true && TheGS->HUD != NULL) txBitBlt (0, 0, TheGS->HUD);
+     if (flagClearBackground == true && TheGS->HUD == NULL) txClear();
+     //txClear();
+     txSetFillColor (color);
+
+}
+
+void ClearBackground (HDC HUD)
+{
+    static bool flagClearBackground = true;
+
+     if (txGetAsyncKeyState ('C'))
+     {
+         flagClearBackground = true;
+     }
+
+     if (txGetAsyncKeyState ('N'))
+     {
+         flagClearBackground = false;
+     }
+
+     COLORREF color = txGetFillColor();
+     txSetFillColor (TX_BLACK);
+     if (flagClearBackground == true && HUD != NULL) txBitBlt (0, 0, HUD);
+     if (flagClearBackground == true && HUD == NULL) txClear();
      //txClear();
      txSetFillColor (color);
 
