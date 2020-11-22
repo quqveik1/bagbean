@@ -21,8 +21,9 @@ public:
 
 private:
 	void privatePrint (const int line);
+	void privatePrint (const int line, const char* str);
 
-	static const int nLines_ = 18;
+	static const int nLines_ = 17;
 
 	string consoleText_[nLines_]; 
 	int lastLine_;
@@ -41,13 +42,17 @@ Console::Console (Vector startPosPix, Vector scalePix) :
 void Console::print (const char* str)
 {
 	consoleText_[lastLine_]	= str;
-	if (str == "Комета успешно добавилась") DebugBreak();
-						   
-	privatePrint (lastLine_);
 
-	if (++lastLine_ >= nLines_ - 1) lastLine_ = 0; 
+
+	//if (str == "Комета успешно добавилась") DebugBreak();
+						   
+	//privatePrint (lastLine_);
+
+	if (++lastLine_ >= nLines_) lastLine_ = 0; 
 	
 }
+
+
 
 
 void Console::clear ()
@@ -57,10 +62,26 @@ void Console::clear ()
 
 void Console::reDraw ()
 {
+
+	int printL = 0;
+	//char stri[100] = "";
+
+	//txSetColor (TX_CYAN);
+	for (int i = lastLine_; i < nLines_; i++)
+	{
+		//sprintf	(stri, "[%02d] [%s]", i, consoleText_[i].c_str());
 	
+		privatePrint (printL++, consoleText_[i].c_str());
+		//printf ("-+020.6%f") |+000000000003.140000|
+		//						12345678901234567890					
+	}
+
+	//txSetColor (TX_RED);
 	for (int i = 0; i < lastLine_; i++)
 	{
-		privatePrint (i);
+		//sprintf	(stri, "[%02d] [%s]", i, consoleText_[i].c_str());
+	
+		privatePrint (printL++, consoleText_[i].c_str());
 	}
 	//printf ("--------------------------------\n");
 }
@@ -70,4 +91,9 @@ void Console::privatePrint (const int line)
 
 	txTextOut (startPosPix_.x, startPosPix_.y + (letterSizeY_ * line), consoleText_[line].c_str());	
 	//printf ("%s\n", consoleText_[line].c_str ());
+}
+
+void Console::privatePrint (const int line, const char* str)
+{
+	txTextOut (startPosPix_.x, startPosPix_.y + (letterSizeY_ * line), str);
 }

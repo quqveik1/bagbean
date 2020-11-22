@@ -23,6 +23,7 @@ public:
     Ball planetsInit[BallMax];
     const Rect mainPlace;
     const Rect sysInfo;
+    Rect monitorS;
 
     App ();
 
@@ -37,7 +38,8 @@ App::App ():
     ballS ({}),
     planetsInit {},
     mainPlace ({.pos = {450, 0},   .size = {1350, 1000}}),
-    sysInfo ({.pos = {25,  25},  .size = {400,  375}})
+    sysInfo   ({.pos = {25,  25},  .size = {400,  375}}),
+    monitorS  ({.pos = {0, 0},     .size = MonitorSize})
 {
 
 }

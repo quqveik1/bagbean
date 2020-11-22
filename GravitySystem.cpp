@@ -123,7 +123,7 @@ Vector vectorNormal (Vector vector);
 void unitTest (BallSystem ballS, FILE *ballFile);
 bool compareNearlyNum (double a, double b);
 void copyFrame (BallSystem copyOfMainBallS[], BallSystem ballS, int currFrame);//currFrame(started from 0)
-void writeAllBall (const BallSystem &ballS, FILE *ballFile);
+void writeAllBall (FILE *ballFile);
 void writeBall (const Ball &ball, FILE *ballFile);
 
 void playSystem ();
@@ -153,6 +153,7 @@ void FindColilision (BallSystem &ballS, int numberOfFind);
 COLORREF sumColors (COLORREF a, COLORREF b);
 void sumColorsUnitTest ();
 void ControlAllBalls ();
+void ControlAllBalls (BallSystem *ballS);
 void ssCircle (Ball ball, Rect Box);
 void ssLine (double StartX, double StartY, double FinishX, double FinishY);
 void dynamicSleeping ();
@@ -162,7 +163,7 @@ double SpeedX (double vX);
 double SpeedY (double vY);
 void ClearBackground ();
 void ClearBackground (HDC HUD);
-void   SwitchColour ();
+void   SwitchColour (Ball *ball);
 double SwitchRadius (double r);
 
 
@@ -228,7 +229,7 @@ int main()
     Draw_verVector (vector, start, TX_RED, 5, DegToRad (1));
     */
     
-    txCreateWindow (1800, 1000);
+    txCreateWindow (MonitorSize.x, MonitorSize.y);
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
     HDC HUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud3.bmp");
@@ -471,6 +472,7 @@ void dynamicSleeping ()
     txSleep (timesleep);
 }
 
+
 void drawFrameReplay (BallSystem *ballS)
 {
     for (int i = 0; i < BallMax; i++)
@@ -527,6 +529,7 @@ inline void lining ()
 */
 
 
+
 void RunEngineExperiment ()
 {
     //static bool flagClearBackground = true;
@@ -547,6 +550,8 @@ void RunEngineExperiment ()
     //_getch ();
 
     //Console console (;
+
+    TheGS->console.print ("Press f1 to open FAQ");
 
     FILE *ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.txt", "w");
     assert (ballSystemRecording);
@@ -616,16 +621,23 @@ void RunEngineExperiment ()
 void drawConsole ()
 {
     char str[100] = "";
+
+    // int n = 0;
     
+
     if (txGetAsyncKeyState (VK_CONTROL)) sprintf (str, "Нажата клавиша: ctrl");
     if (txGetAsyncKeyState (VK_TAB)) sprintf (str, "Нажата клавиша: tab");
+    if (txGetAsyncKeyState (VK_F1)) 
+    {
+        txMessageBox ("Это простая физическая симуляция\nДля запуска просто запустите exe, если вдруг антивирус винды редложит отазаться, то нажмите подробнее, выполнить в любом случае\nИнструкция по управлению:\n0.При запуске у вас будет меню read/write. Read- это проигрывание предыдущей симуляции, write - создание новой\n1. Для запуска кометы зажмите лкм и задайте рогаткой вектор полета\n2. Стрелками влево, вправо и другими можно изменять скорость\n3. С - чистить жкран при перерисовки каждого кадра, N - обратное\n4.W - уменьшение размера планет, Е - противоположное\nP.S Можете понажимать разные клавиши, тут очень много функци\n \nВАЖНО! Чтобы выйти нажмите Английскую O на клавиатуре", "FAQ", MB_OK);
+    }
 
     if (strcmp (str, "") != 0)
     {
         TheGS->console.print (str);
         //oprintf ("djaifawoifjioawf");
     }
-    //Какой оператор си инвертирует число!
+    //Какой оператор си инвертирует число! ~
     //!(т) (любое число неравное нулю)
     //false
     //!(0) true
@@ -641,6 +653,8 @@ void drawConsole ()
     
     //printf ("%с", "tf")
     //Чем отличчается %s %c
+    //%s - строка
+    //%c - char символ
 
 
     TheGS->console.reDraw ();
@@ -669,7 +683,7 @@ void drawMiniMap ()
 
 void drawSysInfo ()
 {
-    char info[200];
+    char info [200] = "";
     for (int i = 0; i < TheGS->ballS.currlength; i++)
     {
         if (TheGS->ballS.ball[i].alive)
@@ -755,28 +769,36 @@ void cometShooting ()
 {
     if (txMouseButtons () == 1)
     {
-        Vector finishPos = {};
-        Vector speed     = returnMouseVector (&finishPos);
+        if (txMousePos().x >  TheGS->monitorS.pos.x && 
+            txMousePos().x < (TheGS->monitorS.pos.x + TheGS->monitorS.size.x) &&
+            txMousePos().y >  TheGS->monitorS.pos.y &&
+            txMousePos().y < (TheGS->monitorS.pos.y + TheGS->monitorS.size.y)
+           ) 
+        {
+        
+            Vector finishPos = {};
+            Vector speed     = returnMouseVector (&finishPos);
 
-        Ball comet   = {};
-        comet.pos    = finishPos;
-        comet.v      = speed;
-        comet.m      = 1e4;
-        comet.charge = 2e1;
-        comet.r      = 10;
-        $s
-        comet.color = CometColor;
+            Ball comet   = {};
+            comet.pos    = finishPos;
+            comet.v      = speed;
+            comet.m      = 1e4;
+            comet.charge = 2e1;
+            comet.r      = 10;
+            $s
+            comet.color = CometColor;
             
-        //txSleep (0);
-        if (TheGS->ballS.currlength + 1 < BallMax)
-        {
-            TheGS->ballS.addBall (comet);
-            TheGS->console.print ("Комета успешно добавилась");
+            //txSleep (0);
+            if (TheGS->ballS.currlength + 1 < BallMax)
+            {
+                TheGS->ballS.addBall (comet);
+                TheGS->console.print ("Комета успешно добавилась");
             
-        }
-        if (TheGS->ballS.currlength + 1 >= BallMax)
-        {
-            txMessageBox ("Невозможно добавить новую планету", "Предупреждение", MB_OK);
+            }
+            if (TheGS->ballS.currlength + 1 >= BallMax)
+            {
+                txMessageBox ("Невозможно добавить новую планету", "Предупреждение", MB_OK);
+            }
         }
 
         
@@ -910,12 +932,24 @@ void ControlAllBalls ()
     }
 }
 
+//use for read mode
+void ControlAllBalls (BallSystem *ballS)
+{
+    for (int i = 0; i < ballS->currlength; i++)
+    {
+        assert (0 <= i && i < BallMax);
+
+        if (ballS->ball[i].alive) 
+            SwitchColour (&ballS->ball[i]);
+    }    
+}
+
 void Control (Ball *ball)
 {
     ball->v.x = SpeedX (ball->v.x);
     ball->v.y = SpeedY (ball->v.y);
 
-    SwitchColour ();
+    SwitchColour (ball);
     (*ball).r = SwitchRadius ((*ball).r);
 }
 
@@ -1357,19 +1391,19 @@ double SpeedY (double vY)
         /*
         if (txGetAsyncKeyState ('S'))
         {
-            vY = standartY;
+            vY = standartY;                                                 
         }
         */
         return vY;
 }
 
-void SwitchColour ()
+void SwitchColour (Ball *ball)
 {
-    if (txGetAsyncKeyState ('B')) txSetFillColor (TX_BLUE);
-    if (txGetAsyncKeyState ('R')) txSetFillColor (TX_RED);
-    if (txGetAsyncKeyState ('G')) txSetFillColor (TX_GREEN);
-    if (txGetAsyncKeyState ('Y')) txSetFillColor (TX_YELLOW);
-    if (txGetAsyncKeyState ('P')) txSetFillColor (TX_PINK);
+    if (txGetAsyncKeyState ('B')) ball->color = TX_BLUE;
+    if (txGetAsyncKeyState ('R')) ball->color = TX_RED;
+    if (txGetAsyncKeyState ('G')) ball->color = TX_GREEN;
+    if (txGetAsyncKeyState ('Y')) ball->color = TX_YELLOW;
+    if (txGetAsyncKeyState ('P')) ball->color = TX_PINK;
 }
 
 double SwitchRadius (double r)

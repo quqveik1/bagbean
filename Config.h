@@ -18,6 +18,7 @@ const double MaxDeltaPrecision = 0.1;
 const COLORREF CometColor = TX_PINK;
 const int SLEEPINGTIME = 30;
 const float Scale = 3;
+const Vector MonitorSize = {1800, 1000};
 
 //int y = SQR (5);  ==>  int y = 5 * 5  ==>  int y = 25;
 //int y = SQR (3 + 2);  ==>  int y = 3 + 2 * 3 + 2  ==>  int y = 11;
