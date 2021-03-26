@@ -15,6 +15,13 @@ class App
 public:
     int Resolution;
     const char *path;
+
+    HDC Menu;
+    Rect startButton;
+    Rect repeatButton;
+    Rect infoButton;
+    Rect exitButton;
+
     HDC HUD;
 
     coordinatSys miniMap;
