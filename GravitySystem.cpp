@@ -228,11 +228,59 @@ int main()
     Vector vector = {.x = 0,   .y = -50};
     Draw_verVector (vector, start, TX_RED, 5, DegToRad (1));
     */
+   
+
+
+    FILE *config = fopen ("GravitySystemFolder/Config.txt", "r");
+    assert (config);
     
+
+    fscanf (config, "Resolution: %d ", &Resolution);
+    printf ("Resolution: %d p", Resolution);
+
+
+
+
+    
+    if (Resolution == 720)
+    {
+        MonitorSize = {1200, 600};      
+    }
+    if (Resolution == 1080)
+    {
+        MonitorSize = {1800, 1000};
+    }
+    
+
+    
+    //txCreateWindow (MonitorSize.x, MonitorSize.y);
     txCreateWindow (MonitorSize.x, MonitorSize.y);
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
-    HDC HUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud3.bmp");
+    App gravitySys;
+    TheGS = &gravitySys;
+
+    if (Resolution == 720)
+    {
+         TheGS->path = "GravitySystemFolder/DevMaterials/Hud4.bmp";  
+         TheGS->sysInfo = {.pos = {15, 20}, .size = {255, 170}};
+         TheGS->console.startPosPix_ = {15, 220};
+         TheGS->console.scalePix_ = {255, 140};
+         TheGS->miniMap.startPosPix_ = {15, 420};
+         TheGS->miniMap.scalePix_ = {255, 170};
+         TheGS->miniMap.intepretK_= {{TheGS->miniMap.scalePix_.x / TheGS->miniMap.coorSize_.x}, {TheGS->miniMap.scalePix_.y / TheGS->miniMap.coorSize_.y}};
+         TheGS->miniMap.coorSize_ = {(double) txGetExtentX (), (double)txGetExtentY ()};
+         TheGS->mainPlace = {.pos = {290, 0}, .size = {(double) (txGetExtentX () - 290), (double) (txGetExtentY () - 0)}};
+    }
+    if (Resolution == 1080)
+    {
+        TheGS->path = "GravitySystemFolder/DevMaterials/Hud3.bmp";
+    }
+    TheGS->HUD = txLoadImage (TheGS->path);
+
+    
+   
+    HDC HUD = txLoadImage (TheGS->path);
 
 
 
@@ -254,8 +302,6 @@ int main()
         ball[2] = {txToss ({0,    +400}), {18, 17}, 1e4, 10, 5, TX_RED};
         ball[3] = {txToss ({400,  -400}), {7, 7}, 1e4, 10, 2, TX_RED};
         */
-        App gravitySys;
-        TheGS = &gravitySys;
 
 
         TheGS->ballS.currlength = 0;
@@ -578,10 +624,12 @@ void RunEngineExperiment ()
 
         drawMiniMap ();
 
+        if (Resolution != 720)
+            drawSysInfo ();
 
-        drawSysInfo ();
-
-        drawConsole ();
+        //!!!Beta
+        if (Resolution != 720)
+            drawConsole ();
 
         //long startFilePos = ftell (ballSystemRecording);
         //fprintf (ballSystemRecording, "//f%i//", i);
@@ -629,7 +677,17 @@ void drawConsole ()
     if (txGetAsyncKeyState (VK_TAB)) sprintf (str, "Нажата клавиша: tab");
     if (txGetAsyncKeyState (VK_F1)) 
     {
-        txMessageBox ("Это простая физическая симуляция\nДля запуска просто запустите exe, если вдруг антивирус винды редложит отазаться, то нажмите подробнее, выполнить в любом случае\nИнструкция по управлению:\n0.При запуске у вас будет меню read/write. Read- это проигрывание предыдущей симуляции, write - создание новой\n1. Для запуска кометы зажмите лкм и задайте рогаткой вектор полета\n2. Стрелками влево, вправо и другими можно изменять скорость\n3. С - чистить жкран при перерисовки каждого кадра, N - обратное\n4.W - уменьшение размера планет, Е - противоположное\nP.S Можете понажимать разные клавиши, тут очень много функци\n \nВАЖНО! Чтобы выйти нажмите Английскую O на клавиатуре", "FAQ", MB_OK);
+        txMessageBox ("Это простая физическая симуляция\n\n"
+                      "Для запуска просто запустите exe, если вдруг антивирус винды редложит отазаться, то нажмите подробнее, выполнить в любом случае\n\n"
+                      "Инструкция по управлению:\n\n"
+                      "0. При запуске у вас будет меню read/write. Read- это проигрывание предыдущей симуляции, write - создание новой\n\n"
+                      "1. Для запуска кометы зажмите лкм и задайте рогаткой вектор полета\n\n"
+                      "2. Стрелками влево, вправо и другими можно изменять скорость\n\n"
+                      "3. С - чистить жкран при перерисовки каждого кадра, N - обратное\n\n"
+                      "4. W - уменьшение размера планет, Е - противоположное\n\n"
+                      "P.S. Можете понажимать разные клавиши, тут очень много функции\n\n"
+                      "ВАЖНО! Чтобы выйти нажмите Английскую O на клавиатуре",
+                      "FAQ", MB_OK);
     }
 
     if (strcmp (str, "") != 0)
@@ -1086,10 +1144,10 @@ void FindColilision (BallSystem &ballS, int numberOfFind)
         {
             if (ballS.ball[i].alive)
             {
-                Vector distanceV = ballS.ball[i].pos - ballS.ball[numberOfFind].pos;
+                Vector distanceV = {ballS.ball[i].pos - ballS.ball[numberOfFind].pos};
                 double distanceS = lengthV (distanceV);
 
-                if (MinDistance > distanceS)
+                if (MinDistance + (ballS.ball[i].r + ballS.ball[numberOfFind].r) > distanceS)
                 {
                     Colision (&ballS.ball[i], &ballS.ball[numberOfFind]);
                 }
@@ -1120,7 +1178,7 @@ void Colision (Ball *ball1, Ball *ball2)
     ball2->v = newV;
     ball1->v = {0, 0};
 
-    double sumSquare = M_PI * ball1->r + M_PI * ball1->r;
+    double sumSquare = M_PI * ball1->r + M_PI * ball2->r;
     ball2->r = sumSquare / M_PI;
     ball1->r = 0;
 

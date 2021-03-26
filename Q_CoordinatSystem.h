@@ -14,7 +14,7 @@ class coordinatSys
 	public: Vector startPosPix_;
     private: Rect   sysBorderPix_ = {startPosPix_, scalePix_};
 
-    private: Vector intepretK_ = {}; //= scalePix / coorSize;
+    public: Vector intepretK_ = {}; //= scalePix / coorSize;
 
     public: coordinatSys ();
     public: coordinatSys (Vector startPosPix, Vector scalePix, Vector coorSize);

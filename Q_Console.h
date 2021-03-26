@@ -9,8 +9,8 @@
 class Console 
 {
 public: 
-	const Vector scalePix_;
-	const Vector startPosPix_;
+	Vector scalePix_;
+	Vector startPosPix_;
 
 	Console	(Vector startPosPix, Vector scalePix);
 	void print (const char* str);

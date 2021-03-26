@@ -13,6 +13,8 @@
 class App
 {
 public:
+    int Resolution;
+    const char *path;
     HDC HUD;
 
     coordinatSys miniMap;
@@ -21,8 +23,8 @@ public:
 
     BallSystem ballS;
     Ball planetsInit[BallMax];
-    const Rect mainPlace;
-    const Rect sysInfo;
+    Rect mainPlace;
+    Rect sysInfo;
     Rect monitorS;
 
     App ();
@@ -32,7 +34,8 @@ public:
 };
 
 App::App ():
-    HUD (txLoadImage ("GravitySystemFolder/DevMaterials/Hud3.bmp")),
+    path ("GravitySystemFolder/DevMaterials/Hud3.bmp"),
+    HUD (txLoadImage (path)),
     miniMap (Vector{25,  685}, Vector{375,  285}, {(double) txGetExtentX (), (double) txGetExtentY ()}),
     console (Vector{25, 375}, Vector{25, 375}),
     ballS ({}),
