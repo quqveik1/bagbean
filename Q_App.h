@@ -23,6 +23,9 @@ public:
     Rect exitButton;
 
     HDC HUD;
+    Rect cleanButton;
+    Rect exitButtonHUD;
+    Rect newPlanetButton;
 
     coordinatSys miniMap;
 

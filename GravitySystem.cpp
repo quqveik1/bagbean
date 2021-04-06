@@ -138,6 +138,9 @@ void drawMiniMap ();
 void drawSysInfo ();
 void drawConsole ();
 void printFAQ ();
+bool onButtonClicked (Rect Button);
+bool inButtonMouse (Rect Button);
+bool inRect (Vector pos, Rect rectangle);
 
 void drawAllBall ();
 void PhysicsAllBall ();
@@ -266,68 +269,65 @@ int main()
     int mode = 1;
 
     if (Resolution == 720)
-    {
-         TheGS->path = "GravitySystemFolder/DevMaterials/Hud4.bmp";  
+    {  
          TheGS->sysInfo = {.pos = {15, 20}, .size = {255, 170}};
          TheGS->console.startPosPix_ = {15, 220};
          TheGS->console.scalePix_ = {255, 140};
-         TheGS->miniMap.startPosPix_ = {15, 420};
-         TheGS->miniMap.scalePix_ = {255, 170};
+         TheGS->miniMap.startPosPix_ = {0, 410};
+         TheGS->miniMap.scalePix_ = {275, 190};
          TheGS->miniMap.intepretK_= {{TheGS->miniMap.scalePix_.x / TheGS->miniMap.coorSize_.x}, {TheGS->miniMap.scalePix_.y / TheGS->miniMap.coorSize_.y}};
          TheGS->miniMap.coorSize_ = {(double) txGetExtentX (), (double)txGetExtentY ()};
          TheGS->mainPlace = {.pos = {290, 0}, .size = {(double) (txGetExtentX () - 290), (double) (txGetExtentY () - 0)}};
-         TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/Menu720.bmp");
+         TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/Menu720p_2.bmp");
          txBitBlt (0, 0, TheGS->Menu);
+
          TheGS->startButton = {.pos = {15, 105}, .size = {415, 160}};
          TheGS->repeatButton = {.pos = {15, 300}, .size = {415, 160}};
          TheGS->infoButton = {.pos = {15, 485}, .size = {100, 100}};
          TheGS->exitButton = {.pos = {1020, 530}, .size = {180, 70}};
+         TheGS->cleanButton = {.pos = {285, 0}, .size = {280, 80}};
+         TheGS->exitButtonHUD = {.pos = {1020, 0}, .size = {180, 70}};
+         TheGS->newPlanetButton = {.pos = {0, 0}, .size = {280, 80}};
+         TheGS->path = "GravitySystemFolder/DevMaterials/Hud720p.bmp";
     }
+
     if (Resolution == 1080)
     {
         TheGS->path = "GravitySystemFolder/DevMaterials/Hud3.bmp";
+        //!Временно поддержка приостановлена
     }
+
     TheGS->HUD = txLoadImage (TheGS->path);
 
     for (;;)
     {
-        if (txMouseButtons () == 1)
+        //RECT r = {TheGS->startButton.left(), TheGS->startButton.top(), TheGS->startButton.right(), TheGS->startButton.bottom()};
+        //POINT point = {txMousePos ().x, txMousePos ().y}; 
+        if (onButtonClicked (TheGS->startButton))
         {
-            if (txMouseX () > TheGS->startButton.left () && txMouseX () <  TheGS->startButton.right ())
-            {
-                 if (txMouseY () > TheGS->startButton.top () && txMouseY () <  TheGS->startButton.bottom ())
-                 {
-                     mode = 1;
-                     txSleep (1000);
-                     break;
-                 }
-            }
+            mode = 1;
+            txSleep(1000);
+            break;
+        }
 
-            if (txMouseX () > TheGS->repeatButton.left () && txMouseX () <  TheGS->repeatButton.right ())
-            {
-                 if (txMouseY () > TheGS->repeatButton.top () && txMouseY () <  TheGS->repeatButton.bottom ())
-                 {
-                     mode = 0;
-                     break;
-                 }
-            }
+       
+        if (onButtonClicked (TheGS->repeatButton))
+        {
+            mode = 0;
+            break;
+        }
 
-            if (txMouseX () > TheGS->infoButton.left () && txMouseX () <  TheGS->infoButton.right ())
-            {
-                 if (txMouseY () > TheGS->infoButton.top () && txMouseY () <  TheGS->infoButton.bottom ())
-                 {
-                     printFAQ ();
-                     continue;
-                 }
-            }
+        if (onButtonClicked (TheGS->infoButton))
+        {
+            printFAQ ();
+            continue;
+        }
 
-            if (txMouseX () > TheGS->exitButton.left () && txMouseX () <  TheGS->exitButton.right ())
-            {
-                 if (txMouseY () > TheGS->exitButton.top () && txMouseY () <  TheGS->exitButton.bottom ())
-                 {
-                     return 0;
-                 }
-            }
+        if (onButtonClicked (TheGS->exitButton))
+        {
+            txEnd ();
+            txDisableAutoPause ();
+            return 0;
         }
     }
 
@@ -341,7 +341,7 @@ int main()
 
     //(void) (_getch ());
     
-    system ("cls");
+    //!!!system ("cls");
 
     if (mode == 1)
     {
@@ -383,36 +383,42 @@ int main()
         }
 
         txBegin ();
+        /*
         for (int n = 0; n < 1; n++)
+        {   */
+        for (int i = 0; i < TheGS->ballS.currlength; i++)
         {
-            for (int i = 0; i < TheGS->ballS.currlength; i++)
-            {
-                assert (0 <= i && i < BallMax);
-                TheGS->ballS.ball[i] = TheGS->planetsInit[i];
-            }
-
-            //txEnd ();
-            ///printf ("Vx = ");
-            //if (scanf  ("%lg", &ballS.ball[2].v.x) != 1) break;
-
-            //if (ballS.ball[2].v.x == -1 && ballS.ball[2].v.y  == -1) break;
-            //txBegin ();
-        
-        
-            RunEngineExperiment ();
-
-            if (txGetAsyncKeyState('O')) break;
+            assert (0 <= i && i < BallMax);
+            TheGS->ballS.ball[i] = TheGS->planetsInit[i];
         }
+
+        //txEnd ();
+        ///printf ("Vx = ");
+        //if (scanf  ("%lg", &ballS.ball[2].v.x) != 1) break;
+
+        //if (ballS.ball[2].v.x == -1 && ballS.ball[2].v.y  == -1) break;
+        //txBegin ();
+        
+        
+        RunEngineExperiment ();
+
+        //oif (txGetAsyncKeyState('O')) break;
 
         txEnd ();
 
         txDisableAutoPause ();
+        
+        //txDeleteDC (TheGS->);
+
     }
 
     if (mode == 0)
     {
         playSystem ();
     }
+
+    txDeleteDC (TheGS->Menu);
+    txDeleteDC (TheGS->HUD);
 
     return 0;
 }
@@ -438,30 +444,41 @@ int main2()
 
 void CreateNewPlanet (BallSystem &ballS)
 {
+    bool escape = 0;
+
     const char *cposx = txInputBox ("Введите координату по x:", "Создание новой планеты", "400");
+    if (!strcmp (cposx, "")) return;
     const char *cposy = txInputBox ("Введите координату по y:", "Создание новой планеты", "400");
+    if (!strcmp (cposy, "")) return;
+    assert (cposx);
     Vector newPos = {};
-    sscanf (cposx, "%lf", &newPos.x);
-    sscanf (cposy, "%lf", &newPos.y);
+    if (!sscanf (cposx, "%lf", &newPos.x)) return;
+    if (!sscanf (cposy, "%lf", &newPos.y)) return;
+
 
     const char *cvx = txInputBox ("Введите скорость по x:", "Создание новой планеты", "20");
+    if (!strcmp (cvx, "")) return;
     const char *cvy = txInputBox ("Введите скорость по y:", "Создание новой планеты", "0");
+    if (!strcmp (cvy, "")) return;
     Vector newV = {};
     sscanf (cvx, "%lf", &newV.x);
     sscanf (cvy, "%lf", &newV.y);
 
     const char *ccharge = txInputBox ("Введите заряженность(притяжение работает благодаря этому):", "Создание новой планеты", "10");
+    if (!strcmp (ccharge, "")) return;
     double newCharge = 0;
     sscanf (ccharge, "%lf", &newCharge);
 
 
     const char *cm = txInputBox ("Введите массу:", "Создание новой планеты", "1000");
+    if (!strcmp (cm, "")) return;
     double newm = 0;
     sscanf (cm, "%lf", &newm);
 
     const char *cr = txInputBox ("Введите радиус:", "Создание новой планеты", "10");
+    if (!strcmp (cr, "")) return;
     double newR = 0;
-    sscanf (cm, "%lf", &newR);
+    sscanf (cr, "%lf", &newR);
 
     Ball newBall;
     newBall.pos = newPos;
@@ -590,6 +607,7 @@ void playSystem ()
         if (txGetAsyncKeyState ('O')) break;
         dynamicSleeping ();
     }
+    txDeleteDC (HUD);
 
     fclose (ballSystemRecording);
 
@@ -702,6 +720,7 @@ void RunEngineExperiment ()
         //txTextOut (25, 25, "sth");
         //txTextOut (25, 300, "sth");
         //txCircle (440, 10, 1);
+        
 
         //solarSystem (ball);
         PhysicsAllBall ();
@@ -711,6 +730,7 @@ void RunEngineExperiment ()
         PhysicsAllBall ();
 
         ControlAllBalls ();
+        //printf ("%f\n", txGetFPS ());
 
 
         drawAllBall ();
@@ -739,6 +759,8 @@ void RunEngineExperiment ()
 
         if (txGetAsyncKeyState('O')) break;
 
+        if (onButtonClicked (TheGS->exitButtonHUD)) break;
+
         ClearBackground ();
     }
 
@@ -756,8 +778,10 @@ void RunEngineExperiment ()
 
     fclose (ballSystemRecordingTesting);
 
-     (void) _getch ();
+    // (void) _getch ();
 }
+
+
 
 void drawConsole ()
 {
@@ -819,21 +843,39 @@ void drawConsole ()
 
 }
 
+bool onButtonClicked (Rect Button)
+{
+    
+    if (txMouseButtons () == 1)
+    {
+        if (txMouseX () > Button.left () && txMouseX () <  Button.right ())
+        {
+            if (txMouseY () > Button.top () && txMouseY () <  Button.bottom ())
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+
+    
+}
+
 void printFAQ ()
 {
     txMessageBox ("Это простая физическая симуляция\n\n"
-                      "Для запуска просто запустите exe, если вдруг антивирус винды предложит отазаться, то нажмите подробнее, выполнить в любом случае\n\n"
+                      "Для запуска просто запустите .exe, если вдруг антивирус винды предложит отазаться, то нажмите подробнее, выполнить в любом случае\n\n"
                       "Инструкция по управлению:\n\n"
-                      "!!!!ВАЖНО!!!! Чтобы выйти нажмите Английскую O на клавиатуре\n"
+                      "!!!!ВАЖНО!!!! Чтобы выйти нажмите Английскую O на клавиатуре\n\n"
                       "0. При запуске у вас будет меню Режим (Старт / Повтор) Повтор - это проигрывание предыдущей симуляции, Старт - создание новой\n\n"
-                      "1. Для запуска кометы зажмите лкм и задайте рогаткой вектор полета\n"
-                      "1.1 Для запуска кометы с заданием значений нажмите Tab\n\n"
+                      "1. Для запуска кометы зажмите ЛКМ и задайте рогаткой вектор полета\n"
+                      "1.1 Для запуска кометы с заданием значений нажмите Tab, если вы передумали запускать, то нажмите Cancel в первом же меню выбора\n\n"
                       "2. Стрелками влево, вправо и другими можно изменять скорость\n\n"
                       "3. С - чистить экран при перерисовки каждого кадра, N - обратное\n\n"
-                      "4. W - уменьшение размера планет, Е - противоположное\n"
+                      "4. W - уменьшение размера планет, Е - противоположное\n\n"
                       "5*. В папке приложения вы можете найти папку GravitySystemFolder пройдите в нее и там есть файл Config.txt, там можно задавать разрешение экрана(720 или 1080) (Пример: Resolution: 720)\n\n" 
-                      "6*. Все ваши симмуляции записываются, и храняться в папке GravitySystemFolder, называется EngeneExperiment.txt, вы можете СКОПИРОВАТЬ(файл не рекомендуется уносить из его папки) в папку BestMoments\n\n"
-                      "P.S. Можете понажимать разные клавиши, тут очень много функции\n\n",
+                      "6*. Все ваши симмуляции записываются, и храняться в папке GravitySystemFolder, называется EngeneExperiment.txt, вы можете СКОПИРОВАТЬ (файл не рекомендуется уносить из его папки) в папку BestMoments\n\n"
+                      "P.S. Можете понажимать разные клавиши, тут очень много функции\n\n",//!!!Автроы
                       "Инструкция по использованию", MB_OK);
 }
 
@@ -936,6 +978,18 @@ void solarSystem (Ball balls[])
     }
 }
 */
+bool inButtonMouse (Rect Button)
+{
+
+     if (txMouseX () > Button.left () && txMouseX () <  Button.right ())
+     {
+            if (txMouseY () > Button.top () && txMouseY () <  Button.bottom ())
+            {
+                return true;
+            }
+     }
+     return false;
+}
 
 void cometShooting ()
 {
@@ -944,7 +998,10 @@ void cometShooting ()
         if (txMousePos().x >  TheGS->monitorS.pos.x && 
             txMousePos().x < (TheGS->monitorS.pos.x + TheGS->monitorS.size.x) &&
             txMousePos().y >  TheGS->monitorS.pos.y &&
-            txMousePos().y < (TheGS->monitorS.pos.y + TheGS->monitorS.size.y)
+            txMousePos().y < (TheGS->monitorS.pos.y + TheGS->monitorS.size.y) &&
+            !inButtonMouse (TheGS->cleanButton) && 
+            !inButtonMouse (TheGS->exitButtonHUD) && 
+            !inButtonMouse (TheGS->newPlanetButton)
            ) 
         {
         
@@ -1023,16 +1080,39 @@ void drawAllBall ()
      {
          assert (0 <= i && i < BallMax);
          
-
+         /*
          if (TheGS->ballS.ball[i].pos.x + TheGS->ballS.ball[i].r < TheGS->mainPlace.right () && TheGS->ballS.ball[i].pos.x - TheGS->ballS.ball[i].r > TheGS->mainPlace.left ())
          {
             if (TheGS->ballS.ball[i].pos.y + TheGS->ballS.ball[i].r < TheGS->mainPlace.bottom () && TheGS->ballS.ball[i].pos.y - TheGS->ballS.ball[i].r > TheGS->mainPlace.top ()) 
             {
-                if (TheGS->ballS.ball[i].alive)
-                    drawBall(&TheGS->ballS.ball[i], TheGS->ballS.ball[i].color);
+
+            */
+
+         //printf ("%d", !inRect ({TheGS->ballS.ball[i].pos.x, TheGS->ballS.ball[i].pos.y}, TheGS->miniMap.sysBorderPix_));
+         //!!!ERROR
+         if (!inRect ({TheGS->ballS.ball[i].pos.x, TheGS->ballS.ball[i].pos.y}, TheGS->miniMap.sysBorderPix_))
+            {
+            if (TheGS->ballS.ball[i].alive)
+            {
+                drawBall(&TheGS->ballS.ball[i], TheGS->ballS.ball[i].color);
             }
-         } 
+                    
+        }
+        
      }
+}
+
+bool inRect (Vector pos, Rect rectangle)
+{
+    if (pos.x > rectangle.left () && pos.x <  rectangle.right ())
+    {
+        if (pos.y > rectangle.top () && pos.y <  rectangle.bottom ())
+        {
+            return true;
+        }
+    }
+    return false;
+
 }
 
 void PhysicsAllBall ()
@@ -1103,6 +1183,11 @@ void ControlAllBalls ()
             Control (&TheGS->ballS.ball[i]);
 
         if (txGetAsyncKeyState (VK_TAB))
+        {
+            CreateNewPlanet (TheGS->ballS);
+        } 
+
+        if (onButtonClicked (TheGS->newPlanetButton))
         {
             CreateNewPlanet (TheGS->ballS);
         }
@@ -1601,6 +1686,12 @@ void ClearBackground ()
      if (txGetAsyncKeyState ('C'))
      {
          flagClearBackground = true;
+     }
+
+     if (onButtonClicked (TheGS->cleanButton))
+     {
+        flagClearBackground = !flagClearBackground;
+        txSleep (100);
      }
 
      if (txGetAsyncKeyState ('N'))
