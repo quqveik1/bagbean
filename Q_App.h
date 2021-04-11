@@ -27,6 +27,8 @@ public:
     Rect exitButtonHUD;
     Rect newPlanetButton;
 
+    HDC ReplayHUD;
+
     coordinatSys miniMap;
 
     Console console;

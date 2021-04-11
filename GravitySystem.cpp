@@ -414,11 +414,16 @@ int main()
 
     if (mode == 0)
     {
+        TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
         playSystem ();
+        txEnd ();
+
+        txDisableAutoPause ();
     }
 
     txDeleteDC (TheGS->Menu);
     txDeleteDC (TheGS->HUD);
+    txDeleteDC (TheGS->ReplayHUD);
 
     return 0;
 }
@@ -598,13 +603,14 @@ void playSystem ()
 
     for (;;)
     {
-        ClearBackground (HUD);
+        ClearBackground (TheGS->ReplayHUD);
 
         readAllBall (&currBallS, ballSystemRecording);
 
         drawFrameReplay (&currBallS);
 
         if (txGetAsyncKeyState ('O')) break;
+        if (onButtonClicked (TheGS->exitButtonHUD)) break;
         dynamicSleeping ();
     }
     txDeleteDC (HUD);
@@ -866,7 +872,7 @@ void printFAQ ()
     txMessageBox ("Это простая физическая симуляция\n\n"
                       "Для запуска просто запустите .exe, если вдруг антивирус винды предложит отазаться, то нажмите подробнее, выполнить в любом случае\n\n"
                       "Инструкция по управлению:\n\n"
-                      "!!!!ВАЖНО!!!! Чтобы выйти нажмите Английскую O на клавиатуре\n\n"
+                      "!!!!ВАЖНО!!!! Чтобы выйти нажмите Английскую O на клавиатуре или конопчку выход в углу экрана\n\n"
                       "0. При запуске у вас будет меню Режим (Старт / Повтор) Повтор - это проигрывание предыдущей симуляции, Старт - создание новой\n\n"
                       "1. Для запуска кометы зажмите ЛКМ и задайте рогаткой вектор полета\n"
                       "1.1 Для запуска кометы с заданием значений нажмите Tab, если вы передумали запускать, то нажмите Cancel в первом же меню выбора\n\n"
@@ -1375,6 +1381,8 @@ void Colision (Ball *ball1, Ball *ball2)
     Vector newV = ((ball1->v * ball1->m) + (ball2->v * ball2->m)) / (ball1->m + ball2->m);
 
     //ball2->color = 
+    ball2->pos = ((ball1->pos * ball1->m) + (ball2->pos * ball2->m))/(ball2->m + ball1->m);
+
 
     ball2->m = ball2->m + ball1->m;
     ball1->m = 0;
@@ -1391,7 +1399,9 @@ void Colision (Ball *ball1, Ball *ball2)
 
     ball2->color = sumColors (ball1->color, ball2->color);
 
+
     ball1->alive = false;
+
 }
 
 COLORREF sumColors (COLORREF a, COLORREF b)
