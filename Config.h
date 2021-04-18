@@ -20,6 +20,7 @@ int SLEEPINGTIME = 30;
 const float Scale = 3;
 Vector MonitorSize = {1800, 1000};
 int Resolution = 0;
+HWND MainScreen;
 
 //int y = SQR (5);  ==>  int y = 5 * 5  ==>  int y = 25;
 //int y = SQR (3 + 2);  ==>  int y = 3 + 2 * 3 + 2  ==>  int y = 11;

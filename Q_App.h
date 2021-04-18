@@ -15,6 +15,7 @@ class App
 public:
     int Resolution;
     const char *path;
+    HWND currScreen;
 
     HDC Menu;
     Rect startButton;
@@ -26,6 +27,7 @@ public:
     Rect cleanButton;
     Rect exitButtonHUD;
     Rect newPlanetButton;
+    Rect screenShotButton;
 
     HDC ReplayHUD;
 

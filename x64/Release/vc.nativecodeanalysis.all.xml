@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS><DEFECT>
     <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\TX\</FILEPATH>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>TXLib.h</FILENAME>
       <LINE>6725</LINE>
       <COLUMN>8</COLUMN>
@@ -13,7 +13,7 @@
     <PATH></PATH>
   </DEFECT><DEFECT>
     <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\TX\</FILEPATH>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>TXLib.h</FILENAME>
       <LINE>8826</LINE>
       <COLUMN>13</COLUMN>
@@ -28,27 +28,27 @@
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>Q_App.h</FILENAME>
-      <LINE>53</LINE>
+      <LINE>54</LINE>
       <COLUMN>11</COLUMN>
     </SFA>
     <DEFECTCODE>6262</DEFECTCODE>
-    <DESCRIPTION>Function uses '39208' bytes of stack:  exceeds /analyze:stacksize '16384'.. This allocation was for a compiler-generated temporary for 'struct BallSystem' at line 53.  Consider moving some data to heap.</DESCRIPTION>
+    <DESCRIPTION>Function uses '39208' bytes of stack:  exceeds /analyze:stacksize '16384'.. This allocation was for a compiler-generated temporary for 'struct BallSystem' at line 54.  Consider moving some data to heap.</DESCRIPTION>
     <FUNCTION>App::{ctor}</FUNCTION>
     <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>48</FUNCLINE>
+    <FUNCLINE>49</FUNCLINE>
     <PATH></PATH>
   </DEFECT><DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>Q_App.h</FILENAME>
-      <LINE>48</LINE>
+      <LINE>49</LINE>
       <COLUMN>5</COLUMN>
     </SFA>
     <DEFECTCODE>26495</DEFECTCODE>
     <DESCRIPTION>Variable 'App::ReplayHUD' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
     <FUNCTION>App::{ctor}</FUNCTION>
     <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>48</FUNCLINE>
+    <FUNCLINE>49</FUNCLINE>
     <ADDITIONALINFO>
       <targetSymbol>App::ReplayHUD</targetSymbol>
     </ADDITIONALINFO>
@@ -57,66 +57,27 @@
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>205</LINE>
+      <LINE>206</LINE>
       <COLUMN>4</COLUMN>
     </SFA>
     <DEFECTCODE>6262</DEFECTCODE>
-    <DESCRIPTION>Function uses '79472' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.</DESCRIPTION>
+    <DESCRIPTION>Function uses '79480' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.</DESCRIPTION>
     <FUNCTION>main</FUNCTION>
     <DECORATED>main</DECORATED>
-    <FUNCLINE>205</FUNCLINE>
+    <FUNCLINE>206</FUNCLINE>
     <PATH></PATH>
   </DEFECT><DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>244</LINE>
+      <LINE>245</LINE>
       <COLUMN>11</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Return value ignored: 'fscanf'.</DESCRIPTION>
     <FUNCTION>main</FUNCTION>
     <DECORATED>main</DECORATED>
-    <FUNCLINE>205</FUNCLINE>
-    <PATH></PATH>
-  </DEFECT><DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>474</LINE>
-      <COLUMN>11</COLUMN>
-    </SFA>
-    <DEFECTCODE>6031</DEFECTCODE>
-    <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
-    <FUNCTION>CreateNewPlanet</FUNCTION>
-    <DECORATED>?CreateNewPlanet@@YAXAEAUBallSystem@@@Z</DECORATED>
-    <FUNCLINE>455</FUNCLINE>
-    <PATH></PATH>
-  </DEFECT><DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>475</LINE>
-      <COLUMN>11</COLUMN>
-    </SFA>
-    <DEFECTCODE>6031</DEFECTCODE>
-    <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
-    <FUNCTION>CreateNewPlanet</FUNCTION>
-    <DECORATED>?CreateNewPlanet@@YAXAEAUBallSystem@@@Z</DECORATED>
-    <FUNCLINE>455</FUNCLINE>
-    <PATH></PATH>
-  </DEFECT><DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>480</LINE>
-      <COLUMN>11</COLUMN>
-    </SFA>
-    <DEFECTCODE>6031</DEFECTCODE>
-    <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
-    <FUNCTION>CreateNewPlanet</FUNCTION>
-    <DECORATED>?CreateNewPlanet@@YAXAEAUBallSystem@@@Z</DECORATED>
-    <FUNCLINE>455</FUNCLINE>
+    <FUNCLINE>206</FUNCLINE>
     <PATH></PATH>
   </DEFECT><DEFECT>
     <SFA>
@@ -129,84 +90,175 @@
     <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
     <FUNCTION>CreateNewPlanet</FUNCTION>
     <DECORATED>?CreateNewPlanet@@YAXAEAUBallSystem@@@Z</DECORATED>
-    <FUNCLINE>455</FUNCLINE>
+    <FUNCLINE>467</FUNCLINE>
     <PATH></PATH>
   </DEFECT><DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>491</LINE>
+      <LINE>487</LINE>
       <COLUMN>11</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
     <FUNCTION>CreateNewPlanet</FUNCTION>
     <DECORATED>?CreateNewPlanet@@YAXAEAUBallSystem@@@Z</DECORATED>
-    <FUNCLINE>455</FUNCLINE>
+    <FUNCLINE>467</FUNCLINE>
     <PATH></PATH>
   </DEFECT><DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>508</LINE>
+      <LINE>492</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
+    <FUNCTION>CreateNewPlanet</FUNCTION>
+    <DECORATED>?CreateNewPlanet@@YAXAEAUBallSystem@@@Z</DECORATED>
+    <FUNCLINE>467</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>GravitySystem.cpp</FILENAME>
+      <LINE>498</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
+    <FUNCTION>CreateNewPlanet</FUNCTION>
+    <DECORATED>?CreateNewPlanet@@YAXAEAUBallSystem@@@Z</DECORATED>
+    <FUNCLINE>467</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>GravitySystem.cpp</FILENAME>
+      <LINE>503</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
+    <FUNCTION>CreateNewPlanet</FUNCTION>
+    <DECORATED>?CreateNewPlanet@@YAXAEAUBallSystem@@@Z</DECORATED>
+    <FUNCLINE>467</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>GravitySystem.cpp</FILENAME>
+      <LINE>520</LINE>
       <COLUMN>5</COLUMN>
     </SFA>
     <DEFECTCODE>6262</DEFECTCODE>
     <DESCRIPTION>Function uses '39280' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.</DESCRIPTION>
     <FUNCTION>unitTest</FUNCTION>
     <DECORATED>?unitTest@@YAXUBallSystem@@PEAU_iobuf@@@Z</DECORATED>
-    <FUNCLINE>508</FUNCLINE>
+    <FUNCLINE>520</FUNCLINE>
     <PATH></PATH>
   </DEFECT><DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>602</LINE>
+      <LINE>614</LINE>
       <COLUMN>5</COLUMN>
     </SFA>
     <DEFECTCODE>6262</DEFECTCODE>
     <DESCRIPTION>Function uses '39228' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.</DESCRIPTION>
     <FUNCTION>playSystem</FUNCTION>
     <DECORATED>?playSystem@@YAXXZ</DECORATED>
-    <FUNCLINE>602</FUNCLINE>
+    <FUNCLINE>614</FUNCLINE>
     <PATH></PATH>
   </DEFECT><DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>745</LINE>
+      <LINE>757</LINE>
       <COLUMN>4</COLUMN>
     </SFA>
     <DEFECTCODE>6292</DEFECTCODE>
     <DESCRIPTION>Ill-defined for-loop:  counts up from maximum.</DESCRIPTION>
     <FUNCTION>RunEngineExperiment</FUNCTION>
     <DECORATED>?RunEngineExperiment@@YAXXZ</DECORATED>
-    <FUNCLINE>719</FUNCLINE>
+    <FUNCLINE>731</FUNCLINE>
     <PATH></PATH>
   </DEFECT><DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>953</LINE>
+      <LINE>966</LINE>
       <COLUMN>5</COLUMN>
     </SFA>
     <DEFECTCODE>6262</DEFECTCODE>
     <DESCRIPTION>Function uses '39220' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.</DESCRIPTION>
     <FUNCTION>copyFrame</FUNCTION>
     <DECORATED>?copyFrame@@YAXQEAUBallSystem@@U1@H@Z</DECORATED>
-    <FUNCLINE>953</FUNCLINE>
+    <FUNCLINE>966</FUNCLINE>
     <PATH></PATH>
   </DEFECT><DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>1079</LINE>
+      <LINE>1092</LINE>
       <COLUMN>22</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Return value ignored: '_getch'.</DESCRIPTION>
     <FUNCTION>cometShooting</FUNCTION>
     <DECORATED>?cometShooting@@YAXXZ</DECORATED>
-    <FUNCLINE>1034</FUNCLINE>
+    <FUNCLINE>1047</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>GravitySystem.cpp</FILENAME>
+      <LINE>1271</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Return value ignored: 'fscanf'.</DESCRIPTION>
+    <FUNCTION>makeScreenShot</FUNCTION>
+    <DECORATED>?makeScreenShot@@YAXXZ</DECORATED>
+    <FUNCLINE>1264</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>GravitySystem.cpp</FILENAME>
+      <LINE>1272</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Return value ignored: 'fscanf'.</DESCRIPTION>
+    <FUNCTION>makeScreenShot</FUNCTION>
+    <DECORATED>?makeScreenShot@@YAXXZ</DECORATED>
+    <FUNCLINE>1264</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>GravitySystem.cpp</FILENAME>
+      <LINE>1272</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>6066</DEFECTCODE>
+    <DESCRIPTION>Non-pointer passed as _Param_(3) when pointer is required in call to 'fscanf' Actual type: 'int'.</DESCRIPTION>
+    <FUNCTION>makeScreenShot</FUNCTION>
+    <DECORATED>?makeScreenShot@@YAXXZ</DECORATED>
+    <FUNCLINE>1264</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>GravitySystem.cpp</FILENAME>
+      <LINE>1284</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>6340</DEFECTCODE>
+    <DESCRIPTION>Mismatch on sign: 'bool' passed as _Param_(2) when some signed type is required in call to 'printf'.</DESCRIPTION>
+    <FUNCTION>makeScreenShot</FUNCTION>
+    <DECORATED>?makeScreenShot@@YAXXZ</DECORATED>
+    <FUNCLINE>1264</FUNCLINE>
     <PATH></PATH>
   </DEFECT></DEFECTS>

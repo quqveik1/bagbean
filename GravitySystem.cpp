@@ -171,6 +171,7 @@ void ClearBackground (HDC HUD);
 void   SwitchColour (Ball *ball);
 double SwitchRadius (double r);
 void ControlDelta ();
+void makeScreenShot ();
 
 
 
@@ -239,11 +240,20 @@ int main()
 
     FILE *config = fopen ("GravitySystemFolder/Config.txt", "r");
     assert (config);
-    
-
     fscanf (config, "Resolution: %d ", &Resolution);
+    
+    /*!!BAG
+    if (fscanf (config, "Resolution: %d ", &Resolution) = 1);
+    {
+        Resolution = 720;
+        if (txMessageBox ("Невозможно считать config.txt\nПродолжить выполнение программы", "Критическая ошибка", MB_YESNO) == 2)
+        {
+            return 0;
+        }
+    }\
+    */
     //printf ("Разрешение программы: %d", Resolution);
-
+    
 
 
 
@@ -258,15 +268,18 @@ int main()
         //printf ("p(FULL HD)");
         MonitorSize = {1800, 1000};
     }
+    fclose (config);
     
 
+   
     
     //txCreateWindow (MonitorSize.x, MonitorSize.y);
-    txCreateWindow (MonitorSize.x, MonitorSize.y);
+    MainScreen = txCreateWindow (MonitorSize.x, MonitorSize.y);
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
     App gravitySys;
     TheGS = &gravitySys;
+    
     int mode = 1;
 
     if (Resolution == 720)
@@ -289,146 +302,156 @@ int main()
          TheGS->cleanButton = {.pos = {285, 0}, .size = {280, 80}};
          TheGS->exitButtonHUD = {.pos = {1020, 0}, .size = {180, 70}};
          TheGS->newPlanetButton = {.pos = {0, 0}, .size = {280, 80}};
+         TheGS->screenShotButton = {.pos = {0, 90}, .size = {130, 40}};
          TheGS->path = "GravitySystemFolder/DevMaterials/Hud720p.bmp";
     }
 
     if (Resolution == 1080)
     {
-        TheGS->path = "GravitySystemFolder/DevMaterials/Hud3.bmp";
+       TheGS->path = "GravitySystemFolder/DevMaterials/Hud3.bmp";
         //!Временно поддержка приостановлена
     }
 
+
+
     TheGS->HUD = txLoadImage (TheGS->path);
+    txBegin ();
 
     for (;;)
     {
-        //RECT r = {TheGS->startButton.left(), TheGS->startButton.top(), TheGS->startButton.right(), TheGS->startButton.bottom()};
-        //POINT point = {txMousePos ().x, txMousePos ().y}; 
-        if (onButtonClicked (TheGS->startButton))
+        txBitBlt (0, 0, TheGS->Menu);
+        txSleep (0);
+        for (;;)
         {
-            mode = 1;
-            //txSleep(1000);
-            break;
-        }
+           
+            //RECT r = {TheGS->startButton.left(), TheGS->startButton.top(), TheGS->startButton.right(), TheGS->startButton.bottom()};
+            //POINT point = {txMousePos ().x, txMousePos ().y}; 
+            if (onButtonClicked (TheGS->startButton))
+            {
+                mode = 1;
+                //txSleep(1000);
+                break;
+            }
 
        
-        if (onButtonClicked (TheGS->repeatButton))
-        {
-            mode = 0;
-            break;
-        }
+            if (onButtonClicked (TheGS->repeatButton))
+            {
+                mode = 0;
+                break;
+            }
 
-        if (onButtonClicked (TheGS->infoButton))
-        {
-            printFAQ ();
-            continue;
-        }
+            if (onButtonClicked (TheGS->infoButton))
+            {
+                printFAQ ();
+                continue;
+            }
 
-        if (onButtonClicked (TheGS->exitButton))
-        {
-            txEnd ();
-            txDisableAutoPause ();
-            txDeleteDC (TheGS->Menu);
-            txDeleteDC (TheGS->HUD);
-            txDeleteDC (TheGS->ReplayHUD);
+            if (onButtonClicked (TheGS->exitButton))
+            {
+                txEnd ();
+                txDisableAutoPause ();
+                txDeleteDC (TheGS->Menu);
+                txDeleteDC (TheGS->HUD);
+                txDeleteDC (TheGS->ReplayHUD);
 
-            return 0;
+                return 0;
+            }
         }
-    }
 
     
    
-    //HDC HUD = txLoadImage (TheGS->path);
+        //HDC HUD = txLoadImage (TheGS->path);
 
 
 
-    //sumColorsUnitTest();
+        //sumColorsUnitTest();
 
-    //(void) (_getch ());
+        //(void) (_getch ());
     
-    //!!!system ("cls");
-
-    if (mode == 1)
-    {
+        //!!!system ("cls");
+        
+        if (mode == 1)
+        {
     
-        /*
-        ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED};
-        ball[1] = {txToss ({0,    -400}),  {7, 7}, 1e4, 10, 2, TX_RED};
-        ball[2] = {txToss ({0,    +400}), {18, 17}, 1e4, 10, 5, TX_RED};
-        ball[3] = {txToss ({400,  -400}), {7, 7}, 1e4, 10, 2, TX_RED};
-        */
+            /*
+            ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED};
+            ball[1] = {txToss ({0,    -400}),  {7, 7}, 1e4, 10, 2, TX_RED};
+            ball[2] = {txToss ({0,    +400}), {18, 17}, 1e4, 10, 5, TX_RED};
+            ball[3] = {txToss ({400,  -400}), {7, 7}, 1e4, 10, 2, TX_RED};
+            */
 
 
-        TheGS->ballS.currlength = 0;
-        TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, 0}),     {0, 0},  1e17, 10, 2e5, TX_YELLOW};
-        TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -400}),  {24, 0}, 1e4,  10, 2,   TX_CYAN};
-        TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -200}),  {32, 0}, 1e4,  10, 2,   TX_RED};
+            TheGS->ballS.currlength = 0;
+            TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, 0}),     {0, 0},  1e17, 10, 2e5, TX_YELLOW};
+            TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -400}),  {24, 0}, 1e4,  10, 2,   TX_CYAN};
+            TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -200}),  {32, 0}, 1e4,  10, 2,   TX_RED};
         
 
-        /*
-        ballS.addBall ({txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED});
-        ballS.addBall ({txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_RED});
-        ballS.addBall ({txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED}};
-        */
+            /*
+            ballS.addBall ({txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED});
+            ballS.addBall ({txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_RED});
+            ballS.addBall ({txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED}};
+            */
 
-        for (int i = TheGS->ballS.currlength; i < BallMax; i++)
-        {
-            assert (0 <= i && i < BallMax);
+            for (int i = TheGS->ballS.currlength; i < BallMax; i++)
+            {
+                assert (0 <= i && i < BallMax);
 
-            TheGS->ballS.ball[i] = {txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED};
+                TheGS->ballS.ball[i] = {txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED};
+            }
+
+            //ball[3] = {txToss ({0, -100}),  {10, 0}, 1e4, 10, 2, TX_RED};
+
+            for (int i = 0; i < BallMax; i++)
+            {
+                assert (0 <= i && i < BallMax);
+
+                TheGS->planetsInit[i] = TheGS->ballS.ball[i];
+            }
+            /*
+            for (int n = 0; n < 1; n++)
+            {   */
+            for (int i = 0; i < TheGS->ballS.currlength; i++)
+            {
+                assert (0 <= i && i < BallMax);
+                TheGS->ballS.ball[i] = TheGS->planetsInit[i];
+            }
+
+            //txEnd ();
+            ///printf ("Vx = ");
+            //if (scanf  ("%lg", &ballS.ball[2].v.x) != 1) break;
+
+            //if (ballS.ball[2].v.x == -1 && ballS.ball[2].v.y  == -1) break;
+            //txBegin ();
+        
+        
+            RunEngineExperiment ();
+
+            //oif (txGetAsyncKeyState('O')) break;
+
+            //txEnd ();
+
+            //txDisableAutoPause ();
+        
+            //txDeleteDC (TheGS->);
+
         }
 
-        //ball[3] = {txToss ({0, -100}),  {10, 0}, 1e4, 10, 2, TX_RED};
-
-        for (int i = 0; i < BallMax; i++)
+        if (mode == 0)
         {
-            assert (0 <= i && i < BallMax);
+            TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
+            playSystem ();
+            //txEnd ();
 
-            TheGS->planetsInit[i] = TheGS->ballS.ball[i];
+            //txDisableAutoPause ();
         }
-
-        txBegin ();
-        /*
-        for (int n = 0; n < 1; n++)
-        {   */
-        for (int i = 0; i < TheGS->ballS.currlength; i++)
-        {
-            assert (0 <= i && i < BallMax);
-            TheGS->ballS.ball[i] = TheGS->planetsInit[i];
-        }
-
-        //txEnd ();
-        ///printf ("Vx = ");
-        //if (scanf  ("%lg", &ballS.ball[2].v.x) != 1) break;
-
-        //if (ballS.ball[2].v.x == -1 && ballS.ball[2].v.y  == -1) break;
-        //txBegin ();
-        
-        
-        RunEngineExperiment ();
-
-        //oif (txGetAsyncKeyState('O')) break;
-
-        txEnd ();
-
-        txDisableAutoPause ();
-        
-        //txDeleteDC (TheGS->);
-
-    }
-
-    if (mode == 0)
-    {
-        TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
-        playSystem ();
-        txEnd ();
-
-        txDisableAutoPause ();
     }
 
     txDeleteDC (TheGS->Menu);
     txDeleteDC (TheGS->HUD);
     txDeleteDC (TheGS->ReplayHUD);
+    txEnd ();
+
 
     return 0;
 }
@@ -901,6 +924,7 @@ bool onButtonClicked (Rect Button)
 
 void printFAQ ()
 {
+    
     txMessageBox ("Это простая физическая симуляция\n\n"
                       "Для запуска просто запустите .exe, если вдруг антивирус винды предложит отазаться, то нажмите подробнее, выполнить в любом случае\n\n"
                       "Инструкция по управлению:\n\n"
@@ -916,7 +940,7 @@ void printFAQ ()
                       "Примечание: кнопка \"скрыть\", пока не работает,\n"
                       "            также планеты могут залазить на элементы интерфейса\n"
                       "P.S. Можете понажимать разные клавиши, тут очень много функции\n\n",//!!!Автроы
-                      "Инструкция по использованию", MB_OK);
+                      "Инструкция по использованию");
 }
 
 
@@ -1041,7 +1065,8 @@ void cometShooting ()
             txMousePos().y < (TheGS->monitorS.pos.y + TheGS->monitorS.size.y) &&
             !inButtonMouse (TheGS->cleanButton) && 
             !inButtonMouse (TheGS->exitButtonHUD) && 
-            !inButtonMouse (TheGS->newPlanetButton)
+            !inButtonMouse (TheGS->newPlanetButton) &&
+            !inButtonMouse (TheGS->screenShotButton)
            ) 
         {
         
@@ -1233,9 +1258,10 @@ void ControlAllBalls ()
         if (TheGS->ballS.ball[i].alive) 
             Control (&TheGS->ballS.ball[i]);
 
-        if (txGetAsyncKeyState (VK_TAB))
+        if (onButtonClicked (TheGS->screenShotButton))
         {
-            CreateNewPlanet (TheGS->ballS);
+            //CreateNewPlanet (TheGS->ballS);
+            makeScreenShot ();
         } 
 
         if (onButtonClicked (TheGS->newPlanetButton))
@@ -1246,6 +1272,30 @@ void ControlAllBalls ()
         
     }
 }  
+
+void makeScreenShot ()
+{
+    FILE *lastScreenShotr = fopen ("GravitySystemFolder/Config.txt", "r");
+    assert (lastScreenShotr);
+    int currRes = 0;
+    int lastScreenShot = 0;
+
+    fscanf (lastScreenShotr, "Resolution: %d\n", &currRes);
+    fscanf (lastScreenShotr, "Last Screen: %d", &lastScreenShot);
+    fclose (lastScreenShotr);
+
+    FILE *lastScreenShotw = fopen ("GravitySystemFolder/Config.txt", "w");
+    assert (lastScreenShotw);
+
+    fprintf (lastScreenShotw, "Resolution: %d\n", currRes);
+    fprintf (lastScreenShotw, "Last Screen: %d", lastScreenShot + 1);
+    fclose (lastScreenShotw);
+
+    char path[100] = {};
+    sprintf (path, "GravitySystemFolder/ScreenShots/ScreenShot_%d.bmp", lastScreenShot++);
+    assert (txSaveImage (path, GetWindowDC (MainScreen)));
+
+}           
 
 void ControlDelta ()
 {
