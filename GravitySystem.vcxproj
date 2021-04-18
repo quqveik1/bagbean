@@ -177,6 +177,7 @@
       <LanguageStandard />
       <EnablePREfast>true</EnablePREfast>
       <AdditionalIncludeDirectories>﻿C:\Users\Алехандро\Desktop\Alex_projects\TX</AdditionalIncludeDirectories>
+      <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

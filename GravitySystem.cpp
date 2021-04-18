@@ -128,8 +128,8 @@ void writeBall (const Ball &ball, FILE *ballFile);
 
 void playSystem ();
 void drawFrameReplay (BallSystem *ballS);
-void readAllBall (BallSystem *ballS, FILE *ballFile);
-void readBall (Ball *ball, FILE *ballFile);
+int readAllBall (BallSystem *ballS, FILE *ballFile);
+int readBall (Ball *ball, FILE *ballFile);
 
 double elDeg (const double number, const double deg);
 double degreesOfDouble (const double number, int degree);
@@ -170,6 +170,7 @@ void ClearBackground ();
 void ClearBackground (HDC HUD);
 void   SwitchColour (Ball *ball);
 double SwitchRadius (double r);
+void ControlDelta ();
 
 
 
@@ -306,7 +307,7 @@ int main()
         if (onButtonClicked (TheGS->startButton))
         {
             mode = 1;
-            txSleep(1000);
+            //txSleep(1000);
             break;
         }
 
@@ -327,6 +328,10 @@ int main()
         {
             txEnd ();
             txDisableAutoPause ();
+            txDeleteDC (TheGS->Menu);
+            txDeleteDC (TheGS->HUD);
+            txDeleteDC (TheGS->ReplayHUD);
+
             return 0;
         }
     }
@@ -605,7 +610,19 @@ void playSystem ()
     {
         ClearBackground (TheGS->ReplayHUD);
 
-        readAllBall (&currBallS, ballSystemRecording);
+        int readCode = readAllBall (&currBallS, ballSystemRecording);
+        if (readCode == 0)
+        {
+            txMessageBox ("Программа не может считать данные сохранений", "Ошибка", MB_OK);
+            txDeleteDC (HUD);
+            return;
+        }
+        if (readCode == -1)
+        {
+            txMessageBox ("Повтор закончился", "Окончание повтора", MB_OK);
+            txDeleteDC (HUD);
+            return;
+        }
 
         drawFrameReplay (&currBallS);
 
@@ -666,23 +683,29 @@ void writeAllBall (FILE *ballFile)
     fprintf (ballFile, "\n");
 }
 
-void readAllBall (BallSystem *ballS, FILE *ballFile)
+int readAllBall (BallSystem *ballS, FILE *ballFile)
 {
     for (int i = 0; i < BallMax; i++)
     {
         assert (0 <= i && i < BallMax);
+        int readCode = readBall ( &(ballS->ball[i]), ballFile);
 
-        readBall ( &(ballS->ball[i]), ballFile);
+        if (readCode == 0 || readCode == -1)
+        {
+            return readCode;
+        }
     }
+    return 100;
 
     //lining ();
 }
 
-void readBall (Ball *ball, FILE *ballFile)
+int readBall (Ball *ball, FILE *ballFile)
 {
-    (void) fscanf (ballFile, "{{%lf, %lf}, color: %u, r: %lf, alive: %u} ||| ", &ball->pos.x , &ball->pos.y, &ball->color, &ball->r, (unsigned int*) &ball->alive);
+    return fscanf (ballFile, "{{%lf, %lf}, color: %u, r: %lf, alive: %u} ||| ", &ball->pos.x , &ball->pos.y, &ball->color, &ball->r, (unsigned int*) &ball->alive);
     //printf (          "{{%lf, %lf}, color: %u, r: %lf, alive: %u}\n ",    ball->pos.x ,  ball->pos.y,  ball->color,  ball->r,                  ball->alive);
     //_getch();
+    
 }
 /*
 inline void lining ()
@@ -858,7 +881,16 @@ bool onButtonClicked (Rect Button)
         {
             if (txMouseY () > Button.top () && txMouseY () <  Button.bottom ())
             {
-                return true;
+                while (txMouseButtons () == 1)
+                {
+                };
+                if (txMouseX () > Button.left () && txMouseX () <  Button.right ())
+                {
+                    if (txMouseY () > Button.top () && txMouseY () <  Button.bottom ())
+                    {
+                        return true;
+                    }
+                }
             }
         }
     }
@@ -881,6 +913,8 @@ void printFAQ ()
                       "4. W - уменьшение размера планет, Е - противоположное\n\n"
                       "5*. В папке приложения вы можете найти папку GravitySystemFolder пройдите в нее и там есть файл Config.txt, там можно задавать разрешение экрана(720 или 1080) (Пример: Resolution: 720)\n\n" 
                       "6*. Все ваши симмуляции записываются, и храняться в папке GravitySystemFolder, называется EngeneExperiment.txt, вы можете СКОПИРОВАТЬ (файл не рекомендуется уносить из его папки) в папку BestMoments\n\n"
+                      "Примечание: кнопка \"скрыть\", пока не работает,\n"
+                      "            также планеты могут залазить на элементы интерфейса\n"
                       "P.S. Можете понажимать разные клавиши, тут очень много функции\n\n",//!!!Автроы
                       "Инструкция по использованию", MB_OK);
 }
@@ -1013,7 +1047,7 @@ void cometShooting ()
         
             Vector finishPos = {};
             Vector speed     = returnMouseVector (&finishPos);
-
+            /*
             Ball comet   = {};
             comet.pos    = finishPos;
             comet.v      = speed;
@@ -1022,9 +1056,18 @@ void cometShooting ()
             comet.r      = 10;
             $s
             comet.color = CometColor;
+            */
+            Ball comet = {};
+            equal (comet.pos, finishPos);
+            equal (comet.v, speed);
+            comet.m      = 1e4;
+            comet.charge = 2e1;
+            comet.r      = 10;
+            $s
+            comet.color = CometColor;
             
             //txSleep (0);
-            if (TheGS->ballS.currlength + 1 < BallMax)
+            if ((TheGS->ballS.currlength) + 1 < BallMax)
             {
                 TheGS->ballS.addBall (comet);
                 TheGS->console.print ("Комета успешно добавилась");
@@ -1033,6 +1076,7 @@ void cometShooting ()
             if (TheGS->ballS.currlength + 1 >= BallMax)
             {
                 txMessageBox ("Невозможно добавить новую планету", "Предупреждение", MB_OK);
+                _getch();
             }
         }
 
@@ -1096,7 +1140,8 @@ void drawAllBall ()
 
          //printf ("%d", !inRect ({TheGS->ballS.ball[i].pos.x, TheGS->ballS.ball[i].pos.y}, TheGS->miniMap.sysBorderPix_));
          //!!!ERROR
-         if (!inRect ({TheGS->ballS.ball[i].pos.x, TheGS->ballS.ball[i].pos.y}, TheGS->miniMap.sysBorderPix_))
+         //printf ("%d",  !inRect (TheGS->ballS.ball[i].pos, TheGS->miniMap.sysBorderPix_));
+         if (!inRect (TheGS->ballS.ball[i].pos, TheGS->newPlanetButton) && !inRect (TheGS->ballS.ball[i].pos, TheGS->cleanButton) && !inRect (TheGS->ballS.ball[i].pos, TheGS->exitButtonHUD))
             {
             if (TheGS->ballS.ball[i].alive)
             {
@@ -1197,7 +1242,21 @@ void ControlAllBalls ()
         {
             CreateNewPlanet (TheGS->ballS);
         }
+        ControlDelta ();
+        
     }
+}  
+
+void ControlDelta ()
+{
+    if (txGetAsyncKeyState (VK_OEM_PLUS))
+    {
+        SLEEPINGTIME--;
+    } 
+    if (txGetAsyncKeyState (VK_OEM_MINUS))
+    {
+        SLEEPINGTIME++;
+    } 
 }
 
 //use for read mode

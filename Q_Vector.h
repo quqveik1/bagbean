@@ -10,6 +10,7 @@ struct Vector
     explicit operator double ();
 };
 
+void equal (Vector &a, const Vector &b);
 inline Vector operator +  (const Vector &a, const Vector &b);
 inline Vector &operator += (Vector &a, const Vector &b);
 inline Vector operator -  (const Vector &a, const Vector &b);
@@ -96,6 +97,14 @@ Vector operator ^ (const Vector &vector, int degree)
 
     return result;
 };
+
+void equal (Vector &a, const Vector &b)
+{
+    a.x = b.x;
+    a.y = b.y;
+}
+
+
 inline void lining ()
 {
     printf ("////////////////////////////////////\n");

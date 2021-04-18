@@ -1,0 +1,3 @@
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\x64\Release\GravitySystem.exe.lastcodeanalysissucceeded
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\x64\Release\NativeCodeAnalysis.read.1.tlog
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\x64\Release\GravitySystem.exe

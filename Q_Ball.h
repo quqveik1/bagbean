@@ -134,7 +134,7 @@ void Ball::DrawHistoryLines ()
 
 void BallSystem::addBall (Ball newBall)
 {
-    assert (0 <= currlength && currlength < BallMax);
+    assert (0 <= currlength && currlength < BallMax - 1);
 
     ball[currlength].pos    = newBall.pos;
     ball[currlength].v      = newBall.v;

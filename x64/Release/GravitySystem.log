@@ -1,0 +1,24 @@
+﻿  GravitySystem.cpp
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(457,10): warning C4189: 'escape': local variable is initialized but not referenced
+  Generating code
+  2 of 596 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    12 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  GravitySystem.vcxproj -> C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\x64\Release\GravitySystem.exe
+C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h(6725): warning C26819: Unannotated fallthrough between switch labels (es.78).
+C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h(8826): warning C26819: Unannotated fallthrough between switch labels (es.78).
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\Q_App.h(53): warning C6262: Function uses '39208' bytes of stack:  exceeds /analyze:stacksize '16384'.. This allocation was for a compiler-generated temporary for 'struct BallSystem' at line 53.  Consider moving some data to heap.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\Q_App.h(48): warning C26495: Variable 'App::ReplayHUD' is uninitialized. Always initialize a member variable (type.6).
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(205): warning C6262: Function uses '79472' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(244): warning C6031: Return value ignored: 'fscanf'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(474): warning C6031: Return value ignored: 'sscanf'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(475): warning C6031: Return value ignored: 'sscanf'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(480): warning C6031: Return value ignored: 'sscanf'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(486): warning C6031: Return value ignored: 'sscanf'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(491): warning C6031: Return value ignored: 'sscanf'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(508): warning C6262: Function uses '39280' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(602): warning C6262: Function uses '39228' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(745): warning C6292: Ill-defined for-loop:  counts up from maximum.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(953): warning C6262: Function uses '39220' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(1079): warning C6031: Return value ignored: '_getch'.
