@@ -1,0 +1,6 @@
+﻿  TestingApp.cpp
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\TestingApp\TestingApp.cpp(6,1): warning C4005: 'txCircle': macro redefinition
+C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h(15775): message : see previous definition of 'txCircle'
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\TestingApp\TestingApp.cpp(7,1): warning C4005: 'txSetColor': macro redefinition
+C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h(15843): message : see previous definition of 'txSetColor'
+  TestingApp.vcxproj -> C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\x64\Debug\TestingApp.exe

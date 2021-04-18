@@ -28,6 +28,8 @@ public:
     Rect exitButtonHUD;
     Rect newPlanetButton;
     Rect screenShotButton;
+    Rect minusSpeedButton;
+    Rect plusSpeedButton;
 
     HDC ReplayHUD;
 
@@ -49,7 +51,6 @@ public:
 
 App::App ():
     path ("GravitySystemFolder/DevMaterials/Hud3.bmp"),
-    HUD (txLoadImage (path)),
     miniMap (Vector{25,  685}, Vector{375,  285}, {(double) txGetExtentX (), (double) txGetExtentY ()}),
     console (Vector{25, 375}, Vector{25, 375}),
     ballS ({}),

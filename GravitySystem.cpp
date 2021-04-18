@@ -1,4 +1,4 @@
-﻿
+﻿//#define _TX_ALLOW_TRACE 9
 #define  _CRT_SECURE_NO_WARNINGS
 
 //#include "TXLib.h"
@@ -172,6 +172,7 @@ void   SwitchColour (Ball *ball);
 double SwitchRadius (double r);
 void ControlDelta ();
 void makeScreenShot ();
+void printfDCS (const char *str);
 
 
 
@@ -206,12 +207,15 @@ fgets (str, size, myfile);
 int main()
 {
 
+    
+
 
     //txCreateWindow (800, 600);
     //txSetColor     (TX_LIGHTRED);
     //txSetFillColor (TX_RED);
     
     (void) _mkdir ("GravitySystemFolder");
+    (void) _mkdir ("GravitySystemFolder/ScreenShots");
 
     /*
     Ball ball1 = {{100, 400}, {5, 5}, {0, 0.7}, 20};
@@ -275,6 +279,7 @@ int main()
     
     //txCreateWindow (MonitorSize.x, MonitorSize.y);
     MainScreen = txCreateWindow (MonitorSize.x, MonitorSize.y);
+    //printfDCS ("CreateWindow");
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
     App gravitySys;
@@ -293,6 +298,7 @@ int main()
          TheGS->miniMap.coorSize_ = {(double) txGetExtentX (), (double)txGetExtentY ()};
          TheGS->mainPlace = {.pos = {290, 0}, .size = {(double) (txGetExtentX () - 290), (double) (txGetExtentY () - 0)}};
          TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/Menu720p_2.bmp");
+         //printfDCS ("Menu");
          txBitBlt (0, 0, TheGS->Menu);
 
          TheGS->startButton = {.pos = {15, 105}, .size = {415, 160}};
@@ -302,7 +308,9 @@ int main()
          TheGS->cleanButton = {.pos = {285, 0}, .size = {280, 80}};
          TheGS->exitButtonHUD = {.pos = {1020, 0}, .size = {180, 70}};
          TheGS->newPlanetButton = {.pos = {0, 0}, .size = {280, 80}};
-         TheGS->screenShotButton = {.pos = {0, 90}, .size = {130, 40}};
+         TheGS->screenShotButton = {.pos = {0, 90}, .size = {150, 40}};
+         TheGS->minusSpeedButton = {.pos = {157, 90}, .size = {40, 40}};
+         TheGS->plusSpeedButton = {.pos = {205, 90}, .size = {40, 40}};
          TheGS->path = "GravitySystemFolder/DevMaterials/Hud720p.bmp";
     }
 
@@ -315,10 +323,15 @@ int main()
 
 
     TheGS->HUD = txLoadImage (TheGS->path);
+    //printfDCS ("HUD");
+    TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
+    //printfDCS ("REplayHud");
+    
     txBegin ();
 
     for (;;)
     {
+        SLEEPINGTIME = 30;
         txBitBlt (0, 0, TheGS->Menu);
         txSleep (0);
         for (;;)
@@ -349,10 +362,12 @@ int main()
             if (onButtonClicked (TheGS->exitButton))
             {
                 txEnd ();
+                //printfDCS ("Before");
                 txDisableAutoPause ();
                 txDeleteDC (TheGS->Menu);
                 txDeleteDC (TheGS->HUD);
                 txDeleteDC (TheGS->ReplayHUD);
+                //printfDCS ("After");
 
                 return 0;
             }
@@ -439,7 +454,7 @@ int main()
 
         if (mode == 0)
         {
-            TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
+           
             playSystem ();
             //txEnd ();
 
@@ -454,6 +469,16 @@ int main()
 
 
     return 0;
+}
+
+void printfDCS (const char *str)
+{
+    printf ("%s\n", str);
+    for (int i = 0; i < _txCanvas_UserDCs->size (); i++)
+    {
+        printf ("%d: %p\n", i, (*_txCanvas_UserDCs)[i]);
+    }
+    _getch ();
 }
 
 /*
@@ -1066,7 +1091,9 @@ void cometShooting ()
             !inButtonMouse (TheGS->cleanButton) && 
             !inButtonMouse (TheGS->exitButtonHUD) && 
             !inButtonMouse (TheGS->newPlanetButton) &&
-            !inButtonMouse (TheGS->screenShotButton)
+            !inButtonMouse (TheGS->screenShotButton) &&
+            !inButtonMouse (TheGS->plusSpeedButton) &&
+            !inButtonMouse (TheGS->minusSpeedButton)
            ) 
         {
         
@@ -1299,11 +1326,11 @@ void makeScreenShot ()
 
 void ControlDelta ()
 {
-    if (txGetAsyncKeyState (VK_OEM_PLUS))
+    if (onButtonClicked (TheGS->plusSpeedButton))
     {
         SLEEPINGTIME--;
     } 
-    if (txGetAsyncKeyState (VK_OEM_MINUS))
+    if (onButtonClicked (TheGS->minusSpeedButton))
     {
         SLEEPINGTIME++;
     } 

@@ -83,3 +83,13 @@ x64/Debug/esp2BCF.tmp
 x64/Debug/esp49C1.tmp
 x64/Debug/esp4CD5.tmp
 x64/Debug/esp630D.tmp
+TestingApp/x64/Debug/TestingApp.Build.CppClean.log
+*.log
+TestingApp/x64/Debug/TestingApp.Build.CppClean.log
+TestingApp/x64/Debug/TestingApp.exe.recipe
+TestingApp/x64/Debug/TestingApp.log
+TestingApp/x64/Debug/TestingApp.tlog/CL.command.1.tlog
+TestingApp/x64/Debug/TestingApp.tlog/CL.read.1.tlog
+TestingApp/x64/Debug/TestingApp.tlog/CL.write.1.tlog
+TestingApp/x64/Debug/TestingApp.tlog/link.command.1.tlog
+TestingApp/x64/Debug/TestingApp.tlog/link.read.1.tlog
