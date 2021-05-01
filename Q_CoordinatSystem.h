@@ -101,7 +101,7 @@ Vector coordinatSys::drawCircle (Vector vector, double r)
     double rScale = (intepretK_.x + intepretK_.y) / 2;
 
     //if (pixPos.x > sysBorderPix_.left() && pixPos.y > sysBorderPix_.top() && pixPos.x < sysBorderPix_.right() && pixPos.y < sysBorderPix_.bottom())
-    txCircle(pixPos.x, pixPos.y, r * rScale);
+    txCircle (pixPos.x, pixPos.y, r * rScale);
 
     return pixPos;
 

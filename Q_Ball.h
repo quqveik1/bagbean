@@ -46,21 +46,25 @@ struct Rect
 
 void Ball::fillHistory ()
 {
-    assert (0 <= oldestNum && oldestNum < BallHistoryLength);
+    assert (0 <= oldestNum && oldestNum <= BallHistoryLength);
+
+    if (oldestNum >= (BallHistoryLength))
+    {
+        oldestNum = 0;
+    }
 
     history [oldestNum] = pos;
     oldestNum++;
 
-    if (oldestNum >= (sizeof (history) / sizeof (history[0])))
-    {
-        oldestNum = 0;
-    }
+    
 }
 
 void Ball::DrawHistory ()
 {
     const double kRgb = 225 / BallHistoryLength;
     double nColor = 0;
+    COLORREF currColor = txGetColor ();
+    COLORREF currFillColor = txGetFillColor ();
 
     for (int i = oldestNum; i < BallHistoryLength; i++)
     {
@@ -82,8 +86,8 @@ void Ball::DrawHistory ()
         nColor += kRgb;
     }
 
-    txSetFillColor (TX_PINK);
-    txSetColor     (TX_PINK);
+    txSetFillColor (currFillColor);
+    txSetColor     (currColor);
     //txCircle (history[oldestNum].x, history[oldestNum].y, 3);
 }
 

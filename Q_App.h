@@ -7,6 +7,9 @@
 #include "Q_CoordinatSystem.h"
 #include "Q_Console.h"
 
+bool isActive (HWND screen);
+
+
 /// <summary>
 /// 
 /// </summary>
@@ -37,29 +40,56 @@ public:
 
     Console console;
 
-    BallSystem ballS;
+    BallSystem ballS = {};
     Ball planetsInit[BallMax];
     Rect mainPlace;
     Rect sysInfo;
     Rect monitorS;
 
+    Rect windowPos;
+
     App ();
+    void getWindowPos ();
 
 
 
 };
 
+
+
 App::App ():
-    path ("GravitySystemFolder/DevMaterials/Hud3.bmp"),
     miniMap (Vector{25,  685}, Vector{375,  285}, {(double) txGetExtentX (), (double) txGetExtentY ()}),
     console (Vector{25, 375}, Vector{25, 375}),
-    ballS ({}),
     planetsInit {},
     mainPlace ({.pos = {450, 0},   .size = {1350, 1000}}),
     sysInfo   ({.pos = {25,  25},  .size = {400,  375}}),
     monitorS  ({.pos = {0, 0},     .size = MonitorSize})
 {
 
+}
+
+
+void App::getWindowPos ()
+{
+    RECT window = {0};
+
+    if (!GetWindowRect (MainScreen, &window))
+    {
+        printf ("%d", GetLastError ());
+    }
+    windowPos.pos = {.x = (double)window.left, .y = (double)window.top};
+    windowPos.size = {.x = ((double)window.right - windowPos.pos.x), .y = ((double)window.bottom - windowPos.pos.y)};
+}
+
+bool isActive (HWND screen)
+{
+    HWND currScreen = GetForegroundWindow ();
+
+    if (screen != currScreen)
+    {
+        return false;
+    }
+    return true;
 }
     
 

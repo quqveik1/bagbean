@@ -240,7 +240,12 @@ int main()
     Draw_verVector (vector, start, TX_RED, 5, DegToRad (1));
     */
    
+    Vector userScreen = {.x = (double)GetSystemMetrics (SM_CXSCREEN), .y = (double)GetSystemMetrics (SM_CYSCREEN)};
 
+    if (userScreen.x < 1800 && userScreen.y < 1000)
+    {
+        Resolution = 720;
+    }
 
     FILE *config = fopen ("GravitySystemFolder/Config.txt", "r");
     assert (config);
@@ -259,9 +264,19 @@ int main()
     //printf ("Разрешение программы: %d", Resolution);
     
 
-
-
     
+
+    if (Resolution == 0)
+    {
+        if (userScreen.x < 1800 && userScreen.y < 1000)
+        {
+           Resolution = 720;
+        }
+        else 
+        {
+            Resolution = 1080;
+        }
+    }
     if (Resolution == 720)
     {
         //printf ("p(HD)");
@@ -276,9 +291,9 @@ int main()
     
 
    
-    
     //txCreateWindow (MonitorSize.x, MonitorSize.y);
     MainScreen = txCreateWindow (MonitorSize.x, MonitorSize.y);
+    //txCreateWindow (1080, 1000);
     //printfDCS ("CreateWindow");
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
@@ -289,42 +304,78 @@ int main()
 
     if (Resolution == 720)
     {  
+        /*
          TheGS->sysInfo = {.pos = {15, 20}, .size = {255, 170}};
          TheGS->console.startPosPix_ = {15, 220};
          TheGS->console.scalePix_ = {255, 140};
+         */
          TheGS->miniMap.startPosPix_ = {0, 410};
          TheGS->miniMap.scalePix_ = {275, 190};
-         TheGS->miniMap.intepretK_= {{TheGS->miniMap.scalePix_.x / TheGS->miniMap.coorSize_.x}, {TheGS->miniMap.scalePix_.y / TheGS->miniMap.coorSize_.y}};
          TheGS->miniMap.coorSize_ = {(double) txGetExtentX (), (double)txGetExtentY ()};
-         TheGS->mainPlace = {.pos = {290, 0}, .size = {(double) (txGetExtentX () - 290), (double) (txGetExtentY () - 0)}};
-         TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/Menu720p_2.bmp");
-         //printfDCS ("Menu");
-         txBitBlt (0, 0, TheGS->Menu);
-
-         TheGS->startButton = {.pos = {15, 105}, .size = {415, 160}};
-         TheGS->repeatButton = {.pos = {15, 300}, .size = {415, 160}};
-         TheGS->infoButton = {.pos = {15, 485}, .size = {100, 100}};
-         TheGS->exitButton = {.pos = {1020, 530}, .size = {180, 70}};
-         TheGS->cleanButton = {.pos = {285, 0}, .size = {280, 80}};
+         TheGS->miniMap.intepretK_= {{TheGS->miniMap.scalePix_.x / TheGS->miniMap.coorSize_.x}, {TheGS->miniMap.scalePix_.y / TheGS->miniMap.coorSize_.y}};
          TheGS->exitButtonHUD = {.pos = {1020, 0}, .size = {180, 70}};
          TheGS->newPlanetButton = {.pos = {0, 0}, .size = {280, 80}};
          TheGS->screenShotButton = {.pos = {0, 90}, .size = {150, 40}};
          TheGS->minusSpeedButton = {.pos = {157, 90}, .size = {40, 40}};
          TheGS->plusSpeedButton = {.pos = {205, 90}, .size = {40, 40}};
-         TheGS->path = "GravitySystemFolder/DevMaterials/Hud720p.bmp";
+         TheGS->cleanButton = {.pos = {285, 0}, .size = {280, 80}};
+         //TheGS->mainPlace = {.pos = {290, 0}, .size = {(double) (txGetExtentX () - 290), (double) (txGetExtentY () - 0)}};
+         TheGS->HUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p.bmp");
+         //TheGS->path = "GravitySystemFolder/DevMaterials/Hud720p.bmp";
+
+
+         //printfDCS ("Menu");
+         //txBitBlt (0, 0, TheGS->Menu);
+
+         TheGS->startButton = {.pos = {15, 105}, .size = {415, 160}};
+         TheGS->repeatButton = {.pos = {15, 300}, .size = {415, 160}};
+         TheGS->infoButton = {.pos = {15, 485}, .size = {100, 100}};
+         TheGS->exitButton = {.pos = {1020, 530}, .size = {180, 70}};
+         
+         TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/Menu720p.bmp");
+         
+         
+         TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
     }
 
     if (Resolution == 1080)
     {
-       TheGS->path = "GravitySystemFolder/DevMaterials/Hud3.bmp";
-        //!Временно поддержка приостановлена
+        /*
+        TheGS->sysInfo = {.pos = {15, 20}, .size = {255, 170}};
+        TheGS->console.startPosPix_ = {15, 220};
+        TheGS->console.scalePix_ = {255, 140};
+        */
+        TheGS->miniMap.startPosPix_ = {0, 680};
+        TheGS->miniMap.scalePix_ = {420, 300};
+        TheGS->miniMap.coorSize_ = {(double) txGetExtentX (), (double)txGetExtentY ()};
+        TheGS->miniMap.intepretK_= {{TheGS->miniMap.scalePix_.x / TheGS->miniMap.coorSize_.x}, {TheGS->miniMap.scalePix_.y / TheGS->miniMap.coorSize_.y}};
+        TheGS->cleanButton = {.pos = {430, 0}, .size = {400, 140}};
+        TheGS->exitButtonHUD = {.pos = {1535, 0}, .size = {(double) txGetExtentX () - 1535, 120}};
+        TheGS->newPlanetButton = {.pos = {0, 0}, .size = {420, 135}};
+        TheGS->screenShotButton = {.pos = {0, 155}, .size = {220, 60}};
+        TheGS->minusSpeedButton = {.pos = {235, 150}, .size = {65, 60}};
+        TheGS->plusSpeedButton = {.pos = {300, 150}, .size = {65, 60}};
+        TheGS->HUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud1080p.bmp");
+        //TheGS->path = "GravitySystemFolder/DevMaterials/Hud1080p.bmp";
+
+        //TheGS->mainPlace = {.pos = {290, 0}, .size = {(double) (txGetExtentX () - 290), (double) (txGetExtentY () - 0)}};
+        
+        TheGS->startButton = {.pos = {25, 180}, .size = {620, 270}};
+        TheGS->repeatButton = {.pos = {25, 500}, .size = {620, 270}};
+        TheGS->infoButton = {.pos = {25, 815}, .size = {140, 160}};
+        TheGS->exitButton = {.pos = {1535, 880}, .size = {(double) txGetExtentX () - 1535, (double)txGetExtentY () - 880}};
+        TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/Menu1080p.bmp");
+
+        
+        TheGS->ReplayHUD =  txLoadImage ("GravitySystemFolder/DevMaterials/Hud1080p_Replay.bmp");
+       
     }
 
 
 
-    TheGS->HUD = txLoadImage (TheGS->path);
+    //TheGS->HUD = txLoadImage (TheGS->path);
     //printfDCS ("HUD");
-    TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
+    //TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
     //printfDCS ("REplayHud");
     
     txBegin ();
@@ -784,6 +835,8 @@ void RunEngineExperiment ()
     //_getch ();
 
     //Console console (;
+    //txSetProgress (30);
+    txSetProgress (90, Win32::TBPF_INDETERMINATE);
 
     TheGS->console.print ("Press f1 to open FAQ");
 
@@ -792,6 +845,8 @@ void RunEngineExperiment ()
         
     for (int i = 0; i > -1; i++)
     {
+        TheGS->getWindowPos ();
+        
         //txCircle (400, 645, 5);
         //getch ();
         //txTextOut (25, 25, "sth");
@@ -807,6 +862,7 @@ void RunEngineExperiment ()
         PhysicsAllBall ();
 
         ControlAllBalls ();
+        
         //printf ("%f\n", txGetFPS ());
 
 
@@ -815,11 +871,10 @@ void RunEngineExperiment ()
         drawMiniMap ();
 
         if (Resolution != 720)
-            drawSysInfo ();
+            //drawSysInfo ();
 
-        //!!!Beta
         if (Resolution != 720)
-            drawConsole ();
+           // drawConsole ();
 
         //long startFilePos = ftell (ballSystemRecording);
         //fprintf (ballSystemRecording, "//f%i//", i);
@@ -840,10 +895,11 @@ void RunEngineExperiment ()
 
         ClearBackground ();
     }
+    txSetProgress (0);
 
     fclose (ballSystemRecording); 
 
-    FILE *ballSystemRecordingTesting = fopen ("GravitySystemFolder/EngineExperiment.txt", "r");
+    //FILE *ballSystemRecordingTesting = fopen ("GravitySystemFolder/EngineExperiment.txt", "r");
 
     /*
     for (int i = 0; i < MaxFrame; i++)
@@ -853,7 +909,8 @@ void RunEngineExperiment ()
     }
     */
 
-    fclose (ballSystemRecordingTesting);
+    //fclose (ballSystemRecordingTesting);
+    //fclose (ballSystemRecordingTesting);
 
     // (void) _getch ();
 }
@@ -1088,6 +1145,8 @@ void cometShooting ()
             txMousePos().x < (TheGS->monitorS.pos.x + TheGS->monitorS.size.x) &&
             txMousePos().y >  TheGS->monitorS.pos.y &&
             txMousePos().y < (TheGS->monitorS.pos.y + TheGS->monitorS.size.y) &&
+            inButtonMouse (TheGS->windowPos) &&
+            //isActive (MainScreen) &&
             !inButtonMouse (TheGS->cleanButton) && 
             !inButtonMouse (TheGS->exitButtonHUD) && 
             !inButtonMouse (TheGS->newPlanetButton) &&
@@ -1178,9 +1237,14 @@ void BallSystem::addBall (Ball newBall)
 
 void drawAllBall ()
 {
+    static bool drawHistory = false;
      for (int i = 0; i < TheGS->ballS.currlength; i++)
      {
          assert (0 <= i && i < BallMax);
+         if (onButtonClicked (TheGS->cleanButton))
+         {
+            drawHistory = !drawHistory;
+         }
          
          /*
          if (TheGS->ballS.ball[i].pos.x + TheGS->ballS.ball[i].r < TheGS->mainPlace.right () && TheGS->ballS.ball[i].pos.x - TheGS->ballS.ball[i].r > TheGS->mainPlace.left ())
@@ -1198,6 +1262,8 @@ void drawAllBall ()
             if (TheGS->ballS.ball[i].alive)
             {
                 drawBall(&TheGS->ballS.ball[i], TheGS->ballS.ball[i].color);
+                if (drawHistory)
+                    TheGS->ballS.ball[i].DrawHistory ();
             }
                     
         }
@@ -1320,7 +1386,9 @@ void makeScreenShot ()
 
     char path[100] = {};
     sprintf (path, "GravitySystemFolder/ScreenShots/ScreenShot_%d.bmp", lastScreenShot++);
-    assert (txSaveImage (path, GetWindowDC (MainScreen)));
+    HDC currScreen =  GetWindowDC (MainScreen);
+    int saveVal = txSaveImage (path, currScreen);
+    assert (saveVal);
 
 }           
 
@@ -1833,12 +1901,12 @@ void ClearBackground ()
      {
          flagClearBackground = true;
      }
-
+      /*
      if (onButtonClicked (TheGS->cleanButton))
      {
-        flagClearBackground = !flagClearBackground;
-        txSleep (100);
-     }
+       // flagClearBackground = !flagClearBackground;
+        //txSleep (0);
+     }]*/
 
      if (txGetAsyncKeyState ('N'))
      {
