@@ -4,7 +4,7 @@
 
 #define SQR(O)  ( (O) * (O) )
 
-const int BallHistoryLength = 100;
+const int BallHistoryLength = 200;
 const int BallMax = 100;
 int BallLength = 3;
 const double DivisionPrecision  = 1e-100;

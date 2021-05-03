@@ -1,7 +1,7 @@
 ﻿//#define _TX_ALLOW_TRACE 9
 #define  _CRT_SECURE_NO_WARNINGS
 
-//#include "TXLib.h"
+#include "TXLib.h"
 #include "Q_Vector.h"
 #include "Config.h"
 #include "Q_Ball.h"
@@ -26,6 +26,7 @@ A = {1, 2}
 B = {3, 4}
 |AB| = {b.x - a.x, b.y - a.y};
 */
+
 
 //const int BallHistoryLength = 20;
 
@@ -59,7 +60,7 @@ struct Rect
     double bottom() const { return this->size.y + this->pos.y; }
 };
 
-
+                                                                                                               
 
 struct Ball 
 {
@@ -172,7 +173,8 @@ void   SwitchColour (Ball *ball);
 double SwitchRadius (double r);
 void ControlDelta ();
 void makeScreenShot ();
-void printfDCS (const char *str);
+void printfDCS (const char *str = "");
+void endOfProgram ();
 
 
 
@@ -202,6 +204,22 @@ char str[size];
 fgets (str, size, myfile);
 */
 
+
+BOOL DrawBitmap (HDC hDC, INT x, INT y, INT width, INT height, DWORD dwROP)
+{
+    /*
+    HDC       hDCBits;
+    BITMAP    Bitmap;
+    BOOL      bResult;
+
+    // Replace with StretchBlt call
+    bResult = BitBlt(hDC, x, y, Bitmap.bmWidth, Bitmap.bmHeight, hDCBits, 0, 0, dwROP);
+    bResult = StretchBlt(hDC, x, y, width, height,
+                         hDCBits, 0, 0, Bitmap.bmWidth, Bitmap.bmHeight, dwROP);
+    DeleteDC(hDCBits);
+                    */
+    return 1;
+}
 
 //New
 int main()
@@ -262,10 +280,7 @@ int main()
     }\
     */
     //printf ("Разрешение программы: %d", Resolution);
-    
-
-    
-
+    /*
     if (Resolution == 0)
     {
         if (userScreen.x < 1800 && userScreen.y < 1000)
@@ -287,28 +302,116 @@ int main()
         //printf ("p(FULL HD)");
         MonitorSize = {1800, 1000};
     }
+     */
+
+    
     fclose (config);
+
+
     
 
    
     //txCreateWindow (MonitorSize.x, MonitorSize.y);
-    MainScreen = txCreateWindow (MonitorSize.x, MonitorSize.y);
+    //_txWindowStyle |= WS_THICKFRAME;
+    _txWindowStyle &= ~WS_CAPTION;
+    MainScreen = txCreateWindow (userScreen.x, userScreen.y);
     //txCreateWindow (1080, 1000);
     //printfDCS ("CreateWindow");
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
-    App gravitySys;
-    TheGS = &gravitySys;
+    App *gravitySys = new App ();
+    TheGS = gravitySys;
     
     int mode = 1;
 
+
+
+    /*
+              char fileName[MAX_PATH] = "";
+
+              OPENFILENAME ofn    = { sizeof (ofn), txWindow() };  //  +-- Загадка Жака Фреско... на размышление дается 20 секунд
+                                                                   //  V
+              ofn.lpstrTitle      = "\xcd\xe5\x20\xea\xee\xef\xe8\xef\xe0\xf1\xf2\xfc\x2c\x20\xe0\x20\xf0\xe0\xe7\xe1\xe5\xf0\xe8"
+                                    "\xf1\xfc\x20\xe8\x20\xf1\xe4\xe5\xeb\xe0\xe9\x20\xf4\xf3\xed\xea\xf6\xe8\xfe\x21\x21\x21";
+
+              ofn.lpstrFile       = fileName;
+              ofn.nMaxFile        = sizeof (fileName);
+
+              ofn.lpstrFilter     = "C++ Files\0" "*.cpp\0"  // ofn.nFilterIndex = 1
+                                    "X-- Files\0" "*.xpp\0"  // ofn.nFilterIndex = 2
+                                    "All Files\0" "*.*\0";   // ofn.nFilterIndex = 3
+              ofn.nFilterIndex    = 1;
+
+              ofn.lpstrInitialDir = NULL;
+
+              ofn.Flags           = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+              if ((WIN32::GetOpenFileNameA ))
+                  (WIN32::GetOpenFileNameA (&ofn) );  // Весьма полезная функция, отображает диалог выбора файла.
+
+             printf ("\n" "GetOpenFileName() returned: fileName = \"%s\"\n", fileName);
+              */
+    TheGS->Menu= txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp"); 
+    HDC Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/Menu720p_1.bmp");
+    StretchBlt (TheGS->Menu, 0, 0, userScreen.x, userScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
+    txDeleteDC (Copyimage);
+    //printfDCS ("1");
+
+    TheGS->HUD = txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp");
+    Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/HUD720p_1.bmp");
+    StretchBlt (TheGS->HUD, 0, 0, userScreen.x, userScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
+    txDeleteDC (Copyimage);
+    //printfDCS ("2");
+
+    TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp");
+    Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/HUD720_Replay_1.bmp");
+    StretchBlt (TheGS->ReplayHUD, 0, 0, userScreen.x, userScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
+    txDeleteDC (Copyimage);
+
+    //DrawBitmap (TheGS->Menu, 0, 0, 1900, 1080, SRCCOPY);
+    //!StretchBlt ( TheGS->Menu, 0, 0, 1000, 600, NEWIMAGE, 0, 0, 1900, 1080, SRCAND);
+
+    //$ (GetLastError ());
+    Vector compressK = {.x = userScreen.x / 1280, .y = userScreen.y / 720};
+
+    TheGS->miniMap.startPosPix_ = {0, 490 * compressK.y};
+    TheGS->miniMap.scalePix_ = {290 * compressK.x, 230 * compressK.y};
+    TheGS->miniMap.coorSize_ = {(double) txGetExtentX (), (double)txGetExtentY ()};
+    TheGS->miniMap.intepretK_= {{TheGS->miniMap.scalePix_.x / TheGS->miniMap.coorSize_.x}, {TheGS->miniMap.scalePix_.y / TheGS->miniMap.coorSize_.y}};
+    TheGS->exitButtonHUD = {.pos = {1090 * compressK.x, 0}, .size = {190 * compressK.x, 80 * compressK.y}};
+    TheGS->newPlanetButton = {.pos = {0 * compressK.x, 0}, .size = {300 * compressK.x, 100 * compressK.y}};
+    TheGS->screenShotButton = {.pos = {0, 106 * compressK.y}, .size = {160 * compressK.x, 50 * compressK.y}};
+    TheGS->minusSpeedButton = {.pos = {168 * compressK.x, 106 * compressK.y}, .size = {43 * compressK.x, 51 * compressK.y}};
+    TheGS->plusSpeedButton = {.pos = {220 * compressK.x, 106 * compressK.y}, .size = {43 * compressK.x, 51 * compressK.y}};
+    TheGS->cleanButton = {.pos = {305 * compressK.x, 0}, .size = {300 * compressK.x, 100 * compressK.y}};
+    //TheGS->mainPlace = {.pos = {290, 0}, .size = {(double) (txGetExtentX () - 290), (double) (txGetExtentY () - 0)}};
+    //TheGS->HUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p.bmp");
+    //TheGS->path = "GravitySystemFolder/DevMaterials/Hud720p.bmp";
+
+
+    //printfDCS ("Menu");
+    //txBitBlt (0, 0, TheGS->Menu);
+
+
+    TheGS->startButton = {.pos = {15 * compressK.x, 127 * compressK.y}, .size = {445 * compressK.x, 198 * compressK.y}};
+    TheGS->repeatButton = {.pos = {15 * compressK.x, 358 * compressK.y}, .size = {445 * compressK.x, 198 * compressK.y}};
+    TheGS->infoButton = {.pos = {15 * compressK.x, 485 * compressK.y}, .size = {105 * compressK.x, 215 * compressK.y}};
+    TheGS->exitButton = {.pos = {1092 * compressK.x, 637 * compressK.y}, .size = {188 * compressK.x, 84 * compressK.y}};
+         
+    //TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/Menu720p.bmp");
+         
+         
+         //TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
+
+    ;
+    
     if (Resolution == 720)
     {  
         /*
-         TheGS->sysInfo = {.pos = {15, 20}, .size = {255, 170}};
-         TheGS->console.startPosPix_ = {15, 220};
-         TheGS->console.scalePix_ = {255, 140};
-         */
+        // TheGS->sysInfo = {.pos = {15, 20}, .size = {255, 170}};
+         //TheGS->console.startPosPix_ = {15, 220};
+         //TheGS->console.scalePix_ = {255, 140};
+         
          TheGS->miniMap.startPosPix_ = {0, 410};
          TheGS->miniMap.scalePix_ = {275, 190};
          TheGS->miniMap.coorSize_ = {(double) txGetExtentX (), (double)txGetExtentY ()};
@@ -336,7 +439,9 @@ int main()
          
          
          TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
+         */
     }
+    
 
     if (Resolution == 1080)
     {
@@ -344,7 +449,7 @@ int main()
         TheGS->sysInfo = {.pos = {15, 20}, .size = {255, 170}};
         TheGS->console.startPosPix_ = {15, 220};
         TheGS->console.scalePix_ = {255, 140};
-        */
+        
         TheGS->miniMap.startPosPix_ = {0, 680};
         TheGS->miniMap.scalePix_ = {420, 300};
         TheGS->miniMap.coorSize_ = {(double) txGetExtentX (), (double)txGetExtentY ()};
@@ -368,8 +473,9 @@ int main()
 
         
         TheGS->ReplayHUD =  txLoadImage ("GravitySystemFolder/DevMaterials/Hud1080p_Replay.bmp");
-       
+         */
     }
+    
 
 
 
@@ -378,6 +484,9 @@ int main()
     //TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
     //printfDCS ("REplayHud");
     
+    SetWindowText (MainScreen,  "KVE - Physics Simulation");
+    //H//ICON hicon = (HICON) TheGS->Menu;
+    //DrawIconEx (TheGS->Menu, 1800, 1000, hicon, 32, 32, NULL, DI_NORMAL, );
     txBegin ();
 
     for (;;)
@@ -412,13 +521,7 @@ int main()
 
             if (onButtonClicked (TheGS->exitButton))
             {
-                txEnd ();
-                //printfDCS ("Before");
-                txDisableAutoPause ();
-                txDeleteDC (TheGS->Menu);
-                txDeleteDC (TheGS->HUD);
-                txDeleteDC (TheGS->ReplayHUD);
-                //printfDCS ("After");
+                endOfProgram ();
 
                 return 0;
             }
@@ -513,13 +616,21 @@ int main()
         }
     }
 
+    
+    txEnd ();
+
+    endOfProgram ();
+    return 0;
+}
+
+
+void endOfProgram ()
+{
+    txEnd ();
+    txDisableAutoPause ();
     txDeleteDC (TheGS->Menu);
     txDeleteDC (TheGS->HUD);
     txDeleteDC (TheGS->ReplayHUD);
-    txEnd ();
-
-
-    return 0;
 }
 
 void printfDCS (const char *str)

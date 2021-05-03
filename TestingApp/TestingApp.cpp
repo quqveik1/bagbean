@@ -116,7 +116,11 @@ int main ()
     txCreateWindow (1000, 1000);
     txSetFillColor (TX_BLACK);
 
-    txDrawMan (125, 250, 200,  200, TX_WHITE,    0,    0,    0,   0,   0.8,  0,   0,   1.0,   0,  0);
+    HDC FirstImage;// =txLoadImage ("Image2.bmp"); 
+    HDC final1 = txLoadImage ("IMage.bmp");
+    StretchBlt ( FirstImage, 0, 0, 300, 300, final1, 0, 0, 100, 100,SRCCOPY);
+
+    txBitBlt (0, 0, FirstImage);
   
 
 
