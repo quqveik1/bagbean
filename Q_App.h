@@ -33,8 +33,10 @@ public:
     Rect screenShotButton;
     Rect minusSpeedButton;
     Rect plusSpeedButton;
+    bool writeSaves = true;
 
     HDC ReplayHUD;
+
 
     coordinatSys miniMap;
 

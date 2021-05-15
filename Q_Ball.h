@@ -37,6 +37,7 @@ struct Rect
 {
     Vector pos;
     Vector size;
+    Vector finishPos;
 
     double left  () const { return this->pos.x; }
     double top   () const { return this->pos.y; }

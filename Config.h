@@ -9,7 +9,7 @@ const int BallMax = 100;
 int BallLength = 3;
 const double DivisionPrecision  = 1e-100;
 const double ElectricKf = 6e3;
-const double DT = 0.09;
+double DT = 0.09;
 const double MinDistance = 0;
 int LastComet = 0;
 

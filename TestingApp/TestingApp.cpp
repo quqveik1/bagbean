@@ -1,4 +1,8 @@
-﻿#include "TXLib.h"
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include "TXLib.h"
+#include "Q_Vector.h"
+#include "Q_CoordinatSystem.h"
+
 
 
 
@@ -59,70 +63,188 @@ void _PRINT (const char *x, const char *name, const char *file, int line, const 
 }
  */
 
-inline void DrawMan (int x, int y, int sizeX, int sizeY, COLORREF color, double handL, double handR, double twist,   //
-                       double head, double eyes, double wink, double crazy, double smile, double hair, double wind)    //
-    {                                                                                                                  //
-    const char msg[] = "\0/А я - человечек из библиотеки!\0/Меня объясняли на уроке!\0/Напиши меня сам!\0/";           //
-    //                   |                                |                          |                  |              //
-    // Не копипастите! _/ \_ Все равно не получится! :) _/ \_  Человечки защищают  _/ \_ этот код! :) _/ \_  Муаххаха! //
-    //                                                                                                                 //
-    static int count = GetTickCount(), L = 0;  //////////////////////////////////////////////////////////////////////////
 
-    C0L0RREF lineColor = txGetColor();
-    C0L0RREF fillColor = txGetFillColor();
 
-    txSetColor     (color);
-    txSetFillColor (color);
 
-    txLine (x + twist * sizeX, y - O.35 * sizeY, x, y - O.7 * sizeY);
+struct Button
+{
+    Rect buttonCoor;
+    HDC buttonHDC;
+};
 
-    txLine (x, y - O.7 * sizeY, x - sizeX/2, y - (O.7 + handL) * sizeY);
-    txLine (x, y - O.7 * sizeY, x + sizeX/2, y - (O.7 + handR) * sizeY);
 
-    txLine (x + twist * sizeX, y - O.35 * sizeY, x - sizeX/2, y);
-    txLine (x + twist * sizeX, y - O.35 * sizeY, x + sizeX/2, y);
 
-    txCircle (x, y - (O.85 + head) * sizeY, O.15 * sizeY);
+#define key(a) txGetAsyncKeyState (a)
+void openImage (HDC &hdc);
+void RunCreatingButton (Button &button);
+bool onButtonClicked (Rect Button);
+void RunSettingsButton (FILE *file);
 
-    txLine (x, y - (1 + head) * sizeY, x +  wind/lO        * sizeX, y - (1 + head + hair/lO) * sizeY);
-    txLine (x, y - (1 + head) * sizeY, x + (wind/lO - O.1) * sizeX, y - (1 + head + hair/lO) * sizeY);
-    txLine (x, y - (1 + head) * sizeY, x + (wind/lO + O.1) * sizeX, y - (1 + head + hair/lO) * sizeY);
 
-    txSetColor     (~color & OxFFFFFF);  // Inverse the color
-    txSetFillColor (~color & OxFFFFFF);
 
-    txLine (x, y - (O.8 + head - O.05 * smile/2) * sizeY, x - O.05 * sizeY, y - (O.8 + head + O.05 * smile/2) * sizeY),
-    txLine (x, y - (O.8 + head - O.05 * smile/2) * sizeY, x + O.05 * sizeY, y - (O.8 + head + O.05 * smile/2) * sizeY),
-    txNotifyIcon (4, (const char*)!! (L+'L')[msg], "\n%s\n", msg + ((unsigned) (((count -=- 1) ^=! 1) ^=~ ((0)^(0)) +1) % 3)["\"<"]);
-
-    // See above: Mouth operator -=-, Cat operator ^=!, Mouse operator ^=~ and Owl constant ((0)^(0)). Use it freely, meow
-
-    txCircle (x - O.05 * sizeY, y - (O.9 + head - O.02 * crazy) * sizeY, eyes * (1 + O.5*wink) * O.02 * sizeY);
-    txCircle (x + O.05 * sizeY, y - (O.9 + head + O.02 * crazy) * sizeY, eyes * (1 - O.5*wink) * O.02 * sizeY),
-    Sleep (lOOO + count%2);
-
-    txSetColor     (TX_DARKGRAY);
-    txSetFillColor (TX_TRANSPARENT);
-
-    txCircle (x, y, 4);
-    txRectandle (x - sizeX/2, y - sizeY, x + sizeX/2, y);
-
-    txSetColor     (lineColor);
-    txSetFillColor (fillColor);
-    }
 
 int main ()
 {
-    txCreateWindow (1000, 1000);
+    txCreateWindow (1920, 1080);
     txSetFillColor (TX_BLACK);
+    Button button[6];
+    FILE *file = fopen ("Buttons.txt", "w");
 
-    HDC FirstImage;// =txLoadImage ("Image2.bmp"); 
-    HDC final1 = txLoadImage ("IMage.bmp");
-    StretchBlt ( FirstImage, 0, 0, 300, 300, final1, 0, 0, 100, 100,SRCCOPY);
+    for (int i = 0;;)
+    {
+        if (key (VK_CONTROL) && key ('N')) 
+        {
+            RunCreatingButton (button[i]);
+            i++;
+        }
+        if (key (VK_CONTROL) && key ('O')) 
+        {
+            RunSettingsButton (file);    
+        }
+        if (key (VK_ESCAPE))
+        {
+            return 0;
+        }
+    }
 
-    txBitBlt (0, 0, FirstImage);
-  
+
+    
 
 
     return 0;
+}
+
+void RunSettingsButton (FILE *file)
+{
+    Button button;
+    openImage (button.buttonHDC); 
+    txBitBlt (0, 0, button.buttonHDC);
+    for (;;)
+    {
+
+        txMessageBox ("Теперь нажмите на верхную левую часть", "Информация");
+
+        for (;;)
+        {
+            if (key (VK_ESCAPE))
+            {
+                //VK_ESCAPEprintf ("%d", key ('Q'));
+
+                return;
+            }
+            if (txMouseButtons () == 1)
+            {
+                button.buttonCoor.pos = {.x = txMouseX (), .y = txMouseY ()};
+                txSleep (1000);
+                break;
+            }
+        }
+    
+
+        for (;;)
+        {
+            if (key (VK_ESCAPE)) return;
+            if (txMouseButtons () == 1)
+            {
+                button.buttonCoor.size = {.x = txMouseX () -  button.buttonCoor.pos.x, .y = txMouseY () - button.buttonCoor.pos.y};
+                break;
+            }
+        }
+
+        fprintf (file, "Button = {.pos  = {%lf, %lf}, .size = {%lf, %lf}}\n", button.buttonCoor.pos.x, button.buttonCoor.pos.x, button.buttonCoor.size.x, button.buttonCoor.size.y);
+
+        txMessageBox ("Удачно", "Информация");
+    }
+
+    if (key (VK_ESCAPE)) return;
+
+}
+
+void RunCreatingButton (Button &button)
+{
+    openImage (button.buttonHDC);
+
+    button.buttonCoor.pos = {.x = 0, .y = 0};
+
+    for (;;)
+    {
+        if (txMouseButtons () == 1)
+        {
+            button.buttonCoor.pos = {.x = txMouseX (), .y = txMouseY ()};
+        }
+        if (key (VK_CONTROL) && key ('E'))
+        {
+            break;
+        }
+        txBitBlt (button.buttonCoor.pos.x, button.buttonCoor.pos.y, button.buttonHDC);
+        txSleep (16);
+        txClear ();
+    }
+
+    txMessageBox ("Теперь Нажмите на верхную левую часть", "Информация");
+
+    for (;;)
+    {
+        if (txMouseButtons () == 1)
+        {
+            button.buttonCoor.pos = {.x = txMouseX (), .y = txMouseY ()};
+            break;
+        }
+    }
+
+
+    for (;;)
+    {
+        if (txMouseButtons () == 1)
+        {
+            button.buttonCoor.size = {.x = txMouseX () -  button.buttonCoor.pos.x, .y = txMouseY () - button.buttonCoor.pos.y};
+            break;
+        }
+    }
+}
+
+void openImage (HDC &hdc)
+{
+    char fileName[MAX_PATH] = "";
+
+    OPENFILENAME ofn    = { sizeof (ofn), txWindow() };  //  +-- Загадка Жака Фреско... на размышление дается 20 секунд
+                                                        //  V
+    ofn.lpstrTitle      = "Файл, который хотите открыть";
+
+    ofn.lpstrFile       = fileName;
+    ofn.nMaxFile        = sizeof (fileName);
+
+    ofn.lpstrFilter     = "Image\0" "*.bmp*\0"  // ofn.nFilterIndex = 1
+                        "C++ Files\0" "*.cpp*\0"  // ofn.nFilterIndex = 2
+                        "All Files\0" "*.*\0";   // ofn.nFilterIndex = 3
+    ofn.nFilterIndex    = 1;
+
+    ofn.lpstrInitialDir = NULL;
+
+    ofn.Flags           = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+    if ((WIN32::GetOpenFileNameA ))
+        (WIN32::GetOpenFileNameA (&ofn) );
+    // Весьма полезная функция, отображает диалог выбора файла.
+    hdc = txLoadImage (fileName);
+
+    //printf ("\n" "GetOpenFileName() returned: fileName = \"%s\"\n", fileName);
+}
+
+bool onButtonClicked (Rect Button)
+{
+    
+    if (txMouseButtons () == 1)
+    {
+        if (txMouseX () > Button.left () && txMouseX () <  Button.right ())
+        {
+            if (txMouseY () > Button.top () && txMouseY () <  Button.bottom ())
+            {
+                    return true;
+            }
+        }
+    }
+    return false;
+
+    
 }

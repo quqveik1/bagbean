@@ -4,314 +4,42 @@
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\TX\</FILEPATH>
       <FILENAME>TXLib.h</FILENAME>
-      <LINE>6763</LINE>
+      <LINE>6850</LINE>
       <COLUMN>8</COLUMN>
     </SFA>
     <DEFECTCODE>26819</DEFECTCODE>
     <DESCRIPTION>Unannotated fallthrough between switch labels (es.78).</DESCRIPTION>
     <FUNCTION>`anonymous-namespace'::TX::txInputBox::inputDlg::dialogProc</FUNCTION>
     <DECORATED>?dialogProc@inputDlg@?1??txInputBox@TX@?A0xc35d3595@@YAPEBDPEBD00@Z@UEAAHPEAUHWND__@@I_K_J@Z</DECORATED>
-    <FUNCLINE>6750</FUNCLINE>
+    <FUNCLINE>6837</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\TX\</FILEPATH>
       <FILENAME>TXLib.h</FILENAME>
-      <LINE>8916</LINE>
+      <LINE>8998</LINE>
       <COLUMN>13</COLUMN>
     </SFA>
     <DEFECTCODE>26819</DEFECTCODE>
     <DESCRIPTION>Unannotated fallthrough between switch labels (es.78).</DESCRIPTION>
     <FUNCTION>`anonymous-namespace'::TX::_txOnConsoleCtrlEvent</FUNCTION>
     <DECORATED>?_txOnConsoleCtrlEvent@TX@?A0xc35d3595@@YAHK@Z</DECORATED>
-    <FUNCLINE>8906</FUNCLINE>
+    <FUNCLINE>8988</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::windowPos' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::windowPos</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::plusSpeedButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::plusSpeedButton</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::minusSpeedButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::minusSpeedButton</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::cleanButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::cleanButton</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::screenShotButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::screenShotButton</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::exitButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::exitButton</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::newPlanetButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::newPlanetButton</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::exitButtonHUD' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::exitButtonHUD</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::HUD' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::HUD</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::Resolution' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::Resolution</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::currScreen' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::currScreen</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::path' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::path</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::startButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::startButton</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::repeatButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::repeatButton</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::Menu' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::Menu</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
-      <COLUMN>5</COLUMN>
-    </SFA>
-    <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'App::infoButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
-    <FUNCTION>App::{ctor}</FUNCTION>
-    <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
-    <ADDITIONALINFO>
-      <targetSymbol>App::infoButton</targetSymbol>
-    </ADDITIONALINFO>
-    <PATH></PATH>
-  </DEFECT>
-  <DEFECT>
-    <SFA>
-      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
-      <FILENAME>Q_App.h</FILENAME>
-      <LINE>60</LINE>
+      <LINE>62</LINE>
       <COLUMN>5</COLUMN>
     </SFA>
     <DEFECTCODE>26495</DEFECTCODE>
     <DESCRIPTION>Variable 'App::ReplayHUD' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
     <FUNCTION>App::{ctor}</FUNCTION>
     <DECORATED>??0App@@QEAA@XZ</DECORATED>
-    <FUNCLINE>60</FUNCLINE>
+    <FUNCLINE>62</FUNCLINE>
     <ADDITIONALINFO>
       <targetSymbol>App::ReplayHUD</targetSymbol>
     </ADDITIONALINFO>
@@ -321,210 +49,482 @@
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>Q_App.h</FILENAME>
-      <LINE>78</LINE>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::currScreen' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::currScreen</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::windowPos' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::windowPos</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::newPlanetButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::newPlanetButton</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::exitButtonHUD' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::exitButtonHUD</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::cleanButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::cleanButton</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::repeatButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::repeatButton</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::exitButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::exitButton</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::infoButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::infoButton</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::path' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::path</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::minusSpeedButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::minusSpeedButton</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::startButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::startButton</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::Menu' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::Menu</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::HUD' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::HUD</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::screenShotButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::screenShotButton</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::plusSpeedButton' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::plusSpeedButton</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>62</LINE>
+      <COLUMN>5</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'App::Resolution' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>App::{ctor}</FUNCTION>
+    <DECORATED>??0App@@QEAA@XZ</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>App::Resolution</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
+      <FILENAME>Q_App.h</FILENAME>
+      <LINE>80</LINE>
       <COLUMN>15</COLUMN>
     </SFA>
     <DEFECTCODE>6340</DEFECTCODE>
     <DESCRIPTION>Mismatch on sign: 'unsigned long' passed as _Param_(2) when some signed type is required in call to 'printf'.</DESCRIPTION>
     <FUNCTION>App::getWindowPos</FUNCTION>
     <DECORATED>?getWindowPos@App@@QEAAXXZ</DECORATED>
-    <FUNCLINE>72</FUNCLINE>
+    <FUNCLINE>74</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>269</LINE>
+      <LINE>263</LINE>
       <COLUMN>11</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Return value ignored: 'fscanf'.</DESCRIPTION>
     <FUNCTION>main</FUNCTION>
     <DECORATED>main</DECORATED>
-    <FUNCLINE>224</FUNCLINE>
+    <FUNCLINE>218</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>591</LINE>
+      <LINE>793</LINE>
       <COLUMN>11</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Return value ignored: '_getch'.</DESCRIPTION>
     <FUNCTION>printfDCS</FUNCTION>
     <DECORATED>?printfDCS@@YAXPEBD@Z</DECORATED>
-    <FUNCLINE>584</FUNCLINE>
+    <FUNCLINE>786</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>632</LINE>
+      <LINE>834</LINE>
       <COLUMN>11</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
     <FUNCTION>CreateNewPlanet</FUNCTION>
     <DECORATED>?CreateNewPlanet@@YAXAEAUBallSystem@@@Z</DECORATED>
-    <FUNCLINE>613</FUNCLINE>
+    <FUNCLINE>815</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>633</LINE>
+      <LINE>835</LINE>
       <COLUMN>11</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
     <FUNCTION>CreateNewPlanet</FUNCTION>
     <DECORATED>?CreateNewPlanet@@YAXAEAUBallSystem@@@Z</DECORATED>
-    <FUNCLINE>613</FUNCLINE>
+    <FUNCLINE>815</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>638</LINE>
+      <LINE>840</LINE>
       <COLUMN>11</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
     <FUNCTION>CreateNewPlanet</FUNCTION>
     <DECORATED>?CreateNewPlanet@@YAXAEAUBallSystem@@@Z</DECORATED>
-    <FUNCLINE>613</FUNCLINE>
+    <FUNCLINE>815</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>644</LINE>
+      <LINE>846</LINE>
       <COLUMN>11</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
     <FUNCTION>CreateNewPlanet</FUNCTION>
     <DECORATED>?CreateNewPlanet@@YAXAEAUBallSystem@@@Z</DECORATED>
-    <FUNCLINE>613</FUNCLINE>
+    <FUNCLINE>815</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>649</LINE>
+      <LINE>851</LINE>
       <COLUMN>11</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Return value ignored: 'sscanf'.</DESCRIPTION>
     <FUNCTION>CreateNewPlanet</FUNCTION>
     <DECORATED>?CreateNewPlanet@@YAXAEAUBallSystem@@@Z</DECORATED>
-    <FUNCLINE>613</FUNCLINE>
+    <FUNCLINE>815</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>666</LINE>
+      <LINE>868</LINE>
       <COLUMN>5</COLUMN>
     </SFA>
     <DEFECTCODE>6262</DEFECTCODE>
     <DESCRIPTION>Function uses '327280' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.</DESCRIPTION>
     <FUNCTION>unitTest</FUNCTION>
     <DECORATED>?unitTest@@YAXUBallSystem@@PEAU_iobuf@@@Z</DECORATED>
-    <FUNCLINE>666</FUNCLINE>
+    <FUNCLINE>868</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>760</LINE>
+      <LINE>962</LINE>
       <COLUMN>5</COLUMN>
     </SFA>
     <DEFECTCODE>6262</DEFECTCODE>
-    <DESCRIPTION>Function uses '327228' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.</DESCRIPTION>
+    <DESCRIPTION>Function uses '327236' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.</DESCRIPTION>
     <FUNCTION>playSystem</FUNCTION>
-    <DECORATED>?playSystem@@YAXXZ</DECORATED>
-    <FUNCLINE>760</FUNCLINE>
+    <DECORATED>?playSystem@@YAXPEBD@Z</DECORATED>
+    <FUNCLINE>962</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>905</LINE>
+      <LINE>1093</LINE>
       <COLUMN>4</COLUMN>
     </SFA>
     <DEFECTCODE>6292</DEFECTCODE>
     <DESCRIPTION>Ill-defined for-loop:  counts up from maximum.</DESCRIPTION>
     <FUNCTION>RunEngineExperiment</FUNCTION>
     <DECORATED>?RunEngineExperiment@@YAXXZ</DECORATED>
-    <FUNCLINE>877</FUNCLINE>
+    <FUNCLINE>1079</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>1118</LINE>
+      <LINE>1320</LINE>
       <COLUMN>5</COLUMN>
     </SFA>
     <DEFECTCODE>6262</DEFECTCODE>
     <DESCRIPTION>Function uses '327220' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.</DESCRIPTION>
     <FUNCTION>copyFrame</FUNCTION>
     <DECORATED>?copyFrame@@YAXQEAUBallSystem@@U1@H@Z</DECORATED>
-    <FUNCLINE>1118</FUNCLINE>
+    <FUNCLINE>1320</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>1249</LINE>
+      <LINE>1450</LINE>
       <COLUMN>22</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Return value ignored: '_getch'.</DESCRIPTION>
     <FUNCTION>cometShooting</FUNCTION>
     <DECORATED>?cometShooting@@YAXXZ</DECORATED>
-    <FUNCLINE>1199</FUNCLINE>
+    <FUNCLINE>1401</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>1435</LINE>
+      <LINE>1636</LINE>
       <COLUMN>11</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Return value ignored: 'fscanf'.</DESCRIPTION>
     <FUNCTION>makeScreenShot</FUNCTION>
     <DECORATED>?makeScreenShot@@YAXXZ</DECORATED>
-    <FUNCLINE>1428</FUNCLINE>
+    <FUNCLINE>1629</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\</FILEPATH>
       <FILENAME>GravitySystem.cpp</FILENAME>
-      <LINE>1436</LINE>
+      <LINE>1637</LINE>
       <COLUMN>11</COLUMN>
     </SFA>
     <DEFECTCODE>6031</DEFECTCODE>
     <DESCRIPTION>Return value ignored: 'fscanf'.</DESCRIPTION>
     <FUNCTION>makeScreenShot</FUNCTION>
     <DECORATED>?makeScreenShot@@YAXXZ</DECORATED>
-    <FUNCLINE>1428</FUNCLINE>
+    <FUNCLINE>1629</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
 </DEFECTS>

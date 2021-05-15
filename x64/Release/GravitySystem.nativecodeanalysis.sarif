@@ -16,9 +16,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/TX/TXLib.h"
                 },
                 "region": {
-                  "startLine": 6763,
+                  "startLine": 6850,
                   "startColumn": 9,
-                  "endLine": 6763,
+                  "endLine": 6850,
                   "endColumn": 9
                 }
               }
@@ -37,14 +37,62 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/TX/TXLib.h"
                 },
                 "region": {
-                  "startLine": 8916,
+                  "startLine": 8998,
                   "startColumn": 14,
-                  "endLine": 8916,
+                  "endLine": 8998,
                   "endColumn": 14
                 }
               }
             }
           ]
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'App::ReplayHUD' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
+                },
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 6,
+                  "endLine": 62,
+                  "endColumn": 6
+                }
+              }
+            }
+          ],
+          "properties": {
+            "targetSymbol": "App::ReplayHUD"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'App::currScreen' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
+                },
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 6,
+                  "endLine": 62,
+                  "endColumn": 6
+                }
+              }
+            }
+          ],
+          "properties": {
+            "targetSymbol": "App::currScreen"
+          }
         },
         {
           "ruleId": "C26495",
@@ -58,9 +106,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
                 },
                 "region": {
-                  "startLine": 60,
+                  "startLine": 62,
                   "startColumn": 6,
-                  "endLine": 60,
+                  "endLine": 62,
                   "endColumn": 6
                 }
               }
@@ -68,126 +116,6 @@
           ],
           "properties": {
             "targetSymbol": "App::windowPos"
-          }
-        },
-        {
-          "ruleId": "C26495",
-          "message": {
-            "text": "Variable 'App::plusSpeedButton' is uninitialized. Always initialize a member variable (type.6)."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
-                },
-                "region": {
-                  "startLine": 60,
-                  "startColumn": 6,
-                  "endLine": 60,
-                  "endColumn": 6
-                }
-              }
-            }
-          ],
-          "properties": {
-            "targetSymbol": "App::plusSpeedButton"
-          }
-        },
-        {
-          "ruleId": "C26495",
-          "message": {
-            "text": "Variable 'App::minusSpeedButton' is uninitialized. Always initialize a member variable (type.6)."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
-                },
-                "region": {
-                  "startLine": 60,
-                  "startColumn": 6,
-                  "endLine": 60,
-                  "endColumn": 6
-                }
-              }
-            }
-          ],
-          "properties": {
-            "targetSymbol": "App::minusSpeedButton"
-          }
-        },
-        {
-          "ruleId": "C26495",
-          "message": {
-            "text": "Variable 'App::cleanButton' is uninitialized. Always initialize a member variable (type.6)."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
-                },
-                "region": {
-                  "startLine": 60,
-                  "startColumn": 6,
-                  "endLine": 60,
-                  "endColumn": 6
-                }
-              }
-            }
-          ],
-          "properties": {
-            "targetSymbol": "App::cleanButton"
-          }
-        },
-        {
-          "ruleId": "C26495",
-          "message": {
-            "text": "Variable 'App::screenShotButton' is uninitialized. Always initialize a member variable (type.6)."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
-                },
-                "region": {
-                  "startLine": 60,
-                  "startColumn": 6,
-                  "endLine": 60,
-                  "endColumn": 6
-                }
-              }
-            }
-          ],
-          "properties": {
-            "targetSymbol": "App::screenShotButton"
-          }
-        },
-        {
-          "ruleId": "C26495",
-          "message": {
-            "text": "Variable 'App::exitButton' is uninitialized. Always initialize a member variable (type.6)."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
-                },
-                "region": {
-                  "startLine": 60,
-                  "startColumn": 6,
-                  "endLine": 60,
-                  "endColumn": 6
-                }
-              }
-            }
-          ],
-          "properties": {
-            "targetSymbol": "App::exitButton"
           }
         },
         {
@@ -202,9 +130,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
                 },
                 "region": {
-                  "startLine": 60,
+                  "startLine": 62,
                   "startColumn": 6,
-                  "endLine": 60,
+                  "endLine": 62,
                   "endColumn": 6
                 }
               }
@@ -226,9 +154,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
                 },
                 "region": {
-                  "startLine": 60,
+                  "startLine": 62,
                   "startColumn": 6,
-                  "endLine": 60,
+                  "endLine": 62,
                   "endColumn": 6
                 }
               }
@@ -241,7 +169,7 @@
         {
           "ruleId": "C26495",
           "message": {
-            "text": "Variable 'App::HUD' is uninitialized. Always initialize a member variable (type.6)."
+            "text": "Variable 'App::cleanButton' is uninitialized. Always initialize a member variable (type.6)."
           },
           "locations": [
             {
@@ -250,112 +178,16 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
                 },
                 "region": {
-                  "startLine": 60,
+                  "startLine": 62,
                   "startColumn": 6,
-                  "endLine": 60,
+                  "endLine": 62,
                   "endColumn": 6
                 }
               }
             }
           ],
           "properties": {
-            "targetSymbol": "App::HUD"
-          }
-        },
-        {
-          "ruleId": "C26495",
-          "message": {
-            "text": "Variable 'App::Resolution' is uninitialized. Always initialize a member variable (type.6)."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
-                },
-                "region": {
-                  "startLine": 60,
-                  "startColumn": 6,
-                  "endLine": 60,
-                  "endColumn": 6
-                }
-              }
-            }
-          ],
-          "properties": {
-            "targetSymbol": "App::Resolution"
-          }
-        },
-        {
-          "ruleId": "C26495",
-          "message": {
-            "text": "Variable 'App::currScreen' is uninitialized. Always initialize a member variable (type.6)."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
-                },
-                "region": {
-                  "startLine": 60,
-                  "startColumn": 6,
-                  "endLine": 60,
-                  "endColumn": 6
-                }
-              }
-            }
-          ],
-          "properties": {
-            "targetSymbol": "App::currScreen"
-          }
-        },
-        {
-          "ruleId": "C26495",
-          "message": {
-            "text": "Variable 'App::path' is uninitialized. Always initialize a member variable (type.6)."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
-                },
-                "region": {
-                  "startLine": 60,
-                  "startColumn": 6,
-                  "endLine": 60,
-                  "endColumn": 6
-                }
-              }
-            }
-          ],
-          "properties": {
-            "targetSymbol": "App::path"
-          }
-        },
-        {
-          "ruleId": "C26495",
-          "message": {
-            "text": "Variable 'App::startButton' is uninitialized. Always initialize a member variable (type.6)."
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
-                },
-                "region": {
-                  "startLine": 60,
-                  "startColumn": 6,
-                  "endLine": 60,
-                  "endColumn": 6
-                }
-              }
-            }
-          ],
-          "properties": {
-            "targetSymbol": "App::startButton"
+            "targetSymbol": "App::cleanButton"
           }
         },
         {
@@ -370,9 +202,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
                 },
                 "region": {
-                  "startLine": 60,
+                  "startLine": 62,
                   "startColumn": 6,
-                  "endLine": 60,
+                  "endLine": 62,
                   "endColumn": 6
                 }
               }
@@ -385,7 +217,7 @@
         {
           "ruleId": "C26495",
           "message": {
-            "text": "Variable 'App::Menu' is uninitialized. Always initialize a member variable (type.6)."
+            "text": "Variable 'App::exitButton' is uninitialized. Always initialize a member variable (type.6)."
           },
           "locations": [
             {
@@ -394,16 +226,16 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
                 },
                 "region": {
-                  "startLine": 60,
+                  "startLine": 62,
                   "startColumn": 6,
-                  "endLine": 60,
+                  "endLine": 62,
                   "endColumn": 6
                 }
               }
             }
           ],
           "properties": {
-            "targetSymbol": "App::Menu"
+            "targetSymbol": "App::exitButton"
           }
         },
         {
@@ -418,9 +250,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
                 },
                 "region": {
-                  "startLine": 60,
+                  "startLine": 62,
                   "startColumn": 6,
-                  "endLine": 60,
+                  "endLine": 62,
                   "endColumn": 6
                 }
               }
@@ -433,7 +265,7 @@
         {
           "ruleId": "C26495",
           "message": {
-            "text": "Variable 'App::ReplayHUD' is uninitialized. Always initialize a member variable (type.6)."
+            "text": "Variable 'App::path' is uninitialized. Always initialize a member variable (type.6)."
           },
           "locations": [
             {
@@ -442,16 +274,184 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
                 },
                 "region": {
-                  "startLine": 60,
+                  "startLine": 62,
                   "startColumn": 6,
-                  "endLine": 60,
+                  "endLine": 62,
                   "endColumn": 6
                 }
               }
             }
           ],
           "properties": {
-            "targetSymbol": "App::ReplayHUD"
+            "targetSymbol": "App::path"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'App::minusSpeedButton' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
+                },
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 6,
+                  "endLine": 62,
+                  "endColumn": 6
+                }
+              }
+            }
+          ],
+          "properties": {
+            "targetSymbol": "App::minusSpeedButton"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'App::startButton' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
+                },
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 6,
+                  "endLine": 62,
+                  "endColumn": 6
+                }
+              }
+            }
+          ],
+          "properties": {
+            "targetSymbol": "App::startButton"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'App::Menu' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
+                },
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 6,
+                  "endLine": 62,
+                  "endColumn": 6
+                }
+              }
+            }
+          ],
+          "properties": {
+            "targetSymbol": "App::Menu"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'App::HUD' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
+                },
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 6,
+                  "endLine": 62,
+                  "endColumn": 6
+                }
+              }
+            }
+          ],
+          "properties": {
+            "targetSymbol": "App::HUD"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'App::screenShotButton' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
+                },
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 6,
+                  "endLine": 62,
+                  "endColumn": 6
+                }
+              }
+            }
+          ],
+          "properties": {
+            "targetSymbol": "App::screenShotButton"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'App::plusSpeedButton' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
+                },
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 6,
+                  "endLine": 62,
+                  "endColumn": 6
+                }
+              }
+            }
+          ],
+          "properties": {
+            "targetSymbol": "App::plusSpeedButton"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'App::Resolution' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
+                },
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 6,
+                  "endLine": 62,
+                  "endColumn": 6
+                }
+              }
+            }
+          ],
+          "properties": {
+            "targetSymbol": "App::Resolution"
           }
         },
         {
@@ -466,9 +466,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/Q_App.h"
                 },
                 "region": {
-                  "startLine": 78,
+                  "startLine": 80,
                   "startColumn": 9,
-                  "endLine": 78,
+                  "endLine": 80,
                   "endColumn": 36
                 }
               }
@@ -487,9 +487,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/GravitySystem.cpp"
                 },
                 "region": {
-                  "startLine": 269,
+                  "startLine": 263,
                   "startColumn": 5,
-                  "endLine": 269,
+                  "endLine": 263,
                   "endColumn": 41
                 }
               }
@@ -508,9 +508,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/GravitySystem.cpp"
                 },
                 "region": {
-                  "startLine": 591,
+                  "startLine": 793,
                   "startColumn": 5,
-                  "endLine": 591,
+                  "endLine": 793,
                   "endColumn": 12
                 }
               }
@@ -529,9 +529,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/GravitySystem.cpp"
                 },
                 "region": {
-                  "startLine": 632,
+                  "startLine": 834,
                   "startColumn": 5,
-                  "endLine": 632,
+                  "endLine": 834,
                   "endColumn": 30
                 }
               }
@@ -550,9 +550,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/GravitySystem.cpp"
                 },
                 "region": {
-                  "startLine": 633,
+                  "startLine": 835,
                   "startColumn": 5,
-                  "endLine": 633,
+                  "endLine": 835,
                   "endColumn": 30
                 }
               }
@@ -571,9 +571,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/GravitySystem.cpp"
                 },
                 "region": {
-                  "startLine": 638,
+                  "startLine": 840,
                   "startColumn": 5,
-                  "endLine": 638,
+                  "endLine": 840,
                   "endColumn": 30
                 }
               }
@@ -592,9 +592,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/GravitySystem.cpp"
                 },
                 "region": {
-                  "startLine": 644,
+                  "startLine": 846,
                   "startColumn": 5,
-                  "endLine": 644,
+                  "endLine": 846,
                   "endColumn": 25
                 }
               }
@@ -613,9 +613,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/GravitySystem.cpp"
                 },
                 "region": {
-                  "startLine": 649,
+                  "startLine": 851,
                   "startColumn": 5,
-                  "endLine": 649,
+                  "endLine": 851,
                   "endColumn": 25
                 }
               }
@@ -634,9 +634,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/GravitySystem.cpp"
                 },
                 "region": {
-                  "startLine": 666,
+                  "startLine": 868,
                   "startColumn": 6,
-                  "endLine": 666,
+                  "endLine": 868,
                   "endColumn": 6
                 }
               }
@@ -646,7 +646,7 @@
         {
           "ruleId": "C6262",
           "message": {
-            "text": "Function uses '327228' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap."
+            "text": "Function uses '327236' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap."
           },
           "locations": [
             {
@@ -655,9 +655,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/GravitySystem.cpp"
                 },
                 "region": {
-                  "startLine": 760,
+                  "startLine": 962,
                   "startColumn": 6,
-                  "endLine": 760,
+                  "endLine": 962,
                   "endColumn": 6
                 }
               }
@@ -676,9 +676,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/GravitySystem.cpp"
                 },
                 "region": {
-                  "startLine": 905,
+                  "startLine": 1093,
                   "startColumn": 5,
-                  "endLine": 905,
+                  "endLine": 1093,
                   "endColumn": 5
                 }
               }
@@ -697,9 +697,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/GravitySystem.cpp"
                 },
                 "region": {
-                  "startLine": 1118,
+                  "startLine": 1320,
                   "startColumn": 6,
-                  "endLine": 1118,
+                  "endLine": 1320,
                   "endColumn": 6
                 }
               }
@@ -718,9 +718,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/GravitySystem.cpp"
                 },
                 "region": {
-                  "startLine": 1249,
+                  "startLine": 1450,
                   "startColumn": 17,
-                  "endLine": 1249,
+                  "endLine": 1450,
                   "endColumn": 23
                 }
               }
@@ -739,9 +739,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/GravitySystem.cpp"
                 },
                 "region": {
-                  "startLine": 1435,
+                  "startLine": 1636,
                   "startColumn": 5,
-                  "endLine": 1435,
+                  "endLine": 1636,
                   "endColumn": 51
                 }
               }
@@ -760,9 +760,9 @@
                   "uri": "file:///C:/Users/Алехандро/Desktop/AlexProjects/BAGBEAN/GravitySystem.cpp"
                 },
                 "region": {
-                  "startLine": 1436,
+                  "startLine": 1637,
                   "startColumn": 5,
-                  "endLine": 1436,
+                  "endLine": 1637,
                   "endColumn": 50
                 }
               }
@@ -779,7 +779,7 @@
       },
       "invocations": [
         {
-          "commandLine": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\VC\\Tools\\MSVC\\14.27.29110\\bin\\HostX86\\x64\\c1xx.dll\" -ACf{1F7B090C-16DB-4822-966A-A93D26ED4681} -ACpmspft140.dll -Alint -D_PREFAST_ -D_AST_FE_ -Analyze -zm0x00B87180 -il C:\\Users\\0864~1\\AppData\\Local\\Temp\\_CL_b3499b25ast -typedil -f GravitySystem.cpp -Ze -D_MSC_EXTENSIONS -Zp16 -pc \\:/ -D_MSC_VER=1927 -D_MSC_FULL_VER=192729112 -D_MSC_BUILD=0 -D_M_AMD64=100 -ZILP448 -D_M_X64=100 -D_WIN64 -D_WIN32 -GR -D_CPPRTTI -I C:\\Users\\Алехандро\\Desktop\\AlexProjects\\BAGBEAN\\﻿C:\\Users\\Алехандро\\Desktop\\Alex_projects\\TX -nologo -W 4 -diagnostics:column -D_GUARDOVERFLOW_CRT_ALLOCATORS=1 -GF -Og -Ot -Oy -Oi -ltcg -DCODE_ANALYSIS -DNDEBUG -D_CONSOLE -D_MBCS -EHs -D_CPPUNWIND -EHc -MD -D_MT -D_DLL -GS -D_M_FP_PRECISE -permissive- -Zc:wchar_t -Zc:forScope -Fox64\\Release\\GravitySystem.obj -Fdx64\\Release\\vc142.pdb -Gd -analyze:projectdirectory C:\\Users\\Алехандро\\Desktop\\AlexProjects\\BAGBEAN\\ -analyze:rulesetdirectory ;C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\Team Tools\\Static Analysis Tools\\\\Rule Sets; -analyze:ruleset GravitySystem.ruleset -analyze:quiet -analyze:plugin C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\VC\\Tools\\MSVC\\14.27.29110\\bin\\HostX86\\x86\\EspXEngine.dll -FC -errorreport:prompt -std:c++latest -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\VC\\Tools\\MSVC\\14.27.29110\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\VC\\Tools\\MSVC\\14.27.29110\\atlmfc\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\VC\\Auxiliary\\VS\\include -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\ucrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\cppwinrt -I C:\\Users\\Алехандро\\Desktop\\AlexProjects\\BAGBEAN\\Include\\um",
+          "commandLine": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\VC\\Tools\\MSVC\\14.27.29110\\bin\\HostX86\\x64\\c1xx.dll\" -ACf{1F7B090C-16DB-4822-966A-A93D26ED4681} -ACpmspft140.dll -Alint -D_PREFAST_ -D_AST_FE_ -Analyze -zm0x00A97180 -il C:\\Users\\0864~1\\AppData\\Local\\Temp\\_CL_e41339eeast -typedil -f GravitySystem.cpp -Ze -D_MSC_EXTENSIONS -Zp16 -pc \\:/ -D_MSC_VER=1927 -D_MSC_FULL_VER=192729112 -D_MSC_BUILD=0 -D_M_AMD64=100 -ZILP448 -D_M_X64=100 -D_WIN64 -D_WIN32 -GR -D_CPPRTTI -I C:\\Users\\Алехандро\\Desktop\\AlexProjects\\BAGBEAN\\﻿C:\\Users\\Алехандро\\Desktop\\Alex_projects\\TX -nologo -W 4 -diagnostics:column -D_GUARDOVERFLOW_CRT_ALLOCATORS=1 -GF -Og -Ot -Oy -Oi -ltcg -DCODE_ANALYSIS -DNDEBUG -D_CONSOLE -D_MBCS -EHs -D_CPPUNWIND -EHc -MD -D_MT -D_DLL -GS -D_M_FP_PRECISE -permissive- -Zc:wchar_t -Zc:forScope -Fox64\\Release\\GravitySystem.obj -Fdx64\\Release\\vc142.pdb -Gd -analyze:projectdirectory C:\\Users\\Алехандро\\Desktop\\AlexProjects\\BAGBEAN\\ -analyze:rulesetdirectory ;C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\Team Tools\\Static Analysis Tools\\\\Rule Sets; -analyze:ruleset GravitySystem.ruleset -analyze:quiet -analyze:plugin C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\VC\\Tools\\MSVC\\14.27.29110\\bin\\HostX86\\x86\\EspXEngine.dll -FC -errorreport:prompt -std:c++latest -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\VC\\Tools\\MSVC\\14.27.29110\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\VC\\Tools\\MSVC\\14.27.29110\\atlmfc\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\VC\\Auxiliary\\VS\\include -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\ucrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\cppwinrt -I C:\\Users\\Алехандро\\Desktop\\AlexProjects\\BAGBEAN\\Include\\um",
           "executionSuccessful": true,
           "ruleConfigurationOverrides": []
         }
@@ -804,7 +804,7 @@
         },
         {
           "location": {
-            "uri": "file:///c:/users/алехандро/desktop/alexprojects/bagbean/q_app.h"
+            "uri": "file:///c:/users/алехандро/desktop/alexprojects/bagbean/q_vector.h"
           },
           "roles": [
             "resultFile"
@@ -812,7 +812,7 @@
         },
         {
           "location": {
-            "uri": "file:///c:/users/алехандро/desktop/alexprojects/bagbean/q_vector.h"
+            "uri": "file:///c:/users/алехандро/desktop/alexprojects/bagbean/q_app.h"
           },
           "roles": [
             "resultFile"
@@ -845,6 +845,14 @@
         {
           "location": {
             "uri": "file:///c:/users/алехандро/desktop/alexprojects/bagbean/q_console.h"
+          },
+          "roles": [
+            "resultFile"
+          ]
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/алехандро/desktop/alexprojects/bagbean/settingswindow.cpp"
           },
           "roles": [
             "resultFile"

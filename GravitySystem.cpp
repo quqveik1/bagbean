@@ -1,5 +1,6 @@
 ﻿//#define _TX_ALLOW_TRACE 9
 #define  _CRT_SECURE_NO_WARNINGS
+#define  TX_USE_SPEAK
 
 #include "TXLib.h"
 #include "Q_Vector.h"
@@ -9,6 +10,10 @@
 #include "Q_Console.h"
 #include <io.h>
 #include "Q_App.h"
+#include "settingsWindow.cpp"
+
+//#include <olectl.h>//!!Beta
+
 //You must to delete "my" TXLib.h file from the ptoject or you can do not download "my" TXLib.h file, you need to download TXLib from https://sourceforge.net/projects/txlib/files/latest/download and install this	1
 /*
 -   -
@@ -33,6 +38,7 @@ B = {3, 4}
 
 //const Rect miniMap =   {.pos = {25,  685}, .size = {375,  285}};
 
+#define key(a) txGetAsyncKeyState (a)
 
 
 App* TheGS = 0;
@@ -127,7 +133,7 @@ void copyFrame (BallSystem copyOfMainBallS[], BallSystem ballS, int currFrame);/
 void writeAllBall (FILE *ballFile);
 void writeBall (const Ball &ball, FILE *ballFile);
 
-void playSystem ();
+void playSystem (const char path[]);
 void drawFrameReplay (BallSystem *ballS);
 int readAllBall (BallSystem *ballS, FILE *ballFile);
 int readBall (Ball *ball, FILE *ballFile);
@@ -139,6 +145,7 @@ void drawMiniMap ();
 void drawSysInfo ();
 void drawConsole ();
 void printFAQ ();
+bool inButtonClicked (Rect button);
 bool onButtonClicked (Rect Button);
 bool inButtonMouse (Rect Button);
 bool inRect (Vector pos, Rect rectangle);
@@ -174,6 +181,7 @@ double SwitchRadius (double r);
 void ControlDelta ();
 void makeScreenShot ();
 void printfDCS (const char *str = "");
+const char* openCustomFile ();
 void endOfProgram ();
 
 
@@ -205,21 +213,6 @@ fgets (str, size, myfile);
 */
 
 
-BOOL DrawBitmap (HDC hDC, INT x, INT y, INT width, INT height, DWORD dwROP)
-{
-    /*
-    HDC       hDCBits;
-    BITMAP    Bitmap;
-    BOOL      bResult;
-
-    // Replace with StretchBlt call
-    bResult = BitBlt(hDC, x, y, Bitmap.bmWidth, Bitmap.bmHeight, hDCBits, 0, 0, dwROP);
-    bResult = StretchBlt(hDC, x, y, width, height,
-                         hDCBits, 0, 0, Bitmap.bmWidth, Bitmap.bmHeight, dwROP);
-    DeleteDC(hDCBits);
-                    */
-    return 1;
-}
 
 //New
 int main()
@@ -315,43 +308,19 @@ int main()
     //_txWindowStyle |= WS_THICKFRAME;
     _txWindowStyle &= ~WS_CAPTION;
     MainScreen = txCreateWindow (userScreen.x, userScreen.y);
-    //txCreateWindow (1080, 1000);
-    //printfDCS ("CreateWindow");
+    SetWindowText (MainScreen,  "KVE - Physics Simulation");
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
+
     App *gravitySys = new App ();
     TheGS = gravitySys;
     
-    int mode = 1;
+    //int mode = 0;
 
 
 
-    /*
-              char fileName[MAX_PATH] = "";
+    TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp");; 
 
-              OPENFILENAME ofn    = { sizeof (ofn), txWindow() };  //  +-- Загадка Жака Фреско... на размышление дается 20 секунд
-                                                                   //  V
-              ofn.lpstrTitle      = "\xcd\xe5\x20\xea\xee\xef\xe8\xef\xe0\xf1\xf2\xfc\x2c\x20\xe0\x20\xf0\xe0\xe7\xe1\xe5\xf0\xe8"
-                                    "\xf1\xfc\x20\xe8\x20\xf1\xe4\xe5\xeb\xe0\xe9\x20\xf4\xf3\xed\xea\xf6\xe8\xfe\x21\x21\x21";
-
-              ofn.lpstrFile       = fileName;
-              ofn.nMaxFile        = sizeof (fileName);
-
-              ofn.lpstrFilter     = "C++ Files\0" "*.cpp\0"  // ofn.nFilterIndex = 1
-                                    "X-- Files\0" "*.xpp\0"  // ofn.nFilterIndex = 2
-                                    "All Files\0" "*.*\0";   // ofn.nFilterIndex = 3
-              ofn.nFilterIndex    = 1;
-
-              ofn.lpstrInitialDir = NULL;
-
-              ofn.Flags           = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-
-              if ((WIN32::GetOpenFileNameA ))
-                  (WIN32::GetOpenFileNameA (&ofn) );  // Весьма полезная функция, отображает диалог выбора файла.
-
-             printf ("\n" "GetOpenFileName() returned: fileName = \"%s\"\n", fileName);
-              */
-    TheGS->Menu= txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp"); 
     HDC Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/Menu720p_1.bmp");
     StretchBlt (TheGS->Menu, 0, 0, userScreen.x, userScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
     txDeleteDC (Copyimage);
@@ -374,6 +343,7 @@ int main()
     //$ (GetLastError ());
     Vector compressK = {.x = userScreen.x / 1280, .y = userScreen.y / 720};
 
+    TheGS->monitorS = {.pos= {0,0}, .size = userScreen};
     TheGS->miniMap.startPosPix_ = {0, 490 * compressK.y};
     TheGS->miniMap.scalePix_ = {290 * compressK.x, 230 * compressK.y};
     TheGS->miniMap.coorSize_ = {(double) txGetExtentX (), (double)txGetExtentY ()};
@@ -403,7 +373,6 @@ int main()
          
          //TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
 
-    ;
     
     if (Resolution == 720)
     {  
@@ -484,7 +453,7 @@ int main()
     //TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
     //printfDCS ("REplayHud");
     
-    SetWindowText (MainScreen,  "KVE - Physics Simulation");
+    
     //H//ICON hicon = (HICON) TheGS->Menu;
     //DrawIconEx (TheGS->Menu, 1800, 1000, hicon, 32, 32, NULL, DI_NORMAL, );
     txBegin ();
@@ -501,15 +470,70 @@ int main()
             //POINT point = {txMousePos ().x, txMousePos ().y}; 
             if (onButtonClicked (TheGS->startButton))
             {
-                mode = 1;
-                //txSleep(1000);
+                if (key (VK_CONTROL))
+                {
+                    TheGS->writeSaves = false;
+                }
+
+                TheGS->ballS.currlength = 0;
+                TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, 0}),     {0, 0},  1e17, 10, 2e5, TX_YELLOW};
+                TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -400}),  {24, 0}, 1e4,  10, 2,   TX_CYAN};
+                TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -200}),  {32, 0}, 1e4,  10, 2,   TX_RED};
+        
+
+                /*
+                ballS.addBall ({txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED});
+                ballS.addBall ({txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_RED});
+                ballS.addBall ({txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED}};
+                */
+
+                for (int i = TheGS->ballS.currlength; i < BallMax; i++)
+                {
+                    assert (0 <= i && i < BallMax);
+
+                    TheGS->ballS.ball[i] = {txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED};
+                }
+
+                //ball[3] = {txToss ({0, -100}),  {10, 0}, 1e4, 10, 2, TX_RED};
+
+                for (int i = 0; i < BallMax; i++)
+                {
+                    assert (0 <= i && i < BallMax);
+
+                    TheGS->planetsInit[i] = TheGS->ballS.ball[i];
+                }
+                /*
+                for (int n = 0; n < 1; n++)
+                {   */
+                for (int i = 0; i < TheGS->ballS.currlength; i++)
+                {
+                    assert (0 <= i && i < BallMax);
+                    TheGS->ballS.ball[i] = TheGS->planetsInit[i];
+                }
+
+        
+                RunEngineExperiment ();
+                TheGS->writeSaves = true;
+                
                 break;
             }
 
        
             if (onButtonClicked (TheGS->repeatButton))
             {
-                mode = 0;
+                if (key (VK_CONTROL))
+                {
+                    const char* path = openCustomFile ();
+                    //printf ("\"%s\"", path);
+                    //if (strcmp (path, ""))
+                    {
+                        playSystem (path);
+                    }
+                }
+                else
+                {
+                    playSystem ("GravitySystemFolder/EngineExperiment.saves");
+                }
                 break;
             }
 
@@ -519,12 +543,31 @@ int main()
                 continue;
             }
 
-            if (onButtonClicked (TheGS->exitButton))
+            if (onButtonClicked (TheGS->exitButton) || txGetAsyncKeyState ('O'))
             {
                 endOfProgram ();
-
+                delete TheGS;
                 return 0;
             }
+
+           if (key ('5') && key ('7'))
+           {
+               
+                txSpeak ("Я роняю Запад, у! Я роняю Запад, у!\n"
+                         "Я роняю Запад, у! Я роняю Запад, а!\n"
+                         "Я роняю Запад, у! Я роняю запад, а!\n"
+                         "На моём хуе вся индустрия США (ха-ха!)\n"
+                         "Я роняю Запад, у! Я роняю Запад, эй!\n"
+                         "Я роняю Запад! (эщкере!) Я роняю Запад, эй!\n"
+                         "Я роняю Запад, у! Я роняю запад, а!\n"
+                         "На моём хуе вся индустрия США, я\n" 
+                ); 
+           }
+
+           if (key ('1') && key ('3') && key ('2') && key('9'))
+           {
+               //txPlaySound ("GravitySystemFolder/DevMaterials/FACE-Fiksiki.wav", SND_ASYNC);
+           }
         }
 
     
@@ -538,7 +581,7 @@ int main()
         //(void) (_getch ());
     
         //!!!system ("cls");
-        
+        /*
         if (mode == 1)
         {
     
@@ -547,7 +590,7 @@ int main()
             ball[1] = {txToss ({0,    -400}),  {7, 7}, 1e4, 10, 2, TX_RED};
             ball[2] = {txToss ({0,    +400}), {18, 17}, 1e4, 10, 5, TX_RED};
             ball[3] = {txToss ({400,  -400}), {7, 7}, 1e4, 10, 2, TX_RED};
-            */
+            
 
 
             TheGS->ballS.currlength = 0;
@@ -560,7 +603,7 @@ int main()
             ballS.addBall ({txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED});
             ballS.addBall ({txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_RED});
             ballS.addBall ({txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED}};
-            */
+           
 
             for (int i = TheGS->ballS.currlength; i < BallMax; i++)
             {
@@ -579,41 +622,19 @@ int main()
             }
             /*
             for (int n = 0; n < 1; n++)
-            {   */
+            {   
             for (int i = 0; i < TheGS->ballS.currlength; i++)
             {
                 assert (0 <= i && i < BallMax);
                 TheGS->ballS.ball[i] = TheGS->planetsInit[i];
             }
 
-            //txEnd ();
-            ///printf ("Vx = ");
-            //if (scanf  ("%lg", &ballS.ball[2].v.x) != 1) break;
-
-            //if (ballS.ball[2].v.x == -1 && ballS.ball[2].v.y  == -1) break;
-            //txBegin ();
-        
         
             RunEngineExperiment ();
-
-            //oif (txGetAsyncKeyState('O')) break;
-
-            //txEnd ();
-
-            //txDisableAutoPause ();
-        
-            //txDeleteDC (TheGS->);
+            TheGS->writeSaves = true;
 
         }
-
-        if (mode == 0)
-        {
-           
-            playSystem ();
-            //txEnd ();
-
-            //txDisableAutoPause ();
-        }
+        */
     }
 
     
@@ -622,6 +643,92 @@ int main()
     endOfProgram ();
     return 0;
 }
+
+/*
+HRESULT Load(LPCTSTR szFile)
+    {
+        CComPtr<IStream> pStream;
+        
+        // Load the file to a memory stream
+        HRESULT hr = FileToStream(szFile, &pStream);
+
+        if (SUCCEEDED(hr))
+        {
+            // Decode the picture
+            hr = ::OleLoadPicture(
+                    pStream,            // [in] Pointer to the stream that contains picture's data
+                    0,                    // [in] Number of bytes read from the stream (0 == entire)
+                    true,                // [in] Loose original format if true
+                    IID_IPicture,        // [in] Requested interface
+                    (void**)&m_pPicture // [out] IPictire object on success
+                    );
+        }
+
+        return hr;
+    }
+
+    HRESULT DrawImg(HDC hdc, const RECT& rcBounds)
+    {
+        if (m_pPicture)
+        {
+            // Get the width and the height of the picture
+            long hmWidth = 0, hmHeight = 0;
+            m_pPicture->get_Width(&hmWidth);
+            m_pPicture->get_Height(&hmHeight);
+
+            // Convert himetric to pixels
+            int nWidth    = MulDiv(hmWidth, ::GetDeviceCaps(hdc, LOGPIXELSX), HIMETRIC_INCH);
+            int nHeight    = MulDiv(hmHeight, ::GetDeviceCaps(hdc, LOGPIXELSY), HIMETRIC_INCH);
+
+            // Display the picture using IPicture::Render
+            return m_pPicture->Render(
+                hdc,                            // [in] Handle of device context on which to render the image
+                rcBounds.left,                    // [in] Horizontal position of image in hdc
+                rcBounds.top,                    // [in] Vertical position of image in hdc
+                rcBounds.right - rcBounds.left,    // [in] Horizontal dimension of destination rectangle
+                rcBounds.bottom - rcBounds.top, // [in] Vertical dimension of destination rectangle
+                0,                                // [in] Horizontal offset in source picture
+                hmHeight,                        // [in] Vertical offset in source picture
+                hmWidth,                        // [in] Amount to copy horizontally in source picture
+                -hmHeight,                        // [in] Amount to copy vertically in source picture
+                &rcBounds                        // [in, optional] Pointer to position of destination for a metafile hdc
+                );
+        }
+
+        return E_UNEXPECTED;
+    }
+    */
+
+
+const char* openCustomFile ()
+{
+    char fileName[MAX_PATH] = "";
+
+    OPENFILENAME ofn    = { sizeof (ofn), txWindow() };  //  +-- Загадка Жака Фреско... на размышление дается 20 секунд
+                                                        //  V
+    ofn.lpstrTitle      = "Файл, который нужно проиграть";
+
+    ofn.lpstrFile       = fileName;
+    ofn.nMaxFile        = sizeof (fileName);
+
+    ofn.lpstrFilter     = "Saves\0" "*.txt*\0"  // ofn.nFilterIndex = 1
+                        "All Files\0" "*.*\0";   // ofn.nFilterIndex = 3
+    ofn.nFilterIndex    = 1;
+
+    ofn.lpstrInitialDir = NULL;
+
+    ofn.Flags           = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+    if ((WIN32::GetOpenFileNameA ))
+        (WIN32::GetOpenFileNameA (&ofn) );
+    // Весьма полезная функция, отображает диалог выбора файла.
+
+    //printf ("\n" "GetOpenFileName() returned: fileName = \"%s\"\n", fileName);
+
+    return fileName;
+}
+
+
 
 
 void endOfProgram ()
@@ -746,12 +853,6 @@ void unitTest (BallSystem ballS, FILE *ballFile)
         
         
         
-        //(void) _getch ();
-        /*if (balls[i].pos.x != pos.x || balls[i].pos.y != pos.y || balls[i].r != r || (unsigned int) balls[i].color != color || (unsigned int) balls[i].alive != alive)
-        {
-            correctInput = false;
-        }
-        */
         printf ("Ball: %i:", i + 1);
 
         assert (0 <= i && i < BallMax);
@@ -809,9 +910,9 @@ bool compareNearlyNum (double a, double b)
     return (moduleDelta <= MaxDeltaPrecision);
 }
 
-void playSystem ()
+void playSystem (const char path[])
 {
-    FILE *ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.txt", "r");
+    FILE *ballSystemRecording = fopen (path, "r");
     BallSystem currBallS = {};
     HDC HUD = NULL;
      
@@ -838,7 +939,8 @@ void playSystem ()
 
         if (txGetAsyncKeyState ('O')) break;
         if (onButtonClicked (TheGS->exitButtonHUD)) break;
-        dynamicSleeping ();
+        ControlDelta ();
+        txSleep (SLEEPINGTIME);
     }
     txDeleteDC (HUD);
 
@@ -917,64 +1019,34 @@ int readBall (Ball *ball, FILE *ballFile)
     //_getch();
     
 }
-/*
-inline void lining ()
-{
-    printf ("////////////////////////////////////\n");
-}
-*/
 
 
 
 void RunEngineExperiment ()
 {
-    //static bool flagClearBackground = true;
-    //const int MaxFrame = 1000;
-
-    //BallSystem copyOfMainBallS[MaxFrame];
-   
-   
-    //Rect hud;
-    //hud.pos = {25, 685};
-    //hud.size = {375, 285}
-
-    //_getch ();
-    //txClear();
-    
-    //txSleep (10000);
-    //txClear();
-    //_getch ();
-
-    //Console console (;
     //txSetProgress (30);
     txSetProgress (90, Win32::TBPF_INDETERMINATE);
 
     TheGS->console.print ("Press f1 to open FAQ");
+    FILE *ballSystemRecording = {};
 
-    FILE *ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.txt", "w");
-    assert (ballSystemRecording);
+    if (TheGS->writeSaves)
+    {
+        ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.saves", "w");
+        assert (ballSystemRecording);
+    }
         
     for (int i = 0; i > -1; i++)
     {
         TheGS->getWindowPos ();
-        
-        //txCircle (400, 645, 5);
-        //getch ();
-        //txTextOut (25, 25, "sth");
-        //txTextOut (25, 300, "sth");
-        //txCircle (440, 10, 1);
-        
 
-        //solarSystem (ball);
         PhysicsAllBall ();
-        //solarSystem (ball);
+
         PhysicsAllBall ();
-        //solarSystem (ball);
+
         PhysicsAllBall ();
 
         ControlAllBalls ();
-        
-        //printf ("%f\n", txGetFPS ());
 
 
         drawAllBall ();
@@ -987,17 +1059,14 @@ void RunEngineExperiment ()
         if (Resolution != 720)
            // drawConsole ();
 
-        //long startFilePos = ftell (ballSystemRecording);
-        //fprintf (ballSystemRecording, "//f%i//", i);
-        writeAllBall (ballSystemRecording);
-        //copyFrame (copyOfMainBallS, ballS, i);
+        if (TheGS->writeSaves)
+            writeAllBall (ballSystemRecording);
 
-        //fseek (ballSystemRecording, startFilePos, SEEK_SET);
-
-        //unitTest (ballS, ballSystemRecording);
         
 
-
+        int fps = txGetFPS ();
+        if (fps < 30) SLEEPINGTIME--;
+        if (fps > 30) SLEEPINGTIME++;
         txSleep (SLEEPINGTIME);
 
         if (txGetAsyncKeyState('O')) break;
@@ -1008,22 +1077,11 @@ void RunEngineExperiment ()
     }
     txSetProgress (0);
 
-    fclose (ballSystemRecording); 
-
-    //FILE *ballSystemRecordingTesting = fopen ("GravitySystemFolder/EngineExperiment.txt", "r");
-
-    /*
-    for (int i = 0; i < MaxFrame; i++)
+    if (TheGS->writeSaves)
     {
-        unitTest (copyOfMainBallS[i], ballSystemRecordingTesting);
-        txSleep (10);
+        fclose (ballSystemRecording); 
     }
-    */
 
-    //fclose (ballSystemRecordingTesting);
-    //fclose (ballSystemRecordingTesting);
-
-    // (void) _getch ();
 }
 
 
@@ -1040,25 +1098,11 @@ void drawConsole ()
     if (txGetAsyncKeyState (VK_F1)) 
     {
         printFAQ ();
-        /*
-        txMessageBox ("Это простая физическая симуляция\n\n"
-                      "Для запуска просто запустите exe, если вдруг антивирус винды редложит отазаться, то нажмите подробнее, выполнить в любом случае\n\n"
-                      "Инструкция по управлению:\n\n"
-                      "0. При запуске у вас будет меню read/write. Read- это проигрывание предыдущей симуляции, write - создание новой\n\n"
-                      "1. Для запуска кометы зажмите лкм и задайте рогаткой вектор полета\n\n"
-                      "2. Стрелками влево, вправо и другими можно изменять скорость\n\n"
-                      "3. С - чистить жкран при перерисовки каждого кадра, N - обратное\n\n"
-                      "4. W - уменьшение размера планет, Е - противоположное\n\n"
-                      "P.S. Можете понажимать разные клавиши, тут очень много функции\n\n"
-                      "ВАЖНО! Чтобы выйти нажмите Английскую O на клавиатуре",
-                      "FAQ", MB_OK);
-                      */
     }
 
     if (strcmp (str, "") != 0)
     {
         TheGS->console.print (str);
-        //oprintf ("djaifawoifjioawf");
     }
     //Какой оператор си инвертирует число! ~
     //!(т) (любое число неравное нулю)
@@ -1086,6 +1130,20 @@ void drawConsole ()
         
 
 
+}
+bool inButtonClicked (Rect button)
+{
+    if (txMouseButtons () == 1)
+    {
+        if (txMouseX () > button.left () && txMouseX () <  button.right ())
+        {
+            if (txMouseY () > button.top () && txMouseY () <  button.bottom ())
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 bool onButtonClicked (Rect Button)
@@ -1117,23 +1175,19 @@ bool onButtonClicked (Rect Button)
 
 void printFAQ ()
 {
-    
     txMessageBox ("Это простая физическая симуляция\n\n"
-                      "Для запуска просто запустите .exe, если вдруг антивирус винды предложит отазаться, то нажмите подробнее, выполнить в любом случае\n\n"
+                      "Для запуска просто запустите .exe, если вдруг антивирус винды предложит отказаться, то нажмите подробнее, выполнить в любом случае\n\n"
                       "Инструкция по управлению:\n\n"
-                      "!!!!ВАЖНО!!!! Чтобы выйти нажмите Английскую O на клавиатуре или конопчку выход в углу экрана\n\n"
-                      "0. При запуске у вас будет меню Режим (Старт / Повтор) Повтор - это проигрывание предыдущей симуляции, Старт - создание новой\n\n"
+                      "!!!!ВАЖНО!!!! Чтобы выйти нажмите Английскую O на клавиатуре или кнопочку \"Выход\" в углу экрана\n\n"
+                      "0. При запуске у вас будет меню Режим (\"Старт\" / \"Повтор\") \"Повтор\" - это проигрывание предыдущей симуляции, \"Старт\" - создание новой (При одновременном нажатии на Ctrl запись повтора вестись не будет)\n\n"
                       "1. Для запуска кометы зажмите ЛКМ и задайте рогаткой вектор полета\n"
-                      "1.1 Для запуска кометы с заданием значений нажмите Tab, если вы передумали запускать, то нажмите Cancel в первом же меню выбора\n\n"
-                      "2. Стрелками влево, вправо и другими можно изменять скорость\n\n"
-                      "3. С - чистить экран при перерисовки каждого кадра, N - обратное\n\n"
-                      "4. W - уменьшение размера планет, Е - противоположное\n\n"
-                      "5*. В папке приложения вы можете найти папку GravitySystemFolder пройдите в нее и там есть файл Config.txt, там можно задавать разрешение экрана(720 или 1080) (Пример: Resolution: 720)\n\n" 
-                      "6*. Все ваши симмуляции записываются, и храняться в папке GravitySystemFolder, называется EngeneExperiment.txt, вы можете СКОПИРОВАТЬ (файл не рекомендуется уносить из его папки) в папку BestMoments\n\n"
-                      "Примечание: кнопка \"скрыть\", пока не работает,\n"
-                      "            также планеты могут залазить на элементы интерфейса\n"
+                      "1.1 Для запуска кометы с заданием значений нажмите кнопку \"Новая планета\", если вы передумали запускать, то нажмите Cancel в первом же меню выбора\n\n"
+                      "2. При нажатии на кнопку \"История\" будет включено отображение история перемещения планет\n\n"
+                      "3. Стрелками влево, вправо и другими можно изменять скорость\n\n"
+                      "4. С - чистить экран при перерисовки каждого кадра, N - обратное\n\n"
+                      "5. W - уменьшение размера планет, Е - противоположное\n\n" 
                       "P.S. Можете понажимать разные клавиши, тут очень много функции\n\n",//!!!Автроы
-                      "Инструкция по использованию");
+                      "Инструкция по использованию", MB_OK);
 }
 
 
@@ -1256,7 +1310,6 @@ void cometShooting ()
             txMousePos().x < (TheGS->monitorS.pos.x + TheGS->monitorS.size.x) &&
             txMousePos().y >  TheGS->monitorS.pos.y &&
             txMousePos().y < (TheGS->monitorS.pos.y + TheGS->monitorS.size.y) &&
-            inButtonMouse (TheGS->windowPos) &&
             //isActive (MainScreen) &&
             !inButtonMouse (TheGS->cleanButton) && 
             !inButtonMouse (TheGS->exitButtonHUD) && 
@@ -1470,7 +1523,7 @@ void ControlAllBalls ()
 
         if (onButtonClicked (TheGS->newPlanetButton))
         {
-            CreateNewPlanet (TheGS->ballS);
+            //CreateNewPlanet (TheGS->ballS);
         }
         ControlDelta ();
         
@@ -1505,13 +1558,14 @@ void makeScreenShot ()
 
 void ControlDelta ()
 {
-    if (onButtonClicked (TheGS->plusSpeedButton))
+    if (inButtonClicked (TheGS->plusSpeedButton))
     {
-        SLEEPINGTIME--;
+        DT += 0.001;
     } 
-    if (onButtonClicked (TheGS->minusSpeedButton))
+    if (inButtonClicked (TheGS->minusSpeedButton))
     {
-        SLEEPINGTIME++;
+        //SLEEPINGTIME++;
+        DT -= 0.001;
     } 
 }
 

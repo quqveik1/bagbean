@@ -1,36 +1,38 @@
 ﻿  GravitySystem.cpp
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(207,70): warning C4100: 'dwROP': unreferenced formal parameter
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(207,56): warning C4100: 'height': unreferenced formal parameter
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(207,45): warning C4100: 'width': unreferenced formal parameter
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(207,38): warning C4100: 'y': unreferenced formal parameter
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(207,31): warning C4100: 'x': unreferenced formal parameter
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(207,22): warning C4100: 'hDC': unreferenced formal parameter
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(438,11): warning C4189: 'hicon': local variable is initialized but not referenced
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(353,9): warning C4189: 'NEWIMAGE': local variable is initialized but not referenced
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(615,10): warning C4189: 'escape': local variable is initialized but not referenced
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(1449,9): warning C4189: 'saveVal': local variable is initialized but not referenced
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(357,60): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(357,46): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(363,59): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(363,45): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(369,65): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(369,51): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(318,9): warning C4189: 'mode': local variable is initialized but not referenced
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(765,17): warning C4551: function call missing argument list
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(817,10): warning C4189: 'escape': local variable is initialized but not referenced
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(1132,17): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(1650,9): warning C4189: 'saveVal': local variable is initialized but not referenced
   Generating code
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(575): warning C4702: unreachable code
-  115 of 598 functions (19.2%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    6 functions had inline decision re-evaluated but remain unchanged
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(771): warning C4172: returning address of local variable or temporary: fileName
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(684): warning C4702: unreachable code
+  232 of 606 functions (38.3%) were compiled, the rest were copied from previous compilation.
+    9 functions were new in current compilation
+    12 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   GravitySystem.vcxproj -> C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\x64\Release\GravitySystem.exe
-C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h(6763): warning C26819: Unannotated fallthrough between switch labels (es.78).
-C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h(8916): warning C26819: Unannotated fallthrough between switch labels (es.78).
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\Q_App.h(60): warning C26495: Variable 'App::windowPos' is uninitialized. Always initialize a member variable (type.6).
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\Q_App.h(78): warning C6340: Mismatch on sign: 'unsigned long' passed as _Param_(2) when some signed type is required in call to 'printf'.
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(269): warning C6031: Return value ignored: 'fscanf'.
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(591): warning C6031: Return value ignored: '_getch'.
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(632): warning C6031: Return value ignored: 'sscanf'.
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(633): warning C6031: Return value ignored: 'sscanf'.
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(638): warning C6031: Return value ignored: 'sscanf'.
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(644): warning C6031: Return value ignored: 'sscanf'.
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(649): warning C6031: Return value ignored: 'sscanf'.
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(666): warning C6262: Function uses '327280' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(760): warning C6262: Function uses '327228' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(905): warning C6292: Ill-defined for-loop:  counts up from maximum.
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(1118): warning C6262: Function uses '327220' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(1249): warning C6031: Return value ignored: '_getch'.
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(1435): warning C6031: Return value ignored: 'fscanf'.
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(1436): warning C6031: Return value ignored: 'fscanf'.
+C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h(6850): warning C26819: Unannotated fallthrough between switch labels (es.78).
+C:\Users\Алехандро\Desktop\AlexProjects\TX\TXLib.h(8998): warning C26819: Unannotated fallthrough between switch labels (es.78).
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\Q_App.h(62): warning C26495: Variable 'App::ReplayHUD' is uninitialized. Always initialize a member variable (type.6).
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\Q_App.h(80): warning C6340: Mismatch on sign: 'unsigned long' passed as _Param_(2) when some signed type is required in call to 'printf'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(263): warning C6031: Return value ignored: 'fscanf'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(793): warning C6031: Return value ignored: '_getch'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(834): warning C6031: Return value ignored: 'sscanf'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(835): warning C6031: Return value ignored: 'sscanf'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(840): warning C6031: Return value ignored: 'sscanf'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(846): warning C6031: Return value ignored: 'sscanf'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(851): warning C6031: Return value ignored: 'sscanf'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(868): warning C6262: Function uses '327280' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(962): warning C6262: Function uses '327236' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(1093): warning C6292: Ill-defined for-loop:  counts up from maximum.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(1320): warning C6262: Function uses '327220' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(1450): warning C6031: Return value ignored: '_getch'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(1636): warning C6031: Return value ignored: 'fscanf'.
+C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystem.cpp(1637): warning C6031: Return value ignored: 'fscanf'.
