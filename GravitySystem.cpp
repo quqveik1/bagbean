@@ -1,4 +1,6 @@
 ﻿//#define _TX_ALLOW_TRACE 9
+#define DIRECTRTX 12U
+#define LOVE(PYTHON) неправильный выбор
 #define  _CRT_SECURE_NO_WARNINGS
 #define  TX_USE_SPEAK
 
@@ -39,85 +41,35 @@ B = {3, 4}
 //const Rect miniMap =   {.pos = {25,  685}, .size = {375,  285}};
 
 #define key(a) txGetAsyncKeyState (a)
+#define endifkey(a) if (key (a)) break;
+#define endtillkey(a)           \
+{                               \
+    if (key (a))                \
+    {                           \
+        for (;;)                \
+        {                       \
+            if (!key (a))       \
+            {                   \
+                break;          \
+            }                   \
+        }                       \
+    }                           \
+}
+#define printBlt(image)         \
+{                               \
+    txBitBlt (0, 0, image);     \
+    _getch ();                  \
+    txClear ();                 \
+}
 
 
 App* TheGS = 0;
 
-//const Rect hud;
-//hud.pos = {25, 685};
-//hud.size = {375, 285}
-
-/*
-struct Vector 
-{
-    double x;
-    double y;
-};
-*/
-/*
-struct Rect
-{
-    Vector pos;
-    Vector size;
-
-    double left  () const { return this->pos.x; }
-    double top   () const { return this->pos.y; }
-    double right () const { return this->size.x + this->pos.x; }
-    double bottom() const { return this->size.y + this->pos.y; }
-};
-
-                                                                                                               
-
-struct Ball 
-{
-    Vector pos;
-    Vector v;
-    double m;
-    double r;
-    double charge;
-    COLORREF color;
-    bool alive = 1;
-
-    Vector history [BallHistoryLength];
-
-    int oldestNum;
-    void fillHistory ();
-
-    void DrawHistory ();
-    void DrawHistoryLines ();
-};
-
-
-
-
-struct BallSystem
-{
-    Ball ball[BallMax];
-
-    int currlength = 0;
-
-    void addBall (Ball newBall);
-};
-*/
-
-/*
-inline Vector  operator +  (const Vector &a, const Vector &b);
-inline Vector &operator += (Vector &a, const Vector &b);
-inline Vector  operator -  (const Vector &a, const Vector &b);
-inline void lining ();
-inline Vector  operator *  (const Vector &a, const double b);
-inline Vector  operator *  (const Vector &a, const Vector &b);
-inline Vector &operator *= (Vector &a, const Vector &b);
-inline Vector  operator /  (const Vector &a, double m);
-inline Vector operator / (const double a, const Vector &b);
-Vector operator ^ (const Vector &vector, int degree);
-*/
- 
-
-//void RunEngineE2 (const Ball planetsInit[]);
 
 void RunEngineExperiment ();
+void drawEngineFrame (bool drawMiniMapFlag = true);
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness = 1);
+void DrawFromStart (const Vector &vector, const Vector &finishPoint, COLORREF colorOfMainVector, double thickness);
 void drawArrows (const Vector &mainVector, const  Vector &startArrowPoint);
 Vector makePerpendikularLine (const Vector &mainVector);
 void drawVectorCircle (const Vector &vector, const Vector &startP, COLORREF color, double thickness = 1);
@@ -141,6 +93,9 @@ int readBall (Ball *ball, FILE *ballFile);
 double elDeg (const double number, const double deg);
 double degreesOfDouble (const double number, int degree);
 
+
+void loadImage (HDC &MainHDC, const char* imagePath, const char* backGroundPath = NULL, Vector backGroundSize = {});
+void loadImage (HDC image, HDC backGround = NULL, Vector backGroundSize = {});
 void drawMiniMap ();
 void drawSysInfo ();
 void drawConsole ();
@@ -150,9 +105,9 @@ bool onButtonClicked (Rect Button);
 bool inButtonMouse (Rect Button);
 bool inRect (Vector pos, Rect rectangle);
 
-void drawAllBall ();
+void drawAllBall (bool history = true);
 void PhysicsAllBall ();
-void drawBall (const Ball *ball, COLORREF colorCircle);
+void drawBall (const Ball *ball);
 void Control (Ball *ball);
 void Physics (Ball *ball, int numberOfFind, bool Graphic);
 void PhysicsNoGrathics (Ball *ball, Ball balls[], int numberOfFind);
@@ -175,7 +130,7 @@ Vector txToss (Vector pos);
 double SpeedX (double vX);
 double SpeedY (double vY);
 void ClearBackground ();
-void ClearBackground (HDC HUD);
+void ClearBackground (HDC HUD, Vector size = {});
 void   SwitchColour (Ball *ball);
 double SwitchRadius (double r);
 void ControlDelta ();
@@ -183,6 +138,9 @@ void makeScreenShot ();
 void printfDCS (const char *str = "");
 const char* openCustomFile ();
 void endOfProgram ();
+bool onButtons ();
+bool onButtons (Vector pos);
+bool onCreateButtons ();
 
 
 
@@ -228,146 +186,105 @@ int main()
     (void) _mkdir ("GravitySystemFolder");
     (void) _mkdir ("GravitySystemFolder/ScreenShots");
 
-    /*
-    Ball ball1 = {{100, 400}, {5, 5}, {0, 0.7}, 20};
-    Ball ball2 = {{300, 100}, {5, 5}, {0, 0.7}, 10};
-    Ball ball3 = {{400, 500}, {5, 5}, {0, 0.7}, 15};
-    double dt = 1;
-    bool flagClearBackground = false;
-    for (;;)
-    {
-        BallFrame (&ball1, dt);
-        BallFrame (&ball2, dt);
-        BallFrame (&ball3, dt);
-        
-        txSleep (20);
-        if (txGetAsyncKeyState('Q')) break;
-        flagClearBackground = ClearBackground (flagClearBackground);
-    }
-    */
-    /*
-    Vector start =  {.x = 400, .y = 300};
-    Vector vector = {.x = 0,   .y = -50};
-    Draw_verVector (vector, start, TX_RED, 5, DegToRad (1));
-    */
-   
-    Vector userScreen = {.x = (double)GetSystemMetrics (SM_CXSCREEN), .y = (double)GetSystemMetrics (SM_CYSCREEN)};
-
-    if (userScreen.x < 1800 && userScreen.y < 1000)
-    {
-        Resolution = 720;
-    }
-
-    FILE *config = fopen ("GravitySystemFolder/Config.txt", "r");
-    assert (config);
-    fscanf (config, "Resolution: %d ", &Resolution);
-    
-    /*!!BAG
-    if (fscanf (config, "Resolution: %d ", &Resolution) = 1);
-    {
-        Resolution = 720;
-        if (txMessageBox ("Невозможно считать config.txt\nПродолжить выполнение программы", "Критическая ошибка", MB_YESNO) == 2)
-        {
-            return 0;
-        }
-    }\
-    */
-    //printf ("Разрешение программы: %d", Resolution);
-    /*
-    if (Resolution == 0)
-    {
-        if (userScreen.x < 1800 && userScreen.y < 1000)
-        {
-           Resolution = 720;
-        }
-        else 
-        {
-            Resolution = 1080;
-        }
-    }
-    if (Resolution == 720)
-    {
-        //printf ("p(HD)");
-        MonitorSize = {1200, 600};      
-    }
-    if (Resolution == 1080)
-    {
-        //printf ("p(FULL HD)");
-        MonitorSize = {1800, 1000};
-    }
-     */
-
-    
-    fclose (config);
-
-
-    
 
    
-    //txCreateWindow (MonitorSize.x, MonitorSize.y);
-    //_txWindowStyle |= WS_THICKFRAME;
+    UserScreen = {.x = (double)GetSystemMetrics (SM_CXSCREEN), .y = (double)GetSystemMetrics (SM_CYSCREEN)};
+    CompressK = {.x = UserScreen.x / 1280, .y = UserScreen.y / 720};
+
     _txWindowStyle &= ~WS_CAPTION;
-    MainScreen = txCreateWindow (userScreen.x, userScreen.y);
+    MainScreen = txCreateWindow (UserScreen.x, UserScreen.y);
     SetWindowText (MainScreen,  "KVE - Physics Simulation");
     txSetColor     (TX_LIGHTRED);
     txSetFillColor (TX_RED);
+    txSelectFont ("Fixedsys", 40 * CompressK.x, 20 * CompressK.y);
 
     App *gravitySys = new App ();
     TheGS = gravitySys;
     
     //int mode = 0;
+    
 
+    
 
-
-    TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp");; 
+    
+    
+    TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp");
 
     HDC Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/Menu720p_1.bmp");
-    StretchBlt (TheGS->Menu, 0, 0, userScreen.x, userScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
+    StretchBlt (TheGS->Menu, 0, 0, UserScreen.x, UserScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
     txDeleteDC (Copyimage);
     //printfDCS ("1");
 
     TheGS->HUD = txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp");
     Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/HUD720p_1.bmp");
-    StretchBlt (TheGS->HUD, 0, 0, userScreen.x, userScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
+    StretchBlt (TheGS->HUD, 0, 0, UserScreen.x, UserScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
     txDeleteDC (Copyimage);
-    //printfDCS ("2");
+
+    //loadImage (TheGS->LeftButtonsImage, "GravitySystemFolder/DevMaterials/LeftButtons720p.bmp", "GravitySystemFolder/DevMaterials/HUD720p_1.bmp", UserScreen);
+    
+    TheGS->LeftButtonsImage = txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp");
+    txBitBlt (TheGS->LeftButtonsImage, 0, 0, UserScreen.x, UserScreen.y, TheGS->HUD, 0, 0);
+    Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/LeftButtons720p.bmp");
+    StretchBlt (TheGS->LeftButtonsImage, 0, 0, 605 * CompressK.x, 157 * CompressK.y,  Copyimage, 0, 0, 605, 157, SRCCOPY);
+    //printBlt (TheGS->LeftButtonsImage);
+    txDeleteDC (Copyimage);
+
+    TheGS->CreateModeHDC = txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp");
+    txBitBlt (TheGS->CreateModeHDC, 0, 0, UserScreen.x, UserScreen.y, TheGS->HUD, 0, 0);
+    Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/CreateButtonHud.bmp");
+    StretchBlt (TheGS->CreateModeHDC, 0, 0, 760 * CompressK.x, 140 * CompressK.y,  Copyimage, 0, 0, 760, 140, SRCCOPY);
+    //printBlt (TheGS->CreateModeHDC);
+    txDeleteDC (Copyimage);
 
     TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp");
-    Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/HUD720_Replay_1.bmp");
-    StretchBlt (TheGS->ReplayHUD, 0, 0, userScreen.x, userScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
+    Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/HUD720p_Replay_1.bmp");
+    StretchBlt (TheGS->ReplayHUD, 0, 0, UserScreen.x, UserScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
     txDeleteDC (Copyimage);
-
+     
     //DrawBitmap (TheGS->Menu, 0, 0, 1900, 1080, SRCCOPY);
     //!StretchBlt ( TheGS->Menu, 0, 0, 1000, 600, NEWIMAGE, 0, 0, 1900, 1080, SRCAND);
 
     //$ (GetLastError ());
-    Vector compressK = {.x = userScreen.x / 1280, .y = userScreen.y / 720};
+    
 
-    TheGS->monitorS = {.pos= {0,0}, .size = userScreen};
-    TheGS->miniMap.startPosPix_ = {0, 490 * compressK.y};
-    TheGS->miniMap.scalePix_ = {290 * compressK.x, 230 * compressK.y};
+    TheGS->monitorS = {.pos= {0,0}, .size = UserScreen};
+    TheGS->miniMap.startPosPix_ = {0, 490 * CompressK.y};
+    TheGS->miniMap.scalePix_ = {290 * CompressK.x, 230 * CompressK.y};
     TheGS->miniMap.coorSize_ = {(double) txGetExtentX (), (double)txGetExtentY ()};
     TheGS->miniMap.intepretK_= {{TheGS->miniMap.scalePix_.x / TheGS->miniMap.coorSize_.x}, {TheGS->miniMap.scalePix_.y / TheGS->miniMap.coorSize_.y}};
-    TheGS->exitButtonHUD = {.pos = {1090 * compressK.x, 0}, .size = {190 * compressK.x, 80 * compressK.y}};
-    TheGS->newPlanetButton = {.pos = {0 * compressK.x, 0}, .size = {300 * compressK.x, 100 * compressK.y}};
-    TheGS->screenShotButton = {.pos = {0, 106 * compressK.y}, .size = {160 * compressK.x, 50 * compressK.y}};
-    TheGS->minusSpeedButton = {.pos = {168 * compressK.x, 106 * compressK.y}, .size = {43 * compressK.x, 51 * compressK.y}};
-    TheGS->plusSpeedButton = {.pos = {220 * compressK.x, 106 * compressK.y}, .size = {43 * compressK.x, 51 * compressK.y}};
-    TheGS->cleanButton = {.pos = {305 * compressK.x, 0}, .size = {300 * compressK.x, 100 * compressK.y}};
-    //TheGS->mainPlace = {.pos = {290, 0}, .size = {(double) (txGetExtentX () - 290), (double) (txGetExtentY () - 0)}};
-    //TheGS->HUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p.bmp");
-    //TheGS->path = "GravitySystemFolder/DevMaterials/Hud720p.bmp";
+    
+
+    TheGS->LeftButtons = {.pos = {0, 0}, .size = {605 * CompressK.x, 157 * CompressK.y}};
+    /*
+    txBitBlt (0, 0, TheGS->LeftButtonsImage);
+    _getch ();
+    txBitBlt (0, 0, TheGS->LeftButtonsImage, TheGS->LeftButtons.size.x, TheGS->LeftButtons.size.y);
+    _getch ();
+    */
+    TheGS->exitButtonHUD = {.pos = {1090 * CompressK.x, 0}, .size = {190 * CompressK.x, 80 * CompressK.y}};
+    TheGS->newPlanetButton = {.pos = {0 * CompressK.x, 0}, .size = {300 * CompressK.x, 100 * CompressK.y}};
+    TheGS->screenShotButton = {.pos = {0, 106 * CompressK.y}, .size = {160 * CompressK.x, 50 * CompressK.y}};
+    TheGS->minusSpeedButton = {.pos = {168 * CompressK.x, 106 * CompressK.y}, .size = {43 * CompressK.x, 51 * CompressK.y}};
+    TheGS->plusSpeedButton = {.pos = {220 * CompressK.x, 106 * CompressK.y}, .size = {43 * CompressK.x, 51 * CompressK.y}};
+    TheGS->cleanButton = {.pos = {305 * CompressK.x, 0}, .size = {300 * CompressK.x, 100 * CompressK.y}};
+
+    TheGS->rMinusButton = {.pos = {650 * CompressK.x, 5 * CompressK.y}, .size = {50 * CompressK.x, 60 * CompressK.y}};
+    TheGS->rPlusButton = {.pos  = {706 * CompressK.x, 5 * CompressK.y}, .size = {50 * CompressK.x, 60 * CompressK.y}};
+    TheGS->mMinusButton = {.pos  = {650 * CompressK.x, 80 * CompressK.y}, .size = {50 * CompressK.x, 60 * CompressK.y}};
+    TheGS->mPlusButton = {.pos  = {706 * CompressK.x, 80 * CompressK.y}, .size = {50 * CompressK.x, 60 * CompressK.y}};
 
 
     //printfDCS ("Menu");
     //txBitBlt (0, 0, TheGS->Menu);
 
 
-    TheGS->startButton = {.pos = {15 * compressK.x, 127 * compressK.y}, .size = {445 * compressK.x, 198 * compressK.y}};
-    TheGS->repeatButton = {.pos = {15 * compressK.x, 358 * compressK.y}, .size = {445 * compressK.x, 198 * compressK.y}};
-    TheGS->infoButton = {.pos = {15 * compressK.x, 485 * compressK.y}, .size = {105 * compressK.x, 215 * compressK.y}};
-    TheGS->exitButton = {.pos = {1092 * compressK.x, 637 * compressK.y}, .size = {188 * compressK.x, 84 * compressK.y}};
-         
+    TheGS->startButton = {.pos = {15 * CompressK.x, 127 * CompressK.y}, .size = {445 * CompressK.x, 198 * CompressK.y}};
+    TheGS->repeatButton = {.pos = {15 * CompressK.x, 358 * CompressK.y}, .size = {445 * CompressK.x, 198 * CompressK.y}};
+    TheGS->infoButton = {.pos = {15 * CompressK.x, 485 * CompressK.y}, .size = {105 * CompressK.x, 215 * CompressK.y}};
+    TheGS->exitButton = {.pos = {1092 * CompressK.x, 637 * CompressK.y}, .size = {188 * CompressK.x, 84 * CompressK.y}};
+       
+    
+
     //TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/Menu720p.bmp");
          
          
@@ -470,15 +387,18 @@ int main()
             //POINT point = {txMousePos ().x, txMousePos ().y}; 
             if (onButtonClicked (TheGS->startButton))
             {
-                if (key (VK_CONTROL))
+                if (key (VK_TAB))
                 {
                     TheGS->writeSaves = false;
                 }
-
                 TheGS->ballS.currlength = 0;
-                TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, 0}),     {0, 0},  1e17, 10, 2e5, TX_YELLOW};
-                TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -400}),  {24, 0}, 1e4,  10, 2,   TX_CYAN};
-                TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -200}),  {32, 0}, 1e4,  10, 2,   TX_RED};
+
+                if (!key (VK_CONTROL))
+                {
+                    TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, 0}),     {0, 0},  1e17, 10, 2e5, TX_YELLOW};
+                    TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -400}),  {24, 0}, 1e4,  10, 2,   TX_CYAN};
+                    TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -200}),  {32, 0}, 1e4,  10, 2,   TX_RED};
+                }
         
 
                 /*
@@ -523,9 +443,9 @@ int main()
             {
                 if (key (VK_CONTROL))
                 {
-                    const char* path = openCustomFile ();
+                    const char *path = openCustomFile ();
                     //printf ("\"%s\"", path);
-                    //if (strcmp (path, ""))
+                    if (strcmp (path, ""))
                     {
                         playSystem (path);
                     }
@@ -569,72 +489,6 @@ int main()
                //txPlaySound ("GravitySystemFolder/DevMaterials/FACE-Fiksiki.wav", SND_ASYNC);
            }
         }
-
-    
-   
-        //HDC HUD = txLoadImage (TheGS->path);
-
-
-
-        //sumColorsUnitTest();
-
-        //(void) (_getch ());
-    
-        //!!!system ("cls");
-        /*
-        if (mode == 1)
-        {
-    
-            /*
-            ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED};
-            ball[1] = {txToss ({0,    -400}),  {7, 7}, 1e4, 10, 2, TX_RED};
-            ball[2] = {txToss ({0,    +400}), {18, 17}, 1e4, 10, 5, TX_RED};
-            ball[3] = {txToss ({400,  -400}), {7, 7}, 1e4, 10, 2, TX_RED};
-            
-
-
-            TheGS->ballS.currlength = 0;
-            TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, 0}),     {0, 0},  1e17, 10, 2e5, TX_YELLOW};
-            TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -400}),  {24, 0}, 1e4,  10, 2,   TX_CYAN};
-            TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -200}),  {32, 0}, 1e4,  10, 2,   TX_RED};
-        
-
-            /*
-            ballS.addBall ({txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED});
-            ballS.addBall ({txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_RED});
-            ballS.addBall ({txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED}};
-           
-
-            for (int i = TheGS->ballS.currlength; i < BallMax; i++)
-            {
-                assert (0 <= i && i < BallMax);
-
-                TheGS->ballS.ball[i] = {txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED};
-            }
-
-            //ball[3] = {txToss ({0, -100}),  {10, 0}, 1e4, 10, 2, TX_RED};
-
-            for (int i = 0; i < BallMax; i++)
-            {
-                assert (0 <= i && i < BallMax);
-
-                TheGS->planetsInit[i] = TheGS->ballS.ball[i];
-            }
-            /*
-            for (int n = 0; n < 1; n++)
-            {   
-            for (int i = 0; i < TheGS->ballS.currlength; i++)
-            {
-                assert (0 <= i && i < BallMax);
-                TheGS->ballS.ball[i] = TheGS->planetsInit[i];
-            }
-
-        
-            RunEngineExperiment ();
-            TheGS->writeSaves = true;
-
-        }
-        */
     }
 
     
@@ -642,6 +496,34 @@ int main()
 
     endOfProgram ();
     return 0;
+}   
+
+/*
+void loadImage (HDC &MainHDC, const char* imagePath, const char* backGroundPath /*= NULL, Vector backGroundSize =NULL)
+{
+    HDC backGround = txLoadImage (backGroundPath);   
+    printBlt (backGround);
+    HDC image = txLoadImage (emptyFilePath);
+    MainHDC =  txLoadImage (emptyFilePath);
+    printBlt (image);
+    txBitBlt (image, 0, 0, backGroundSize.x, backGroundSize.y, backGround, 0, 0);
+    printBlt (image);
+    HDC Copyimage= txLoadImage (imagePath);
+    StretchBlt (image, 0, 0, UserScreen.x, UserScreen.y,  Copyimage, 0, 0, TheGS->LeftButtons.size.x, TheGS->LeftButtons.size.y, SRCCOPY);
+    txBitBlt (MainHDC, 0, 0, UserScreen.x, UserScreen.y, image, 0, 0);
+    printBlt (MainHDC);
+    txDeleteDC (Copyimage);  
+}
+*/
+
+void loadImage (HDC image, HDC backGround /*= NULL*/, Vector backGroundSize /*=NULL*/)
+{
+    image = txLoadImage (emptyFilePath);
+    if (backGround != NULL) txBitBlt (image, 0, 0, backGroundSize.x, backGroundSize.y, backGround, 0, 0);
+    HDC Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/HUD720p_1.bmp");
+    StretchBlt (TheGS->HUD, 0, 0, UserScreen.x, UserScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
+    printBlt (TheGS->HUD);
+    txDeleteDC (Copyimage);  
 }
 
 /*
@@ -711,7 +593,7 @@ const char* openCustomFile ()
     ofn.lpstrFile       = fileName;
     ofn.nMaxFile        = sizeof (fileName);
 
-    ofn.lpstrFilter     = "Saves\0" "*.txt*\0"  // ofn.nFilterIndex = 1
+    ofn.lpstrFilter     = "Saves\0" "*.saves*\0"  // ofn.nFilterIndex = 1
                         "All Files\0" "*.*\0";   // ofn.nFilterIndex = 3
     ofn.nFilterIndex    = 1;
 
@@ -719,11 +601,11 @@ const char* openCustomFile ()
 
     ofn.Flags           = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
-    if ((WIN32::GetOpenFileNameA ))
+   if ((WIN32::GetOpenFileNameA ))
         (WIN32::GetOpenFileNameA (&ofn) );
     // Весьма полезная функция, отображает диалог выбора файла.
 
-    //printf ("\n" "GetOpenFileName() returned: fileName = \"%s\"\n", fileName);
+    ///printf ("\n" "GetOpenFileName() returned: fileName = \"%s\"\n", fileName);
 
     return fileName;
 }
@@ -738,6 +620,8 @@ void endOfProgram ()
     txDeleteDC (TheGS->Menu);
     txDeleteDC (TheGS->HUD);
     txDeleteDC (TheGS->ReplayHUD);
+    txDeleteDC (TheGS->LeftButtonsImage);
+    txDeleteDC (TheGS->CreateModeHDC);
 }
 
 void printfDCS (const char *str)
@@ -771,6 +655,83 @@ int main2()
 
 void CreateNewPlanet (BallSystem &ballS)
 {
+    Ball newBall = {};
+    newBall.pos = {UserScreen.x/2, UserScreen.y/2};
+    newBall.m      = 1e4;
+    newBall.charge = 2e1;
+    newBall.r      = 10;
+    Vector MousePos = {};
+    for (;;)
+    {
+        //printf ("%d", !onCreateButtons ());
+        if (txMouseButtons () == 2)
+        {
+            newBall.pos = {.x = txMouseX (), .y = txMouseY ()};
+        } 
+
+        if (onButtonClicked (TheGS->rPlusButton))
+        {
+            newBall.r++;
+        }
+        if (onButtonClicked (TheGS->rMinusButton))
+        {
+            newBall.r--;
+        }
+
+
+        if (onButtonClicked (TheGS->mMinusButton))
+        {
+            newBall.m--;
+        }
+        if (onButtonClicked (TheGS->mPlusButton))
+        {
+            newBall.m++;
+        }
+
+        if (txMouseButtons () == 1 && !onCreateButtons ()) 
+        { 
+            MousePos  = {txMouseX(), txMouseY()};
+            newBall.v = newBall.pos - MousePos;
+        }
+
+        DrawFromStart (newBall.v, newBall.pos, TX_CYAN, 5);
+        drawAllBall (false);
+        drawMiniMap ();
+        char rInfo[100] = {};
+        char mInfo[100] = {};
+        sprintf (rInfo, "%d", (int) newBall.r);
+        sprintf (mInfo, "%d", (int) newBall.m);
+        $s;
+        txSetColor (TX_WHITE);
+        txTextOut (220 * CompressK.x, 20 * CompressK.y + 2, rInfo);
+        txTextOut (190 * CompressK.x, 90 * CompressK.y + 2, mInfo);
+
+
+        
+        //~!!!
+        //printf ("%d", txFontExist ("Fixedsys"));
+        
+       // txSetColor (TX_WHITE);
+        //txTextOut (10, TheGS->screenShotButton.bottom() + 10, rInfo);
+        //txTextOut (10, TheGS->screenShotButton.bottom() + 50, mInfo);
+
+        if (onButtonClicked (TheGS->exitButtonHUD)) break;
+
+        newBall.draw ();
+        txSleep  (SLEEPINGTIME);
+        //txBitBlt (0,0, TheGS->HUD);
+        //txBitBlt (0,0, TheGS->LeftButtonsImage);
+        //ClearBackground (TheGS->HUD);
+        ClearBackground (TheGS->CreateModeHDC);
+    }
+
+    TheGS->ballS.addBall (newBall);
+
+
+
+
+
+    /*
     bool escape = 0;
 
     const char *cposx = txInputBox ("Введите координату по x:", "Создание новой планеты", "400");
@@ -817,9 +778,19 @@ void CreateNewPlanet (BallSystem &ballS)
 
     
     ballS.addBall (newBall);
+    */
 
 
+}
 
+bool onCreateButtons ()
+{
+    return  inButtonMouse (TheGS->exitButtonHUD) ||
+            inButtonMouse (TheGS->rMinusButton)  ||
+            inButtonMouse (TheGS->rPlusButton)   ||
+            inButtonMouse (TheGS->mMinusButton)  ||
+            inButtonMouse (TheGS->mPlusButton);
+            
 }
 
 void unitTest (BallSystem ballS, FILE *ballFile)
@@ -912,9 +883,9 @@ bool compareNearlyNum (double a, double b)
 
 void playSystem (const char path[])
 {
-    FILE *ballSystemRecording = fopen (path, "r");
+    FILE *ballSystemRecording = fopen (path, "r");  
+    //printf ("%p", ballSystemRecording);
     BallSystem currBallS = {};
-    HDC HUD = NULL;
      
 
     for (;;)
@@ -925,13 +896,11 @@ void playSystem (const char path[])
         if (readCode == 0)
         {
             txMessageBox ("Программа не может считать данные сохранений", "Ошибка", MB_OK);
-            txDeleteDC (HUD);
             return;
         }
         if (readCode == -1)
         {
             txMessageBox ("Повтор закончился", "Окончание повтора", MB_OK);
-            txDeleteDC (HUD);
             return;
         }
 
@@ -942,7 +911,6 @@ void playSystem (const char path[])
         ControlDelta ();
         txSleep (SLEEPINGTIME);
     }
-    txDeleteDC (HUD);
 
     fclose (ballSystemRecording);
 
@@ -972,7 +940,7 @@ void drawFrameReplay (BallSystem *ballS)
         assert (0 <= i && i < BallMax);
 
         if (ballS->ball[i].alive)
-            drawBall ( &(ballS->ball[i]), ballS->ball[i].color);    
+            drawBall ( &(ballS->ball[i]));    
     }
 }
 
@@ -983,9 +951,10 @@ void writeBall (const Ball &ball, FILE *ballFile)
 
 void writeAllBall (FILE *ballFile)
 {
-    OFF fprintf (ballFile, "/BEGIN  :::  ");
+    //OFF fprintf (ballFile, "/BEGIN  :::  ");
+    fprintf (ballFile, "Num: %d||", TheGS->ballS.currlength);
 
-    for (int i = 0; i < BallMax; i++)
+    for (int i = 0; i < TheGS->ballS.currlength; i++)
     {
         assert (0 <= i && i < BallMax);
 
@@ -997,10 +966,17 @@ void writeAllBall (FILE *ballFile)
 
 int readAllBall (BallSystem *ballS, FILE *ballFile)
 {
-    for (int i = 0; i < BallMax; i++)
+    int size = 0;
+    int readCode = fscanf (ballFile, "Num: %d|| ", &size);
+    if (readCode == 0 || readCode == -1)
+    {
+        return readCode;
+    }
+
+    for (int i = 0; i < size; i++)
     {
         assert (0 <= i && i < BallMax);
-        int readCode = readBall ( &(ballS->ball[i]), ballFile);
+        readCode = readBall ( &(ballS->ball[i]), ballFile);
 
         if (readCode == 0 || readCode == -1)
         {
@@ -1033,36 +1009,39 @@ void RunEngineExperiment ()
     if (TheGS->writeSaves)
     {
         ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.saves", "w");
+       
+        //printf ("%p|||", ballSystemRecording);
+        //DebugBreak ();
         assert (ballSystemRecording);
     }
         
     for (int i = 0; i > -1; i++)
     {
-        TheGS->getWindowPos ();
+        //TheGS->getWindowPos ();
 
         PhysicsAllBall ();
 
         PhysicsAllBall ();
 
         PhysicsAllBall ();
+        //DebugBreak ();
 
         ControlAllBalls ();
 
+        drawEngineFrame ();
 
+         /*
         drawAllBall ();
 
         drawMiniMap ();
+        */
 
-        if (Resolution != 720)
-            //drawSysInfo ();
 
-        if (Resolution != 720)
-           // drawConsole ();
-
+        //printf ("%p|| %d", ballSystemRecording, TheGS->writeSaves);
         if (TheGS->writeSaves)
             writeAllBall (ballSystemRecording);
 
-        
+        //DebugBreak ();
 
         int fps = txGetFPS ();
         if (fps < 30) SLEEPINGTIME--;
@@ -1073,7 +1052,8 @@ void RunEngineExperiment ()
 
         if (onButtonClicked (TheGS->exitButtonHUD)) break;
 
-        ClearBackground ();
+        //ClearBackground (TheGS->HUD);
+        ClearBackground (TheGS->LeftButtonsImage);
     }
     txSetProgress (0);
 
@@ -1081,6 +1061,13 @@ void RunEngineExperiment ()
     {
         fclose (ballSystemRecording); 
     }
+
+}
+
+void drawEngineFrame (bool drawMiniMapFlag)
+{
+    drawAllBall ();
+    if (drawMiniMapFlag) drawMiniMap ();
 
 }
 
@@ -1178,10 +1165,9 @@ void printFAQ ()
     txMessageBox ("Это простая физическая симуляция\n\n"
                       "Для запуска просто запустите .exe, если вдруг антивирус винды предложит отказаться, то нажмите подробнее, выполнить в любом случае\n\n"
                       "Инструкция по управлению:\n\n"
-                      "!!!!ВАЖНО!!!! Чтобы выйти нажмите Английскую O на клавиатуре или кнопочку \"Выход\" в углу экрана\n\n"
-                      "0. При запуске у вас будет меню Режим (\"Старт\" / \"Повтор\") \"Повтор\" - это проигрывание предыдущей симуляции, \"Старт\" - создание новой (При одновременном нажатии на Ctrl запись повтора вестись не будет)\n\n"
+                      "0. При запуске у вас будет меню Режим (\"Старт\" / \"Повтор\") \"Повтор\" - это проигрывание предыдущей симуляции, \"Старт\" - создание новой (При одновременном нажатии на Ctrl создается пустая симуляция)\n\n"
                       "1. Для запуска кометы зажмите ЛКМ и задайте рогаткой вектор полета\n"
-                      "1.1 Для запуска кометы с заданием значений нажмите кнопку \"Новая планета\", если вы передумали запускать, то нажмите Cancel в первом же меню выбора\n\n"
+                      "1.1 Для запуска кометы с заданием значений нажмите кнопку \"Новая планета\", задавайте положение планеты с помощью ПКМ, а вектор скорости с помощью ЛКМ\n\n"
                       "2. При нажатии на кнопку \"История\" будет включено отображение история перемещения планет\n\n"
                       "3. Стрелками влево, вправо и другими можно изменять скорость\n\n"
                       "4. С - чистить экран при перерисовки каждого кадра, N - обратное\n\n"
@@ -1351,7 +1337,6 @@ void cometShooting ()
             if (TheGS->ballS.currlength + 1 >= BallMax)
             {
                 txMessageBox ("Невозможно добавить новую планету", "Предупреждение", MB_OK);
-                _getch();
             }
         }
 
@@ -1372,10 +1357,14 @@ Vector returnMouseVector (Vector *finishPos)
         currMousePos = {txMouseX(), txMouseY()};
         speed        = startPos - currMousePos;
         Draw (speed, currMousePos, TX_CYAN, 5);
+        drawAllBall ();
+        drawMiniMap ();
+
         txSleep (SLEEPINGTIME);
 
         if (txMouseButtons () != 1) break;
-        ClearBackground ();
+        ClearBackground (TheGS->HUD);
+        ClearBackground (TheGS->LeftButtonsImage, TheGS->LeftButtons.size);
     }
 
     *finishPos = currMousePos;
@@ -1399,13 +1388,13 @@ void BallSystem::addBall (Ball newBall)
 }
 */
 
-void drawAllBall ()
+void drawAllBall (bool history /* = true*/)
 {
     static bool drawHistory = false;
      for (int i = 0; i < TheGS->ballS.currlength; i++)
      {
          assert (0 <= i && i < BallMax);
-         if (onButtonClicked (TheGS->cleanButton))
+         if (onButtonClicked (TheGS->cleanButton) && history)
          {
             drawHistory = !drawHistory;
          }
@@ -1425,7 +1414,7 @@ void drawAllBall ()
             {
             if (TheGS->ballS.ball[i].alive)
             {
-                drawBall(&TheGS->ballS.ball[i], TheGS->ballS.ball[i].color);
+                drawBall(&TheGS->ballS.ball[i]);
                 if (drawHistory)
                     TheGS->ballS.ball[i].DrawHistory ();
             }
@@ -1433,6 +1422,26 @@ void drawAllBall ()
         }
         
      }
+}
+
+bool onButtons ()
+{
+      return    inButtonMouse (TheGS->cleanButton) ||
+                inButtonMouse (TheGS->exitButtonHUD) || 
+                inButtonMouse (TheGS->newPlanetButton) ||
+                inButtonMouse (TheGS->screenShotButton) ||
+                inButtonMouse (TheGS->plusSpeedButton) ||
+                inButtonMouse (TheGS->minusSpeedButton);
+}
+
+bool onButtons (Vector pos)
+{
+      return    inRect (pos, TheGS->cleanButton) ||
+                inRect (pos, TheGS->exitButtonHUD) || 
+                inRect (pos, TheGS->newPlanetButton) ||
+                inRect (pos, TheGS->screenShotButton) ||
+                inRect (pos, TheGS->plusSpeedButton) ||
+                inRect (pos, TheGS->minusSpeedButton);
 }
 
 bool inRect (Vector pos, Rect rectangle)
@@ -1460,9 +1469,11 @@ void PhysicsAllBall ()
     }
 }
 
-void drawBall (const Ball *ball, COLORREF colorCircle)
+void drawBall (const Ball *ball)
 {
-    txSetFillColor (colorCircle);
+    $s
+    txSetFillColor (ball->color);
+    txSetColor (ball->color);
 
     if (ball->pos.x <= txGetExtentX() && ball->pos.y <= txGetExtentY())
     {
@@ -1508,7 +1519,7 @@ Vector txToss (Vector pos)
 
 void ControlAllBalls ()
 {
-    for (int i = 0; i < TheGS->ballS.currlength; i++)
+    for (int i = 0; i <= TheGS->ballS.currlength; i++)
     {
         assert (0 <= i && i < BallMax);
 
@@ -1523,12 +1534,13 @@ void ControlAllBalls ()
 
         if (onButtonClicked (TheGS->newPlanetButton))
         {
-            //CreateNewPlanet (TheGS->ballS);
+            CreateNewPlanet (TheGS->ballS);
         }
         ControlDelta ();
         
     }
 }  
+
 
 void makeScreenShot ()
 {
@@ -1758,9 +1770,9 @@ void Colision (Ball *ball1, Ball *ball2)
 
     ball2->v = newV;
     ball1->v = {0, 0};
-
-    double sumSquare = M_PI * ball1->r + M_PI * ball2->r;
-    ball2->r = sumSquare / M_PI;
+                                                                                                                                 
+    double sumSquare = 4/3 * (M_PI * ball1->r * ball1->r * ball1->r) + 4/3 * (M_PI * ball2->r * ball2->r * ball2->r);
+    ball2->r = cbrt (sumSquare / M_PI);
     ball1->r = 0;
 
     ball2->charge = ball2->charge + ball1->charge;
@@ -1769,8 +1781,7 @@ void Colision (Ball *ball1, Ball *ball2)
     ball2->color = sumColors (ball1->color, ball2->color);
 
 
-    ball1->alive = false;
-
+    ball1->alive = !"dead";
 }
 
 COLORREF sumColors (COLORREF a, COLORREF b)
@@ -1847,7 +1858,7 @@ void ssCircle (Ball ball, Rect Box)
 
     //txCircle (x + 0.5 * Box.right (), y + 0.5 * Box.bottom (), r);
 
-    drawBall (&ball, ball.color);
+    drawBall (&ball);
 }
 
 void ssLine (double StartX, double StartY, double FinishX, double FinishY)
@@ -2080,14 +2091,18 @@ void ClearBackground ()
 
      COLORREF color = txGetFillColor();
      txSetFillColor (TX_BLACK);
-     if (flagClearBackground == true && TheGS->HUD != NULL) txBitBlt (0, 0, TheGS->HUD);
+     if (flagClearBackground == true && TheGS->HUD != NULL) 
+     {
+         txBitBlt (0, 0, TheGS->HUD);
+         //txBitBlt (0, 0, buttons);
+     }
      if (flagClearBackground == true && TheGS->HUD == NULL) txClear();
      //txClear();
      txSetFillColor (color);
 
 }
 
-void ClearBackground (HDC HUD)
+void ClearBackground (HDC HUD, Vector size)
 {
     static bool flagClearBackground = true;
 
@@ -2102,11 +2117,15 @@ void ClearBackground (HDC HUD)
      }
 
      COLORREF color = txGetFillColor();
-     txSetFillColor (TX_BLACK);
-     if (flagClearBackground == true && HUD != NULL) txBitBlt (0, 0, HUD);
+     //txSetFillColor (TX_BLACK);
+     if (flagClearBackground == true && HUD != NULL) 
+     {
+         //if (size.x != 0 && size.y != 0) txBitBlt (0, 0, HUD, size.x, size.y);
+          txBitBlt (0, 0, HUD);
+     }
      if (flagClearBackground == true && HUD == NULL) txClear();
      //txClear();
-     txSetFillColor (color);
+     //txSetFillColor (color);
 
 }
 
@@ -2154,6 +2173,7 @@ double elDeg (const double number, const double deg)
 
 void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainVector, double thickness)
 {
+    $s
     if (thickness > 0)
     {
         Vector finishPoint = startPoint + vector;
@@ -2163,16 +2183,20 @@ void Draw (const Vector &vector, const Vector &startPoint, COLORREF colorOfMainV
         drawArrows (vector, finishPoint);
         txSetFillColor (colorOfMainVector);
     }
+}
 
-    /*
-    txCircle (startPoint.x, startPoint.y, thickness * 0.5 + 0.05 * length (vector));
-    txCircle (startX,  startY, 7);
-    COLORREF color = txGetFillColor();
-    txSetFillColor (TX_BLUE);
-    txCircle (finishX, finishY, 5);
-    txSetFillColor (color);
-    txLine(vector.x, vector.y, vector.x+);
-    */
+void DrawFromStart (const Vector &vector, const Vector &finishPoint, COLORREF colorOfMainVector, double thickness)
+{
+    $s
+    if (thickness > 0)
+    {
+        Vector startPoint = finishPoint - vector;
+
+        txSetColor (colorOfMainVector, thickness);
+        txLine (startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+        drawArrows (vector, finishPoint);
+        txSetFillColor (colorOfMainVector);
+    }
 }
 
 double lengthV (const Vector &vector)

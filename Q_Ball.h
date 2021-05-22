@@ -5,24 +5,38 @@
 #include "Config.h"
 
 
+bool onButtons (Vector pos);
+
 struct Ball 
 {
     Vector pos;
     Vector v;
-    double m;
-    double r;
-    double charge;
-    COLORREF color;
+    double m = 10e4;
+    double r = 10;
+    double charge = 2e1;
+    COLORREF color = TX_WHITE;
     bool alive = 1;
 
     Vector history [BallHistoryLength];
 
     int oldestNum;
+
     void fillHistory ();
 
+
+    void draw ();
     void DrawHistory ();
     void DrawHistoryLines ();
 };
+
+
+void Ball::draw ()
+{
+    $s
+    txSetFillColour (color);
+    txSetColour (color);
+    txCircle (pos.x, pos.y, r);
+}
 
 struct BallSystem
 {
@@ -73,7 +87,7 @@ void Ball::DrawHistory ()
 
         txSetFillColor (RGB (nColor, nColor, nColor));
         txSetColor     (RGB (nColor, nColor, nColor));
-        txCircle (history[i].x, history[i].y, 2);
+        if (!onButtons (history[i])) txCircle (history[i].x, history[i].y, 2);
         nColor += kRgb;
     }
 
@@ -83,7 +97,7 @@ void Ball::DrawHistory ()
 
         txSetFillColor (RGB (nColor, nColor, nColor));
         txSetColor     (RGB (nColor, nColor, nColor));
-        txCircle (history[i].x, history[i].y, 2);
+        if (!onButtons (history[i])) txCircle (history[i].x, history[i].y, 2);
         nColor += kRgb;
     }
 
@@ -150,3 +164,16 @@ void BallSystem::addBall (Ball newBall)
 
     currlength++;
 }
+
+/*
+
+bool onButtons (Vector pos)
+{
+      return    inRect (pos, TheGS->cleanButton) ||
+                inRect (pos, TheGS->exitButtonHUD) || 
+                inRect (pos, TheGS->newPlanetButton) ||
+                inRect (pos, TheGS->screenShotButton) ||
+                inRect (pos, TheGS->plusSpeedButton) ||
+                inRect (pos, TheGS->minusSpeedButton);
+}
+*/

@@ -24,6 +24,14 @@ inline Vector operator / (const double a, const Vector &b);
        Vector operator ^ (const Vector &vector, int degree);
        bool   operator > (const Vector &a, const Vector &b);
        bool   operator < (const Vector &a, const Vector &b);
+       bool operator == (const Vector &a, const Vector &b);
+
+
+bool operator == (const Vector &a, const Vector &b)
+{
+    if (a.x == b.x && a.y == b.y) return true;
+    return false;
+}
 
 inline Vector operator * (const Vector &a, const double b)
 {

@@ -27,12 +27,20 @@ public:
     Rect exitButton;
 
     HDC HUD;
+    HDC LeftButtonsImage;
+    Rect LeftButtons;
     Rect cleanButton;
     Rect exitButtonHUD;
     Rect newPlanetButton;
     Rect screenShotButton;
     Rect minusSpeedButton;
     Rect plusSpeedButton;
+    HDC CreateModeHDC; 
+    Rect rMinusButton;
+    Rect rPlusButton;
+    Rect mMinusButton;
+    Rect mPlusButton;
+
     bool writeSaves = true;
 
     HDC ReplayHUD;

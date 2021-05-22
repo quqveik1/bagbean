@@ -12,6 +12,10 @@ const double ElectricKf = 6e3;
 double DT = 0.09;
 const double MinDistance = 0;
 int LastComet = 0;
+const char FONT[] = "Fixedsys";
+Vector CompressK = {};
+Vector UserScreen = {};
+const char *emptyFilePath = "GravitySystemFolder/DevMaterials/copyImage.bmp";
 
 const int RoundingPrecision = 7;
 const double MaxDeltaPrecision = 0.1;

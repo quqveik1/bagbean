@@ -4,7 +4,6 @@
 #include "TXLib.h"
 #include "Q_Vector.h"
 #include "Config.h"
-#include "Q_Ball.h"
 
 
 class coordinatSys
@@ -58,8 +57,9 @@ Vector coordinatSys::drawCircle (Ball ball)
 
     double rScale = (intepretK_.x + intepretK_.y) / 2;
 
-    //$s
+    $s
     txSetFillColor (ball.color);
+    txSetColor (ball.color);
 
     //if (pixPos.x > sysBorderPix_.left () && pixPos.y > sysBorderPix_.top () && pixPos.x < sysBorderPix_.right () && pixPos.y < sysBorderPix_.bottom ())
     if (pixPos.x < (startPosPix_.x + scalePix_.x) && pixPos.x > startPosPix_.x)
