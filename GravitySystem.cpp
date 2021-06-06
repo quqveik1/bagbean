@@ -1,6 +1,4 @@
 ﻿//#define _TX_ALLOW_TRACE 9
-#define DIRECTRTX 12U
-#define LOVE(PYTHON) неправильный выбор
 #define  _CRT_SECURE_NO_WARNINGS
 #define  TX_USE_SPEAK
 
@@ -12,11 +10,8 @@
 #include "Q_Console.h"
 #include <io.h>
 #include "Q_App.h"
-#include "settingsWindow.cpp"
+#include "settingsWindow.cpp"   
 
-//#include <olectl.h>//!!Beta
-
-//You must to delete "my" TXLib.h file from the ptoject or you can do not download "my" TXLib.h file, you need to download TXLib from https://sourceforge.net/projects/txlib/files/latest/download and install this	1
 /*
 -   -
 a + b = a.x + b.x; a.y + b.y
@@ -62,6 +57,16 @@ B = {3, 4}
     txClear ();                 \
 }
 
+#define ERROR(condition)                   \
+{                                           \
+    if (condition)                         \
+    {                                       \
+        printf ("Танк горит!");                                   \
+        DebugBreak ();                            \
+                              \
+    }                                       \
+}
+
 
 App* TheGS = 0;
 
@@ -94,8 +99,8 @@ double elDeg (const double number, const double deg);
 double degreesOfDouble (const double number, int degree);
 
 
-void loadImage (HDC &MainHDC, const char* imagePath, const char* backGroundPath = NULL, Vector backGroundSize = {});
-void loadImage (HDC image, HDC backGround = NULL, Vector backGroundSize = {});
+
+void loadImage (const char* path, HDC &finalImage, Vector originalSize, Vector finalSize);
 void drawMiniMap ();
 void drawSysInfo ();
 void drawConsole ();
@@ -110,11 +115,9 @@ void PhysicsAllBall ();
 void drawBall (const Ball *ball);
 void Control (Ball *ball);
 void Physics (Ball *ball, int numberOfFind, bool Graphic);
-void PhysicsNoGrathics (Ball *ball, Ball balls[], int numberOfFind);
 void cometShooting ();
 void CreateNewPlanet (BallSystem &ballS);
 Vector returnMouseVector (Vector *finishPos);
-//void addBall (Ball ball[], int *lastBall, Ball newBall);
 Vector findElectricForce (Ball ball[], int numberOfFind, int length);
 void Colision (Ball *ball1, Ball *ball2);
 void FindColilision (BallSystem &ballS, int numberOfFind);
@@ -125,12 +128,11 @@ void ControlAllBalls (BallSystem *ballS);
 void ssCircle (Ball ball, Rect Box);
 void ssLine (double StartX, double StartY, double FinishX, double FinishY);
 void dynamicSleeping ();
-//void solarSystem (Ball balls[]);
 Vector txToss (Vector pos);
 double SpeedX (double vX);
 double SpeedY (double vY);
 void ClearBackground ();
-void ClearBackground (HDC HUD, Vector size = {});
+void ClearBackground (HDC HUD, Vector startPos = {});
 void   SwitchColour (Ball *ball);
 double SwitchRadius (double r);
 void ControlDelta ();
@@ -206,45 +208,12 @@ int main()
 
     
 
-    
-    
-    TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp");
-
-    HDC Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/Menu720p_1.bmp");
-    StretchBlt (TheGS->Menu, 0, 0, UserScreen.x, UserScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
-    txDeleteDC (Copyimage);
-    //printfDCS ("1");
-
-    TheGS->HUD = txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp");
-    Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/HUD720p_1.bmp");
-    StretchBlt (TheGS->HUD, 0, 0, UserScreen.x, UserScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
-    txDeleteDC (Copyimage);
-
-    //loadImage (TheGS->LeftButtonsImage, "GravitySystemFolder/DevMaterials/LeftButtons720p.bmp", "GravitySystemFolder/DevMaterials/HUD720p_1.bmp", UserScreen);
-    
-    TheGS->LeftButtonsImage = txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp");
-    txBitBlt (TheGS->LeftButtonsImage, 0, 0, UserScreen.x, UserScreen.y, TheGS->HUD, 0, 0);
-    Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/LeftButtons720p.bmp");
-    StretchBlt (TheGS->LeftButtonsImage, 0, 0, 605 * CompressK.x, 157 * CompressK.y,  Copyimage, 0, 0, 605, 157, SRCCOPY);
-    //printBlt (TheGS->LeftButtonsImage);
-    txDeleteDC (Copyimage);
-
-    TheGS->CreateModeHDC = txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp");
-    txBitBlt (TheGS->CreateModeHDC, 0, 0, UserScreen.x, UserScreen.y, TheGS->HUD, 0, 0);
-    Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/CreateButtonHud.bmp");
-    StretchBlt (TheGS->CreateModeHDC, 0, 0, 760 * CompressK.x, 140 * CompressK.y,  Copyimage, 0, 0, 760, 140, SRCCOPY);
-    //printBlt (TheGS->CreateModeHDC);
-    txDeleteDC (Copyimage);
-
-    TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/copyImage.bmp");
-    Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/HUD720p_Replay_1.bmp");
-    StretchBlt (TheGS->ReplayHUD, 0, 0, UserScreen.x, UserScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
-    txDeleteDC (Copyimage);
-     
-    //DrawBitmap (TheGS->Menu, 0, 0, 1900, 1080, SRCCOPY);
-    //!StretchBlt ( TheGS->Menu, 0, 0, 1000, 600, NEWIMAGE, 0, 0, 1900, 1080, SRCAND);
-
-    //$ (GetLastError ());
+    loadImage ("GravitySystemFolder/DevMaterials/Menu720p_1.bmp", TheGS->Menu, {1280, 720}, UserScreen);
+    loadImage ("GravitySystemFolder/DevMaterials/HUD720p_1.bmp", TheGS->HUD, {1280, 720}, UserScreen);
+    loadImage ("GravitySystemFolder/DevMaterials/LeftButtons720p.bmp", TheGS->LeftButtonsImage, {605, 157}, {605 * CompressK.x, 157 * CompressK.y});    
+    loadImage ("GravitySystemFolder/DevMaterials/CreateButtonHud.bmp", TheGS->CreateModeHDC, {760, 140}, {760 * CompressK.x, 140 * CompressK.y});    
+    loadImage ("GravitySystemFolder/DevMaterials/HUD720p_Replay_1.bmp", TheGS->ReplayHUD, {1280, 720}, UserScreen);
+   
     
 
     TheGS->monitorS = {.pos= {0,0}, .size = UserScreen};
@@ -496,7 +465,18 @@ int main()
 
     endOfProgram ();
     return 0;
-}   
+} 
+
+void loadImage (const char* path, HDC &finalImage, Vector originalSize, Vector finalSize)
+{
+    finalImage = txCreateCompatibleDC (finalSize.x, finalSize.y);
+
+    HDC Copyimage= txLoadImage (path);
+    assert (Copyimage);
+
+    StretchBlt (finalImage, 0, 0, finalSize.x, finalSize.y,  Copyimage, 0, 0, originalSize.x, originalSize.y, SRCCOPY);
+    txDeleteDC (Copyimage);
+}
 
 /*
 void loadImage (HDC &MainHDC, const char* imagePath, const char* backGroundPath /*= NULL, Vector backGroundSize =NULL)
@@ -516,7 +496,8 @@ void loadImage (HDC &MainHDC, const char* imagePath, const char* backGroundPath 
 }
 */
 
-void loadImage (HDC image, HDC backGround /*= NULL*/, Vector backGroundSize /*=NULL*/)
+/*
+void loadImage (HDC image, HDC backGround /*= NULL, Vector backGroundSize /*=NULL)
 {
     image = txLoadImage (emptyFilePath);
     if (backGround != NULL) txBitBlt (image, 0, 0, backGroundSize.x, backGroundSize.y, backGround, 0, 0);
@@ -525,6 +506,7 @@ void loadImage (HDC image, HDC backGround /*= NULL*/, Vector backGroundSize /*=N
     printBlt (TheGS->HUD);
     txDeleteDC (Copyimage);  
 }
+*/
 
 /*
 HRESULT Load(LPCTSTR szFile)
@@ -661,6 +643,8 @@ void CreateNewPlanet (BallSystem &ballS)
     newBall.charge = 2e1;
     newBall.r      = 10;
     Vector MousePos = {};
+    bool lastOperationR = true;
+
     for (;;)
     {
         //printf ("%d", !onCreateButtons ());
@@ -671,22 +655,28 @@ void CreateNewPlanet (BallSystem &ballS)
 
         if (onButtonClicked (TheGS->rPlusButton))
         {
+            lastOperationR = true;
             newBall.r++;
         }
         if (onButtonClicked (TheGS->rMinusButton))
         {
+            lastOperationR = true;
             newBall.r--;
         }
 
 
         if (onButtonClicked (TheGS->mMinusButton))
         {
+            lastOperationR = false;
             newBall.m--;
         }
         if (onButtonClicked (TheGS->mPlusButton))
         {
+            lastOperationR = false;
             newBall.m++;
         }
+
+   
 
         if (txMouseButtons () == 1 && !onCreateButtons ()) 
         { 
@@ -708,12 +698,7 @@ void CreateNewPlanet (BallSystem &ballS)
 
 
         
-        //~!!!
-        //printf ("%d", txFontExist ("Fixedsys"));
-        
-       // txSetColor (TX_WHITE);
-        //txTextOut (10, TheGS->screenShotButton.bottom() + 10, rInfo);
-        //txTextOut (10, TheGS->screenShotButton.bottom() + 50, mInfo);
+       
 
         if (onButtonClicked (TheGS->exitButtonHUD)) break;
 
@@ -721,7 +706,7 @@ void CreateNewPlanet (BallSystem &ballS)
         txSleep  (SLEEPINGTIME);
         //txBitBlt (0,0, TheGS->HUD);
         //txBitBlt (0,0, TheGS->LeftButtonsImage);
-        //ClearBackground (TheGS->HUD);
+        ClearBackground (TheGS->HUD);
         ClearBackground (TheGS->CreateModeHDC);
     }
 
@@ -1053,6 +1038,8 @@ void RunEngineExperiment ()
         if (onButtonClicked (TheGS->exitButtonHUD)) break;
 
         //ClearBackground (TheGS->HUD);
+        
+        ClearBackground (TheGS->HUD);
         ClearBackground (TheGS->LeftButtonsImage);
     }
     txSetProgress (0);
@@ -1364,7 +1351,7 @@ Vector returnMouseVector (Vector *finishPos)
 
         if (txMouseButtons () != 1) break;
         ClearBackground (TheGS->HUD);
-        ClearBackground (TheGS->LeftButtonsImage, TheGS->LeftButtons.size);
+        ClearBackground (TheGS->LeftButtonsImage);
     }
 
     *finishPos = currMousePos;
@@ -1623,6 +1610,11 @@ void Physics (Ball *ball, int numberOfFind, bool Graphic)
 
     Vector resultantForce = fGravity + /*mouseForce*/  fElectric;
 
+    ERROR (ball->m == 0);
+
+    if (ball->m == 0) ball->m = 0.00001;
+    
+
     Vector a = resultantForce / ball->m;
 
     
@@ -1694,13 +1686,13 @@ void PhysicsNoGrathics (Ball *ball, double dt, Ball balls[], int numberOfFind)
     Draw (mouseForce,     ball->pos, TX_LIGHTCYAN, 0);
     Draw (fGravity,       ball->pos, TX_LIGHTGRAY, 0);
     ball->v += (a * dt);
-    //(*ball).v.y +=  ball->a.y * dt;
-    //ball->  v.x +=  ball->a.x * dt;
+    (*ball).v.y +=  ball->a.y * dt;
+    ball->  v.x +=  ball->a.x * dt;
     Draw (ball->v, ball->pos, TX_GREEN, 0);
     ball->pos += (ball->v * dt);
-    //(*ball).pos.x += (*ball).v.x * dt;
-    //(*ball).pos.y += (*ball).v.y * dt;
-    //ball->fillHistory ();
+    (*ball).pos.x += (*ball).v.x * dt;
+    (*ball).pos.y += (*ball).v.y * dt;
+    ball->fillHistory ();
     if ((*ball).pos.x >= box.right ())
     {
         (*ball).v.x = -((*ball).v.x);
@@ -1749,6 +1741,7 @@ void FindColilision (BallSystem &ballS, int numberOfFind)
 
 void Colision (Ball *ball1, Ball *ball2)
 {
+    //ERROR (1);
     /*
     закон сохранения импулса
     p1 = m1 * v1
@@ -1759,6 +1752,7 @@ void Colision (Ball *ball1, Ball *ball2)
     =>
     скорость = ((масса1 * скорость1) + (масса2 * скорость2)) / масса_итоговоого_объекта
     */
+    ERROR (ball1->m + ball2->m == 0);
     Vector newV = ((ball1->v * ball1->m) + (ball2->v * ball2->m)) / (ball1->m + ball2->m);
 
     //ball2->color = 
@@ -2102,7 +2096,7 @@ void ClearBackground ()
 
 }
 
-void ClearBackground (HDC HUD, Vector size)
+void ClearBackground (HDC HUD, Vector startPos /*= {}*/)
 {
     static bool flagClearBackground = true;
 
@@ -2121,7 +2115,8 @@ void ClearBackground (HDC HUD, Vector size)
      if (flagClearBackground == true && HUD != NULL) 
      {
          //if (size.x != 0 && size.y != 0) txBitBlt (0, 0, HUD, size.x, size.y);
-          txBitBlt (0, 0, HUD);
+          txBitBlt (startPos.x, startPos.y, HUD);
+
      }
      if (flagClearBackground == true && HUD == NULL) txClear();
      //txClear();
