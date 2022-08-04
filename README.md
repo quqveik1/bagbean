@@ -1,22 +1,24 @@
 Это визуальная симуляция солнечной системы с использованием основных законов физики. В этой программе возможно создавать любые системы гравитационных объектов и следить за их развитием и движением. 
 
-![image](https://user-images.githubusercontent.com/64206443/182902513-3f0aa270-8b7d-4048-b526-fda4ebe2e256.png = 100x100)
+
+<img src="https://user-images.githubusercontent.com/64206443/182853670-8112f76a-0e2f-4d05-85bb-b8b178089df2.png" width="500">
 
 Возможности программы:
 - Запуск планет с заданной массой при помощи рогатки
 
 
-![image](https://user-images.githubusercontent.com/64206443/182902696-909bc9ae-05ff-457e-8c93-e63106416ff8.png)
+<img src="https://user-images.githubusercontent.com/64206443/182853670-8112f76a-0e2f-4d05-85bb-b8b178089df2.png" width="500">
 
 - Просмотр истории движения планет
 
 
-![image](https://user-images.githubusercontent.com/64206443/182902963-7cd6cb81-3b12-4622-9524-99681011bcaf.png)
+<img src="https://user-images.githubusercontent.com/64206443/182853804-b0dbff44-0d05-4a97-928c-f044a810f806.png" width="500">
+
 - Возможность регулировки скорости, с которой идет симуляция
 - Каждая симуляция записывается, так что есть возможность позже посмотреть повтор симуляции
 
 
-![image](https://user-images.githubusercontent.com/64206443/182903126-022e2bff-47c7-4c2b-8941-dd4d8cde0583.png)
+<img src="https://user-images.githubusercontent.com/64206443/182854210-536ad340-9bdf-4cbb-aeba-1da79017db26.png" width="500">
 
 -----------------------------------------
 Чтобы запустить программу необходимо скачать её собранную версию из вкладки релизы(https://github.com/quqveik1/bagbean/releases/tag/KVE),
