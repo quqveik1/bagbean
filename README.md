@@ -1,19 +1,21 @@
 Это визуальная симуляция солнечной системы с использованием основных законов физики. В этой программе возможно создавать любые системы гравитационных объектов и следить за их развитием и движением. 
-![image](https://user-images.githubusercontent.com/64206443/182853577-0269e594-52b1-46cc-ba65-9547c9646e8c.png)
+
+![image](https://user-images.githubusercontent.com/64206443/182902513-3f0aa270-8b7d-4048-b526-fda4ebe2e256.png)
 
 Возможности программы:
 - Запуск планет с заданной массой при помощи рогатки
-![image](https://user-images.githubusercontent.com/64206443/182853670-8112f76a-0e2f-4d05-85bb-b8b178089df2.png)
-![image](https://user-images.githubusercontent.com/64206443/182853719-05588de0-d97f-482b-b4da-49f9d260c224.png)
+- ![image](https://user-images.githubusercontent.com/64206443/182902696-909bc9ae-05ff-457e-8c93-e63106416ff8.png)
+
 - Просмотр истории движения планет
-![image](https://user-images.githubusercontent.com/64206443/182853804-b0dbff44-0d05-4a97-928c-f044a810f806.png)
+- ![image](https://user-images.githubusercontent.com/64206443/182902963-7cd6cb81-3b12-4622-9524-99681011bcaf.png)
 - Возможность регулировки скорости, с которой идет симуляция
 - Каждая симуляция записывается, так что есть возможность позже посмотреть повтор симуляции
-![image](https://user-images.githubusercontent.com/64206443/182854210-536ad340-9bdf-4cbb-aeba-1da79017db26.png)
+- ![image](https://user-images.githubusercontent.com/64206443/182903126-022e2bff-47c7-4c2b-8941-dd4d8cde0583.png)
+
 -----------------------------------------
 Чтобы запустить программу необходимо скачать её собранную версию из вкладки релизы(https://github.com/quqveik1/bagbean/releases/tag/KVE),
 при запуске надо игнорировать сообщения антивирусов о том что в файле содержится вирус.
 В таком окне следует нажать "Подробнее" и будет доступно выбрать "Выполнить в любом случае".
 
-![image](https://user-images.githubusercontent.com/64206443/182850947-0855e7db-f4b7-4635-a350-d6ce149e3541.png)
+![image](https://user-images.githubusercontent.com/64206443/182900255-ab4c0823-abb7-421c-9441-17539b89a4f0.png)
 
