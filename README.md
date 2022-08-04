@@ -4,13 +4,19 @@
 
 Возможности программы:
 - Запуск планет с заданной массой при помощи рогатки
-- ![image](https://user-images.githubusercontent.com/64206443/182902696-909bc9ae-05ff-457e-8c93-e63106416ff8.png)
+
+
+![image](https://user-images.githubusercontent.com/64206443/182902696-909bc9ae-05ff-457e-8c93-e63106416ff8.png)
 
 - Просмотр истории движения планет
-- ![image](https://user-images.githubusercontent.com/64206443/182902963-7cd6cb81-3b12-4622-9524-99681011bcaf.png)
+
+
+![image](https://user-images.githubusercontent.com/64206443/182902963-7cd6cb81-3b12-4622-9524-99681011bcaf.png)
 - Возможность регулировки скорости, с которой идет симуляция
 - Каждая симуляция записывается, так что есть возможность позже посмотреть повтор симуляции
-- ![image](https://user-images.githubusercontent.com/64206443/182903126-022e2bff-47c7-4c2b-8941-dd4d8cde0583.png)
+
+
+![image](https://user-images.githubusercontent.com/64206443/182903126-022e2bff-47c7-4c2b-8941-dd4d8cde0583.png)
 
 -----------------------------------------
 Чтобы запустить программу необходимо скачать её собранную версию из вкладки релизы(https://github.com/quqveik1/bagbean/releases/tag/KVE),
