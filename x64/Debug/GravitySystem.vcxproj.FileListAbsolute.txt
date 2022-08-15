@@ -1,4 +1,3 @@
 C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\x64\Debug\GravitySystem.exe.lastcodeanalysissucceeded
 C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\x64\Debug\NativeCodeAnalysis.read.1.tlog
 C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\x64\Debug\GravitySystem.exe
-C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\x64\Debug\GravitySystem.pdb

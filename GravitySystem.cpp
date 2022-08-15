@@ -36,6 +36,7 @@ B = {3, 4}
 //const Rect miniMap =   {.pos = {25,  685}, .size = {375,  285}};
 
 #define key(a) txGetAsyncKeyState (a)
+#define notKey(a) while (txGetAsyncKeyState (a)) {};
 #define endifkey(a) if (key (a)) break;
 #define endtillkey(a)           \
 {                               \
@@ -50,6 +51,21 @@ B = {3, 4}
         }                       \
     }                           \
 }
+
+#define addKeyNum(a, anum, num)       \
+{                                     \
+    if (key(a))                       \
+    {                                 \
+        num = num * 10 + anum;        \
+        for (;;)                      \
+        {                             \
+            if (!key (a)) break;      \
+        }                            \
+    }                                 \
+}
+
+
+
 #define printBlt(image)         \
 {                               \
     txBitBlt (0, 0, image);     \
@@ -107,6 +123,7 @@ void drawConsole ();
 void printFAQ ();
 bool inButtonClicked (Rect button);
 bool onButtonClicked (Rect Button);
+bool notOnButtonClicked (Rect Button);
 bool inButtonMouse (Rect Button);
 bool inRect (Vector pos, Rect rectangle);
 
@@ -117,6 +134,7 @@ void Control (Ball *ball);
 void Physics (Ball *ball, int numberOfFind, bool Graphic);
 void cometShooting ();
 void CreateNewPlanet (BallSystem &ballS);
+void enterInt (Rect button, long long &num, Vector startText, Ball ball, Vector secondText);
 Vector returnMouseVector (Vector *finishPos);
 Vector findElectricForce (Ball ball[], int numberOfFind, int length);
 void Colision (Ball *ball1, Ball *ball2);
@@ -196,8 +214,8 @@ int main()
     _txWindowStyle &= ~WS_CAPTION;
     MainScreen = txCreateWindow (UserScreen.x, UserScreen.y);
     SetWindowText (MainScreen,  "KVE - Physics Simulation");
-    txSetColor     (TX_LIGHTRED);
-    txSetFillColor (TX_RED);
+    txSetColor     (TX_WHITE);
+    txSetFillColor (TX_WHITE);
     txSelectFont ("Fixedsys", 40 * CompressK.x, 20 * CompressK.y);
 
     App *gravitySys = new App ();
@@ -221,15 +239,11 @@ int main()
     TheGS->miniMap.scalePix_ = {290 * CompressK.x, 230 * CompressK.y};
     TheGS->miniMap.coorSize_ = {(double) txGetExtentX (), (double)txGetExtentY ()};
     TheGS->miniMap.intepretK_= {{TheGS->miniMap.scalePix_.x / TheGS->miniMap.coorSize_.x}, {TheGS->miniMap.scalePix_.y / TheGS->miniMap.coorSize_.y}};
+    TheGS->miniMap.findRect ();
+    //$ (TheGS->miniMap.sysBorderPix_.pos.y);
     
 
     TheGS->LeftButtons = {.pos = {0, 0}, .size = {605 * CompressK.x, 157 * CompressK.y}};
-    /*
-    txBitBlt (0, 0, TheGS->LeftButtonsImage);
-    _getch ();
-    txBitBlt (0, 0, TheGS->LeftButtonsImage, TheGS->LeftButtons.size.x, TheGS->LeftButtons.size.y);
-    _getch ();
-    */
     TheGS->exitButtonHUD = {.pos = {1090 * CompressK.x, 0}, .size = {190 * CompressK.x, 80 * CompressK.y}};
     TheGS->newPlanetButton = {.pos = {0 * CompressK.x, 0}, .size = {300 * CompressK.x, 100 * CompressK.y}};
     TheGS->screenShotButton = {.pos = {0, 106 * CompressK.y}, .size = {160 * CompressK.x, 50 * CompressK.y}};
@@ -237,111 +251,19 @@ int main()
     TheGS->plusSpeedButton = {.pos = {220 * CompressK.x, 106 * CompressK.y}, .size = {43 * CompressK.x, 51 * CompressK.y}};
     TheGS->cleanButton = {.pos = {305 * CompressK.x, 0}, .size = {300 * CompressK.x, 100 * CompressK.y}};
 
+    TheGS->rText = {.pos = {15 * CompressK.x, 5 * CompressK.y}, .size = {615 * CompressK.x, 55 * CompressK.y}};
     TheGS->rMinusButton = {.pos = {650 * CompressK.x, 5 * CompressK.y}, .size = {50 * CompressK.x, 60 * CompressK.y}};
-    TheGS->rPlusButton = {.pos  = {706 * CompressK.x, 5 * CompressK.y}, .size = {50 * CompressK.x, 60 * CompressK.y}};
+    TheGS->rPlusButton = {.pos  = {715 * CompressK.x, 5 * CompressK.y}, .size = {50 * CompressK.x, 60 * CompressK.y}};
+    TheGS->mText = {.pos = {15 * CompressK.x, 75 * CompressK.y}, .size = {615 * CompressK.x, 55 * CompressK.y}};
     TheGS->mMinusButton = {.pos  = {650 * CompressK.x, 80 * CompressK.y}, .size = {50 * CompressK.x, 60 * CompressK.y}};
-    TheGS->mPlusButton = {.pos  = {706 * CompressK.x, 80 * CompressK.y}, .size = {50 * CompressK.x, 60 * CompressK.y}};
-
-
-    //printfDCS ("Menu");
-    //txBitBlt (0, 0, TheGS->Menu);
-
+    TheGS->mPlusButton = {.pos  = {715 * CompressK.x, 80 * CompressK.y}, .size = {50 * CompressK.x, 60 * CompressK.y}};
 
     TheGS->startButton = {.pos = {15 * CompressK.x, 127 * CompressK.y}, .size = {445 * CompressK.x, 198 * CompressK.y}};
     TheGS->repeatButton = {.pos = {15 * CompressK.x, 358 * CompressK.y}, .size = {445 * CompressK.x, 198 * CompressK.y}};
     TheGS->infoButton = {.pos = {15 * CompressK.x, 485 * CompressK.y}, .size = {105 * CompressK.x, 215 * CompressK.y}};
     TheGS->exitButton = {.pos = {1092 * CompressK.x, 637 * CompressK.y}, .size = {188 * CompressK.x, 84 * CompressK.y}};
-       
-    
-
-    //TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/Menu720p.bmp");
-         
-         
-         //TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
-
-    
-    if (Resolution == 720)
-    {  
-        /*
-        // TheGS->sysInfo = {.pos = {15, 20}, .size = {255, 170}};
-         //TheGS->console.startPosPix_ = {15, 220};
-         //TheGS->console.scalePix_ = {255, 140};
-         
-         TheGS->miniMap.startPosPix_ = {0, 410};
-         TheGS->miniMap.scalePix_ = {275, 190};
-         TheGS->miniMap.coorSize_ = {(double) txGetExtentX (), (double)txGetExtentY ()};
-         TheGS->miniMap.intepretK_= {{TheGS->miniMap.scalePix_.x / TheGS->miniMap.coorSize_.x}, {TheGS->miniMap.scalePix_.y / TheGS->miniMap.coorSize_.y}};
-         TheGS->exitButtonHUD = {.pos = {1020, 0}, .size = {180, 70}};
-         TheGS->newPlanetButton = {.pos = {0, 0}, .size = {280, 80}};
-         TheGS->screenShotButton = {.pos = {0, 90}, .size = {150, 40}};
-         TheGS->minusSpeedButton = {.pos = {157, 90}, .size = {40, 40}};
-         TheGS->plusSpeedButton = {.pos = {205, 90}, .size = {40, 40}};
-         TheGS->cleanButton = {.pos = {285, 0}, .size = {280, 80}};
-         //TheGS->mainPlace = {.pos = {290, 0}, .size = {(double) (txGetExtentX () - 290), (double) (txGetExtentY () - 0)}};
-         TheGS->HUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p.bmp");
-         //TheGS->path = "GravitySystemFolder/DevMaterials/Hud720p.bmp";
 
 
-         //printfDCS ("Menu");
-         //txBitBlt (0, 0, TheGS->Menu);
-
-         TheGS->startButton = {.pos = {15, 105}, .size = {415, 160}};
-         TheGS->repeatButton = {.pos = {15, 300}, .size = {415, 160}};
-         TheGS->infoButton = {.pos = {15, 485}, .size = {100, 100}};
-         TheGS->exitButton = {.pos = {1020, 530}, .size = {180, 70}};
-         
-         TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/Menu720p.bmp");
-         
-         
-         TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
-         */
-    }
-    
-
-    if (Resolution == 1080)
-    {
-        /*
-        TheGS->sysInfo = {.pos = {15, 20}, .size = {255, 170}};
-        TheGS->console.startPosPix_ = {15, 220};
-        TheGS->console.scalePix_ = {255, 140};
-        
-        TheGS->miniMap.startPosPix_ = {0, 680};
-        TheGS->miniMap.scalePix_ = {420, 300};
-        TheGS->miniMap.coorSize_ = {(double) txGetExtentX (), (double)txGetExtentY ()};
-        TheGS->miniMap.intepretK_= {{TheGS->miniMap.scalePix_.x / TheGS->miniMap.coorSize_.x}, {TheGS->miniMap.scalePix_.y / TheGS->miniMap.coorSize_.y}};
-        TheGS->cleanButton = {.pos = {430, 0}, .size = {400, 140}};
-        TheGS->exitButtonHUD = {.pos = {1535, 0}, .size = {(double) txGetExtentX () - 1535, 120}};
-        TheGS->newPlanetButton = {.pos = {0, 0}, .size = {420, 135}};
-        TheGS->screenShotButton = {.pos = {0, 155}, .size = {220, 60}};
-        TheGS->minusSpeedButton = {.pos = {235, 150}, .size = {65, 60}};
-        TheGS->plusSpeedButton = {.pos = {300, 150}, .size = {65, 60}};
-        TheGS->HUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud1080p.bmp");
-        //TheGS->path = "GravitySystemFolder/DevMaterials/Hud1080p.bmp";
-
-        //TheGS->mainPlace = {.pos = {290, 0}, .size = {(double) (txGetExtentX () - 290), (double) (txGetExtentY () - 0)}};
-        
-        TheGS->startButton = {.pos = {25, 180}, .size = {620, 270}};
-        TheGS->repeatButton = {.pos = {25, 500}, .size = {620, 270}};
-        TheGS->infoButton = {.pos = {25, 815}, .size = {140, 160}};
-        TheGS->exitButton = {.pos = {1535, 880}, .size = {(double) txGetExtentX () - 1535, (double)txGetExtentY () - 880}};
-        TheGS->Menu = txLoadImage ("GravitySystemFolder/DevMaterials/Menu1080p.bmp");
-
-        
-        TheGS->ReplayHUD =  txLoadImage ("GravitySystemFolder/DevMaterials/Hud1080p_Replay.bmp");
-         */
-    }
-    
-
-
-
-    //TheGS->HUD = txLoadImage (TheGS->path);
-    //printfDCS ("HUD");
-    //TheGS->ReplayHUD = txLoadImage ("GravitySystemFolder/DevMaterials/Hud720p_Replay.bmp");
-    //printfDCS ("REplayHud");
-    
-    
-    //H//ICON hicon = (HICON) TheGS->Menu;
-    //DrawIconEx (TheGS->Menu, 1800, 1000, hicon, 32, 32, NULL, DI_NORMAL, );
     txBegin ();
 
     for (;;)
@@ -351,9 +273,6 @@ int main()
         txSleep (0);
         for (;;)
         {
-           
-            //RECT r = {TheGS->startButton.left(), TheGS->startButton.top(), TheGS->startButton.right(), TheGS->startButton.bottom()};
-            //POINT point = {txMousePos ().x, txMousePos ().y}; 
             if (onButtonClicked (TheGS->startButton))
             {
                 if (key (VK_TAB))
@@ -368,13 +287,6 @@ int main()
                     TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -400}),  {24, 0}, 1e4,  10, 2,   TX_CYAN};
                     TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -200}),  {32, 0}, 1e4,  10, 2,   TX_RED};
                 }
-        
-
-                /*
-                ballS.addBall ({txToss ({0, 0}),   {0, 0}, 1e17, 10, 2e5, TX_RED});
-                ballS.addBall ({txToss ({0, -400}),  {24, 0}, 1e4, 10, 2, TX_RED});
-                ballS.addBall ({txToss ({0, -200}),  {10, 0}, 1e4, 10, 2, TX_RED}};
-                */
 
                 for (int i = TheGS->ballS.currlength; i < BallMax; i++)
                 {
@@ -383,17 +295,13 @@ int main()
                     TheGS->ballS.ball[i] = {txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED};
                 }
 
-                //ball[3] = {txToss ({0, -100}),  {10, 0}, 1e4, 10, 2, TX_RED};
-
                 for (int i = 0; i < BallMax; i++)
                 {
                     assert (0 <= i && i < BallMax);
 
                     TheGS->planetsInit[i] = TheGS->ballS.ball[i];
                 }
-                /*
-                for (int n = 0; n < 1; n++)
-                {   */
+
                 for (int i = 0; i < TheGS->ballS.currlength; i++)
                 {
                     assert (0 <= i && i < BallMax);
@@ -413,7 +321,7 @@ int main()
                 if (key (VK_CONTROL))
                 {
                     const char *path = openCustomFile ();
-                    //printf ("\"%s\"", path);
+                   
                     if (strcmp (path, ""))
                     {
                         playSystem (path);
@@ -445,17 +353,12 @@ int main()
                 txSpeak ("Я роняю Запад, у! Я роняю Запад, у!\n"
                          "Я роняю Запад, у! Я роняю Запад, а!\n"
                          "Я роняю Запад, у! Я роняю запад, а!\n"
-                         "На моём хуе вся индустрия США (ха-ха!)\n"
+                         "На моём *** вся индустрия США (ха-ха!)\n"
                          "Я роняю Запад, у! Я роняю Запад, эй!\n"
                          "Я роняю Запад! (эщкере!) Я роняю Запад, эй!\n"
                          "Я роняю Запад, у! Я роняю запад, а!\n"
-                         "На моём хуе вся индустрия США, я\n" 
+                         "На моём *** вся индустрия США, я\n" 
                 ); 
-           }
-
-           if (key ('1') && key ('3') && key ('2') && key('9'))
-           {
-               //txPlaySound ("GravitySystemFolder/DevMaterials/FACE-Fiksiki.wav", SND_ASYNC);
            }
         }
     }
@@ -471,42 +374,13 @@ void loadImage (const char* path, HDC &finalImage, Vector originalSize, Vector f
 {
     finalImage = txCreateCompatibleDC (finalSize.x, finalSize.y);
 
-    HDC Copyimage= txLoadImage (path);
+    HDC Copyimage = txLoadImage (path);
+    //if (CopeImage == 0) традиционная загрузка
     assert (Copyimage);
 
     StretchBlt (finalImage, 0, 0, finalSize.x, finalSize.y,  Copyimage, 0, 0, originalSize.x, originalSize.y, SRCCOPY);
     txDeleteDC (Copyimage);
 }
-
-/*
-void loadImage (HDC &MainHDC, const char* imagePath, const char* backGroundPath /*= NULL, Vector backGroundSize =NULL)
-{
-    HDC backGround = txLoadImage (backGroundPath);   
-    printBlt (backGround);
-    HDC image = txLoadImage (emptyFilePath);
-    MainHDC =  txLoadImage (emptyFilePath);
-    printBlt (image);
-    txBitBlt (image, 0, 0, backGroundSize.x, backGroundSize.y, backGround, 0, 0);
-    printBlt (image);
-    HDC Copyimage= txLoadImage (imagePath);
-    StretchBlt (image, 0, 0, UserScreen.x, UserScreen.y,  Copyimage, 0, 0, TheGS->LeftButtons.size.x, TheGS->LeftButtons.size.y, SRCCOPY);
-    txBitBlt (MainHDC, 0, 0, UserScreen.x, UserScreen.y, image, 0, 0);
-    printBlt (MainHDC);
-    txDeleteDC (Copyimage);  
-}
-*/
-
-/*
-void loadImage (HDC image, HDC backGround /*= NULL, Vector backGroundSize /*=NULL)
-{
-    image = txLoadImage (emptyFilePath);
-    if (backGround != NULL) txBitBlt (image, 0, 0, backGroundSize.x, backGroundSize.y, backGround, 0, 0);
-    HDC Copyimage= txLoadImage ("GravitySystemFolder/DevMaterials/HUD720p_1.bmp");
-    StretchBlt (TheGS->HUD, 0, 0, UserScreen.x, UserScreen.y,  Copyimage, 0, 0, 1280, 720, SRCCOPY);
-    printBlt (TheGS->HUD);
-    txDeleteDC (Copyimage);  
-}
-*/
 
 /*
 HRESULT Load(LPCTSTR szFile)
@@ -583,8 +457,8 @@ const char* openCustomFile ()
 
     ofn.Flags           = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
-   if ((WIN32::GetOpenFileNameA ))
-        (WIN32::GetOpenFileNameA (&ofn) );
+   if ((GetOpenFileNameA ))
+        (GetOpenFileNameA (&ofn) );
     // Весьма полезная функция, отображает диалог выбора файла.
 
     ///printf ("\n" "GetOpenFileName() returned: fileName = \"%s\"\n", fileName);
@@ -616,23 +490,7 @@ void printfDCS (const char *str)
     _getch ();
 }
 
-/*
-int main2()
-{
-    txCreateWindow (1900, 1000);
-    txSetColor     (TX_LIGHTRED);
-    txSetFillColor (TX_RED);
-    Ball ball[BallLength] = {};
-    Ball planetsInit[BallLength] = {};
-    
-    planetsInit[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2, TX_RED};
-    planetsInit[1] = {txToss ({0, -400}), {56, 56}, 1e4, 10, 2, TX_RED};
-    txBegin ();
-    RunEngineE2 (planetsInit);
-    txEnd ();
-    return 0;
-}
-*/
+
 
 
 void CreateNewPlanet (BallSystem &ballS)
@@ -653,26 +511,29 @@ void CreateNewPlanet (BallSystem &ballS)
             newBall.pos = {.x = txMouseX (), .y = txMouseY ()};
         } 
 
+        if (onButtonClicked (TheGS->rText))
+        {
+            long long copyNewBallr = (long long) newBall.r;
+            enterInt (TheGS->rText, copyNewBallr, {220 * CompressK.x, 20 * CompressK.y + 2}, newBall, {190 * CompressK.x, 90 * CompressK.y + 2}); 
+            newBall.r = copyNewBallr;
+        }
+
         if (onButtonClicked (TheGS->rPlusButton))
         {
-            lastOperationR = true;
             newBall.r++;
         }
         if (onButtonClicked (TheGS->rMinusButton))
         {
-            lastOperationR = true;
             newBall.r--;
         }
 
 
         if (onButtonClicked (TheGS->mMinusButton))
         {
-            lastOperationR = false;
             newBall.m--;
         }
         if (onButtonClicked (TheGS->mPlusButton))
         {
-            lastOperationR = false;
             newBall.m++;
         }
 
@@ -704,8 +565,6 @@ void CreateNewPlanet (BallSystem &ballS)
 
         newBall.draw ();
         txSleep  (SLEEPINGTIME);
-        //txBitBlt (0,0, TheGS->HUD);
-        //txBitBlt (0,0, TheGS->LeftButtonsImage);
         ClearBackground (TheGS->HUD);
         ClearBackground (TheGS->CreateModeHDC);
     }
@@ -716,56 +575,59 @@ void CreateNewPlanet (BallSystem &ballS)
 
 
 
-    /*
-    bool escape = 0;
-
-    const char *cposx = txInputBox ("Введите координату по x:", "Создание новой планеты", "400");
-    if (!strcmp (cposx, "")) return;
-    const char *cposy = txInputBox ("Введите координату по y:", "Создание новой планеты", "400");
-    if (!strcmp (cposy, "")) return;
-    assert (cposx);
-    Vector newPos = {};
-    if (!sscanf (cposx, "%lf", &newPos.x)) return;
-    if (!sscanf (cposy, "%lf", &newPos.y)) return;
-
-
-    const char *cvx = txInputBox ("Введите скорость по x:", "Создание новой планеты", "20");
-    if (!strcmp (cvx, "")) return;
-    const char *cvy = txInputBox ("Введите скорость по y:", "Создание новой планеты", "0");
-    if (!strcmp (cvy, "")) return;
-    Vector newV = {};
-    sscanf (cvx, "%lf", &newV.x);
-    sscanf (cvy, "%lf", &newV.y);
-
-    const char *ccharge = txInputBox ("Введите заряженность(притяжение работает благодаря этому):", "Создание новой планеты", "10");
-    if (!strcmp (ccharge, "")) return;
-    double newCharge = 0;
-    sscanf (ccharge, "%lf", &newCharge);
-
-
-    const char *cm = txInputBox ("Введите массу:", "Создание новой планеты", "1000");
-    if (!strcmp (cm, "")) return;
-    double newm = 0;
-    sscanf (cm, "%lf", &newm);
-
-    const char *cr = txInputBox ("Введите радиус:", "Создание новой планеты", "10");
-    if (!strcmp (cr, "")) return;
-    double newR = 0;
-    sscanf (cr, "%lf", &newR);
-
-    Ball newBall;
-    newBall.pos = newPos;
-    newBall.v = newV;
-    newBall.charge = newCharge;
-    newBall.m = newm;
-    newBall.r = newR;
-
-
     
-    ballS.addBall (newBall);
-    */
 
 
+}
+
+void enterInt (Rect button, long long &num, Vector startText, Ball ball, Vector secondText)
+{
+    txClear ();
+    
+
+    for (;;)
+    {
+        if (txMouseButtons () == 1)
+        {
+            if (!inButtonMouse (button)) break;
+        }
+        
+        addKeyNum ('1', 1, num);
+        addKeyNum ('2', 2, num);
+        addKeyNum ('3', 3, num);
+        addKeyNum ('4', 4, num);
+        addKeyNum ('5', 5, num);
+        addKeyNum ('6', 6, num);
+        addKeyNum ('7', 7, num);
+        addKeyNum ('8', 8, num);
+        addKeyNum ('9', 9, num);
+        addKeyNum ('0', 0, num);
+        if (key (VK_BACK))
+        {
+            num = num / 10;
+            notKey (VK_BACK);
+        }
+        
+        char info[100] = {};
+        char ballInfo[100] = {};
+        sprintf (info, "%ld",  num);
+        sprintf (ballInfo, "%d", ball.m);
+       //printf ("%d\n", num);
+
+
+        
+        txBitBlt (0, 0, TheGS->HUD);
+        txBitBlt (0, 0, TheGS->CreateModeHDC);
+
+        drawEngineFrame ();
+        ball.draw ();
+        DrawFromStart (ball.v, ball.pos, TX_CYAN, 5);
+
+        txTextOut (startText.x, startText.y, info);
+        txTextOut (secondText.x, secondText.y, ballInfo);
+        txSleep (SLEEPINGTIME);
+        txClear ();
+    }
 }
 
 bool onCreateButtons ()
@@ -774,7 +636,9 @@ bool onCreateButtons ()
             inButtonMouse (TheGS->rMinusButton)  ||
             inButtonMouse (TheGS->rPlusButton)   ||
             inButtonMouse (TheGS->mMinusButton)  ||
-            inButtonMouse (TheGS->mPlusButton);
+            inButtonMouse (TheGS->mPlusButton)   ||
+            inButtonMouse (TheGS->rText)         ||
+            inButtonMouse (TheGS->mText)         ;
             
 }
 
@@ -976,16 +840,12 @@ int readAllBall (BallSystem *ballS, FILE *ballFile)
 int readBall (Ball *ball, FILE *ballFile)
 {
     return fscanf (ballFile, "{{%lf, %lf}, color: %u, r: %lf, alive: %u} ||| ", &ball->pos.x , &ball->pos.y, &ball->color, &ball->r, (unsigned int*) &ball->alive);
-    //printf (          "{{%lf, %lf}, color: %u, r: %lf, alive: %u}\n ",    ball->pos.x ,  ball->pos.y,  ball->color,  ball->r,                  ball->alive);
-    //_getch();
-    
 }
 
 
 
 void RunEngineExperiment ()
 {
-    //txSetProgress (30);
     txSetProgress (90, Win32::TBPF_INDETERMINATE);
 
     TheGS->console.print ("Press f1 to open FAQ");
@@ -994,9 +854,6 @@ void RunEngineExperiment ()
     if (TheGS->writeSaves)
     {
         ballSystemRecording = fopen ("GravitySystemFolder/EngineExperiment.saves", "w");
-       
-        //printf ("%p|||", ballSystemRecording);
-        //DebugBreak ();
         assert (ballSystemRecording);
     }
         
@@ -1009,24 +866,13 @@ void RunEngineExperiment ()
         PhysicsAllBall ();
 
         PhysicsAllBall ();
-        //DebugBreak ();
 
         ControlAllBalls ();
 
         drawEngineFrame ();
 
-         /*
-        drawAllBall ();
-
-        drawMiniMap ();
-        */
-
-
-        //printf ("%p|| %d", ballSystemRecording, TheGS->writeSaves);
         if (TheGS->writeSaves)
             writeAllBall (ballSystemRecording);
-
-        //DebugBreak ();
 
         int fps = txGetFPS ();
         if (fps < 30) SLEEPINGTIME--;
@@ -1037,8 +883,6 @@ void RunEngineExperiment ()
 
         if (onButtonClicked (TheGS->exitButtonHUD)) break;
 
-        //ClearBackground (TheGS->HUD);
-        
         ClearBackground (TheGS->HUD);
         ClearBackground (TheGS->LeftButtonsImage);
     }
@@ -1120,6 +964,27 @@ bool inButtonClicked (Rect button)
     return false;
 }
 
+//если вы кликнули на что-то другое, но важно что кликнули
+bool notOnButtonClicked (Rect Button)
+{
+    if (txMouseButtons () == 1)
+    {
+        if (txMouseX () > Button.left () && txMouseX () <  Button.right ())
+        {
+            if (! (txMouseY () > Button.top ()) && !(txMouseY () <  Button.bottom ()))
+            {
+                while (txMouseButtons () == 1)
+                {
+                };
+                return true;
+            }
+        }
+    }
+    return false;
+
+
+}
+
 bool onButtonClicked (Rect Button)
 {
     
@@ -1173,10 +1038,6 @@ void drawMiniMap ()
                TheGS->miniMap.drawCircle (TheGS->ballS.ball[i]);
             }
         }
-
-        //miniMap.drawCircle (pos);
-        //txSleep (100);
-
 }
 
 void drawSysInfo ()
@@ -1199,69 +1060,6 @@ void copyFrame (BallSystem copyOfMainBallS[], BallSystem ballS, int currFrame)//
     copyOfMainBallS[currFrame] = ballS;
 }
 
-/*
-void RunEngineE2 (const Ball planetsInit[])
-{
-    Ball ball[BallLength] = {};
-    ball[0] = {txToss ({0, 0}),   {0, 0}, 1e17, 10, 2, TX_RED};
-    ball[1] = {txToss ({0, -400}), {56, 56}, 1e4, 10, 2, TX_RED};
-    bool flagClearBackground = true;
-        
-    for (;;)
-    {
-        for (int i = 0; i < BallLength; i++) ball[i] = planetsInit[i];
-        printf ("Vx = ");
-        scanf  ("%lg", &ball[1].v.x);
-        printf ("Vy = ");
-        scanf  ("%lg", &ball[1].v.y);
-        for (;;)
-        {
-            //solarSystem (ball);
-            PhysicsAllBall (ball);
-            //solarSystem (ball);
-            PhysicsAllBall (ball);
-            //solarSystem (ball);
-            PhysicsAllBall (ball);
-            ControlAllBalls (ball);
-            drawAllBall (ball);
-            txSleep (20);
-            if (txGetAsyncKeyState('Q')) break;
-            flagClearBackground = ClearBackground (flagClearBackground);
-        }
-    }
-    
-}
-*/
-
-
-
-
-
-/*
-void solarSystem (Ball balls[])
-{
-    const Rect box = { {0, 0}, {txGetExtent().x, txGetExtent().y} };
-    for (int i = 1; i < BallLength; i++)
-    {
-        if (balls[i].pos.x < 0.5 * box.right () && balls[i].pos.y < 0.5 * box.bottom ())
-        {
-            balls[i].v = {-56, 56};
-        }
-        if (balls[i].pos.x < 0.5 * box.right () && balls[i].pos.y > 0.5 * box.bottom ())
-        {
-            balls[i].v = {56, 56};
-        }
-        if (balls[i].pos.x > 0.5 * box.right () && balls[i].pos.y > 0.5 * box.bottom ())
-        {
-            balls[i].v = {56, -56};
-        }
-        if (balls[i].pos.x > 0.5 * box.right () && balls[i].pos.y < 0.5 * box.bottom ())
-        {
-            balls[i].v = {-56, -56};
-        }
-    }
-}
-*/
 bool inButtonMouse (Rect Button)
 {
 
@@ -1359,21 +1157,6 @@ Vector returnMouseVector (Vector *finishPos)
     return speed;
 }
 
-/*
-void BallSystem::addBall (Ball newBall)
-{
-    assert (0 <= currlength && currlength < BallMax);
-
-    ball[currlength].pos    = newBall.pos;
-    ball[currlength].v      = newBall.v;
-    ball[currlength].m      = newBall.m;
-    ball[currlength].charge = newBall.charge;
-    ball[currlength].r      = newBall.r;
-    ball[currlength].color  = newBall.color;
-
-    currlength++;
-}
-*/
 
 void drawAllBall (bool history /* = true*/)
 {
@@ -1385,19 +1168,8 @@ void drawAllBall (bool history /* = true*/)
          {
             drawHistory = !drawHistory;
          }
-         
-         /*
-         if (TheGS->ballS.ball[i].pos.x + TheGS->ballS.ball[i].r < TheGS->mainPlace.right () && TheGS->ballS.ball[i].pos.x - TheGS->ballS.ball[i].r > TheGS->mainPlace.left ())
-         {
-            if (TheGS->ballS.ball[i].pos.y + TheGS->ballS.ball[i].r < TheGS->mainPlace.bottom () && TheGS->ballS.ball[i].pos.y - TheGS->ballS.ball[i].r > TheGS->mainPlace.top ()) 
-            {
-
-            */
-
-         //printf ("%d", !inRect ({TheGS->ballS.ball[i].pos.x, TheGS->ballS.ball[i].pos.y}, TheGS->miniMap.sysBorderPix_));
-         //!!!ERROR
-         //printf ("%d",  !inRect (TheGS->ballS.ball[i].pos, TheGS->miniMap.sysBorderPix_));
-         if (!inRect (TheGS->ballS.ball[i].pos, TheGS->newPlanetButton) && !inRect (TheGS->ballS.ball[i].pos, TheGS->cleanButton) && !inRect (TheGS->ballS.ball[i].pos, TheGS->exitButtonHUD))
+            
+         if (!inRect (TheGS->ballS.ball[i].pos, TheGS->newPlanetButton) && !inRect (TheGS->ballS.ball[i].pos, TheGS->cleanButton) && !inRect (TheGS->ballS.ball[i].pos, TheGS->exitButtonHUD) && !inRect (TheGS->ballS.ball[i].pos, TheGS->miniMap.sysBorderPix_))
             {
             if (TheGS->ballS.ball[i].alive)
             {
@@ -1515,7 +1287,6 @@ void ControlAllBalls ()
 
         if (onButtonClicked (TheGS->screenShotButton))
         {
-            //CreateNewPlanet (TheGS->ballS);
             makeScreenShot ();
         } 
 
@@ -1629,93 +1400,15 @@ void Physics (Ball *ball, int numberOfFind, bool Graphic)
 
 
     ball->v += (a * DT);
-    //(*ball).v.y +=  ball->a.y * dt;
-    //ball->  v.x +=  ball->a.x * dt;
-
-   // Draw (ball->v, ball->pos, TX_GREEN, 3);
 
     ball->pos += (ball->v * DT);
-    //txDrawMan ();
-    //(*ball).pos.x += (*ball).v.x * dt;
-    //(*ball).pos.y += (*ball).v.y * dt;
 
     ball->fillHistory ();
-
-    /*
-    if ((*ball).pos.x >= box.right ())
-    {
-        (*ball).v.x = -((*ball).v.x);
-        (*ball).pos.x = box.right() - ((*ball).pos.x - box.right());
-    }
-    if ((*ball).pos.y >= box.bottom())
-    {
-        (*ball).v.y = -((*ball).v.y);
-        (*ball).pos.y = box.bottom() - ((*ball).pos.y - box.bottom());
-    }
-    if ((*ball).pos.x <= box.left())
-    {
-        (*ball).v.x = -((*ball).v.x);
-        (*ball).pos.x = box.left() - ((*ball).pos.x - box.left());
-    }
-    if ((*ball).pos.y <= box.top())
-    {
-        (*ball).v.y = -((*ball).v.y);
-        (*ball).pos.y = box.top() - ((*ball).pos.y - box.top());
-    }
-    */
 
     FindColilision (TheGS->ballS, numberOfFind);
         
 }
-//
-/*
-void PhysicsNoGrathics (Ball *ball, double dt, Ball balls[], int numberOfFind)
-{
-    //ball->DrawHistory();
-    Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
-    Vector fGravity  = {.x = 0, .y = 70};
-    Vector currPosMouse = {txMouseX (), txMouseY ()};
-    Vector mouseForce = (currPosMouse - ball->pos) * 2;
-    Vector fElectric = findElectricForce (balls, numberOfFind, BallLength);
-    Vector resultantForce = fGravity + mouseForce + fElectric;
-    Vector a = resultantForce / ball->m;
-    txSetFillColor (TX_YELLOW);
-    txSetColor     (TX_YELLOW);
-    txCircle (txMousePos ().x, txMousePos ().y, 10);
-    Draw (resultantForce, ball->pos, TX_LIGHTRED,  0);
-    Draw (mouseForce,     ball->pos, TX_LIGHTCYAN, 0);
-    Draw (fGravity,       ball->pos, TX_LIGHTGRAY, 0);
-    ball->v += (a * dt);
-    (*ball).v.y +=  ball->a.y * dt;
-    ball->  v.x +=  ball->a.x * dt;
-    Draw (ball->v, ball->pos, TX_GREEN, 0);
-    ball->pos += (ball->v * dt);
-    (*ball).pos.x += (*ball).v.x * dt;
-    (*ball).pos.y += (*ball).v.y * dt;
-    ball->fillHistory ();
-    if ((*ball).pos.x >= box.right ())
-    {
-        (*ball).v.x = -((*ball).v.x);
-        (*ball).pos.x = box.right() - ((*ball).pos.x - box.right());
-    }
-    if ((*ball).pos.y >= box.bottom())
-    {
-        (*ball).v.y = -((*ball).v.y);
-        (*ball).pos.y = box.bottom() - ((*ball).pos.y - box.bottom());
-    }
-    if ((*ball).pos.x <= box.left())
-    {
-        (*ball).v.x = -((*ball).v.x);
-        (*ball).pos.x = box.left() - ((*ball).pos.x - box.left());
-    }
-    if ((*ball).pos.y <= box.top())
-    {
-        (*ball).v.y = -((*ball).v.y);
-        (*ball).pos.y = box.top() - ((*ball).pos.y - box.top());
-    }
-        
-}//*/
-//                    ball1 -> ball2
+
 
 void FindColilision (BallSystem &ballS, int numberOfFind)
 {
@@ -1741,7 +1434,6 @@ void FindColilision (BallSystem &ballS, int numberOfFind)
 
 void Colision (Ball *ball1, Ball *ball2)
 {
-    //ERROR (1);
     /*
     закон сохранения импулса
     p1 = m1 * v1
@@ -1903,95 +1595,6 @@ Vector vectorNormal (Vector vector)
     return vector / lengthV (vector);
 }
 
-/*
-void Ball::fillHistory ()
-{
-    assert (0 <= oldestNum && oldestNum < BallHistoryLength);
-
-    history [oldestNum] = pos;
-    oldestNum++;
-
-    if (oldestNum >= (sizeof (history) / sizeof (history[0])))
-    {
-        oldestNum = 0;
-    }
-}
-
-void Ball::DrawHistory ()
-{
-    const double kRgb = 225 / BallHistoryLength;
-    double nColor = 0;
-
-    for (int i = oldestNum; i < BallHistoryLength; i++)
-    {
-        assert (0 <= i && i < BallHistoryLength);
-
-        txSetFillColor (RGB (nColor, nColor, nColor));
-        txSetColor     (RGB (nColor, nColor, nColor));
-        txCircle (history[i].x, history[i].y, 2);
-        nColor += kRgb;
-    }
-
-    for (int i = 0; i < oldestNum; i++)
-    {
-        assert (0 <= i && i < BallHistoryLength);
-
-        txSetFillColor (RGB (nColor, nColor, nColor));
-        txSetColor     (RGB (nColor, nColor, nColor));
-        txCircle (history[i].x, history[i].y, 2);
-        nColor += kRgb;
-    }
-
-    txSetFillColor (TX_PINK);
-    txSetColor     (TX_PINK);
-    //txCircle (history[oldestNum].x, history[oldestNum].y, 3);
-}
-
-void Ball::DrawHistoryLines ()
-{
-    const double kRgb = 225 / BallHistoryLength;
-    double nColor = 0;
-    //$(oldestNum);
-
-    for (int i = oldestNum; i < BallHistoryLength - 1; i++)
-    {
-        //cout << i;
-        txSetFillColor (RGB (nColor, nColor, nColor));
-        txSetColor     (RGB (nColor, nColor, nColor));
-      // txCircle (history[i].x, history[i].y, 2);
-        assert (0 <= i     && i     < BallHistoryLength);
-        assert (0 <= i + 1 && i + 1 < BallHistoryLength);
-
-        txLine   (history[i].x, history[i].y, history[i + 1].x, history[i + 1].y);
-        nColor += kRgb;
-    }
-
-    if (oldestNum != 0)
-    {
-        assert (0 <= BallHistoryLength - 1 && BallHistoryLength - 1 < BallHistoryLength);
-
-
-        txLine (history[BallHistoryLength - 1].x, history[BallHistoryLength - 1].y, history[0].x, history[0].y);
-    }
-
-    for (int i = 0; i < oldestNum - 1; i++)
-    {
-        assert (0 <= i && i < BallHistoryLength);
-        //cout << i;
-        txSetFillColor (RGB (nColor, nColor, nColor));
-        txSetColor     (RGB (nColor, nColor, nColor));
-        //txCircle (history[i].x, history[i].y, 2);
-        txLine   (history[i].x, history[i].y, history[i + 1].x, history[i + 1].y);
-        nColor += kRgb;
-    }
-
-    txSetFillColor (TX_PINK);
-    txSetColor     (TX_PINK);
-
-    assert (0 <= oldestNum && oldestNum < BallHistoryLength);
-    txCircle (history[oldestNum].x, history[oldestNum].y, 3);
-}
-*/
 
 double SpeedX (double vX)
 {
@@ -2009,12 +1612,6 @@ double SpeedX (double vX)
 
             if (vX < 0)  vX++;
         }
-        /*
-        if (txGetAsyncKeyState ('S'))
-        {
-            vX = standartX;
-        }
-        */
         return vX;
 }
 
@@ -2071,12 +1668,6 @@ void ClearBackground ()
      {
          flagClearBackground = true;
      }
-      /*
-     if (onButtonClicked (TheGS->cleanButton))
-     {
-       // flagClearBackground = !flagClearBackground;
-        //txSleep (0);
-     }]*/
 
      if (txGetAsyncKeyState ('N'))
      {
@@ -2276,66 +1867,4 @@ Vector makePerpendikularLine(const Vector &mainVector)
     return perpendikularLine;
 }
 
-/*
-inline Vector operator * (const Vector &a, const double b)
-{
-    Vector result = {};
-    result.x = a.x * b;
-    result.y = a.y * b;
-
-    return result;
-}
-
-inline Vector operator / (const double a, const Vector &b)
-{
-    Vector result = {};
-    result.x = a / b.x;
-    result.y = a / b.y;
-
-    return result;
-}
-
-inline Vector operator + (const Vector &a, const Vector &b)
-{
-    Vector result = {};
-    result.x = a.x + b.x;
-    result.y = a.y + b.y;
-
-    return result;
-}
-
-inline Vector operator - (const Vector &a, const Vector &b)
-{
-    return { .x = a.x - b.x,
-             .y = a.y - b.y };
-}
-
-inline Vector &operator += (Vector &a, const Vector &b)
-{
-   a.x += b.x;
-   a.y += b.y;
-   
-   return a;
-}
-
-inline Vector operator * (const Vector &a, const Vector &b)
-{
-    Vector copyA  = a;
-    return copyA *= b;
-}
-
-inline Vector &operator *= (Vector &a, const Vector &b)
-{
-    a.x *= b.x;
-    a.y *= b.y;
-    return a;
-}
-
-inline Vector operator / (const Vector &a, double m)
-{
-    return {.x = a.x / m,
-            .y = a.y / m
-    };
-}
-*/
 

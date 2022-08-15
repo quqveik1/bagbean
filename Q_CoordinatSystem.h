@@ -17,6 +17,7 @@ class coordinatSys
 
     public: coordinatSys ();
     public: coordinatSys (Vector startPosPix, Vector scalePix, Vector coorSize);
+    public: void findRect ();
 
 
 
@@ -25,6 +26,12 @@ class coordinatSys
     public: void drawLine (Vector startLPos, Vector finishLPos, COLORREF color = CometColor);
     public: Vector interpret (Vector vector);
 };
+
+void coordinatSys::findRect ()
+{
+    sysBorderPix_ =  {.pos = startPosPix_, .size = scalePix_};
+}
+
 
 
 coordinatSys::coordinatSys (Vector startPosPix, Vector scalePix, Vector coorSize) :

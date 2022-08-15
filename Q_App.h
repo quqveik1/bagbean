@@ -35,11 +35,14 @@ public:
     Rect screenShotButton;
     Rect minusSpeedButton;
     Rect plusSpeedButton;
+
     HDC CreateModeHDC; 
     Rect rMinusButton;
     Rect rPlusButton;
     Rect mMinusButton;
-    Rect mPlusButton;
+    Rect mPlusButton; 
+    Rect mText;
+    Rect rText;
 
     bool writeSaves = true;
 
