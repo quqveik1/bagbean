@@ -21,11 +21,15 @@
 
 -----------------------------------------
 
-Чтобы запустить программу необходимо скачать её собранную версию из вкладки релизы(https://github.com/quqveik1/bagbean/releases/tag/KVE),
+Чтобы запустить программу необходимо скачать её собранную версию из вкладки релизы(https://github.com/quqveik1/bagbean/releases/latest),
 при запуске надо игнорировать сообщения антивирусов о том, что в файле содержится вирус.
 
 В таком окне следует нажать "Подробнее" и будет доступно выбрать "Выполнить в любом случае".
 
 
 <img src="https://user-images.githubusercontent.com/64206443/182945554-ed4d18c6-a25d-4d0d-a331-e268643b3031.png" width="400">
+
+----
+- [EN](https://github.com/quqveik1/bagbean/blob/master/README_EN.md)
+- [DE](https://github.com/quqveik1/bagbean/blob/master/README_DE.md)
 
