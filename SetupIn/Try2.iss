@@ -32,9 +32,9 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\x64\Release\GravitySystem.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\Release\GravitySystem.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\GravitySystemFolder"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\x64\Release\GravitySystem.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Алехандро\Desktop\AlexProjects\BAGBEAN\Release\GravitySystem.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
