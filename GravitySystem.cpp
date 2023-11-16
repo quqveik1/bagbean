@@ -1,5 +1,4 @@
-﻿//#define _TX_ALLOW_TRACE 9
-#define  _CRT_SECURE_NO_WARNINGS
+﻿#define  _CRT_SECURE_NO_WARNINGS
 #define  TX_USE_SPEAK
 
 #include "TXLib.h"
@@ -11,29 +10,6 @@
 #include <io.h>
 #include "Q_App.h"
 #include "settingsWindow.cpp"   
-
-/*
--   -
-a + b = a.x + b.x; a.y + b.y
-->
-a  * k = a.x * k; a.y * k
-->  ->
-a   b 
-a.y * b.y + a.x * b.x = 0
-->
-|a| = sqrt (a.x^2 + a.y^2)(
-->
-AB = {};
-A = {1, 2}
-B = {3, 4}
-|AB| = {b.x - a.x, b.y - a.y};
-*/
-
-
-//const int BallHistoryLength = 20;
-
-
-//const Rect miniMap =   {.pos = {25,  685}, .size = {375,  285}};
 
 #define key(a) txGetAsyncKeyState (a)
 #define notKey(a) while (txGetAsyncKeyState (a)) {};
@@ -65,7 +41,6 @@ B = {3, 4}
 }
 
 
-
 #define printBlt(image)         \
 {                               \
     txBitBlt (0, 0, image);     \
@@ -85,7 +60,6 @@ B = {3, 4}
 
 
 App* TheGS = 0;
-
 
 void RunEngineExperiment ();
 void drawEngineFrame (bool drawMiniMapFlag = true);
@@ -113,8 +87,6 @@ int readBall (Ball *ball, FILE *ballFile);
 
 double elDeg (const double number, const double deg);
 double degreesOfDouble (const double number, int degree);
-
-
 
 void loadImage (const char* path, HDC &finalImage, Vector originalSize, Vector finalSize);
 void drawMiniMap ();
@@ -162,51 +134,10 @@ bool onButtons ();
 bool onButtons (Vector pos);
 bool onCreateButtons ();
 
-
-
-/*
-0000 1101 (2) = +13 (10)
-1111 0010 (2) = ~13
----------
-1111 1111
-1111 0010 (2) = ~13
-1111 0011 (2) = -13
-  0000 1101 (2) = +13 (10)
-  1111 0011 (2) = -13 (10)
-  ---------
-1 0000 0000 =>
-1|0000 0000 =>
-  0000 0000
-*/ 
-
-/*
-mkdir ("C:/realFolders/Name");  //create folder
-FILE* myFile = fopen ("C:/ALexProjects/Name.txt", "w");
-fprintf (myFile, "Sth = %i", number);                                                             
-fclose (myFile);
-mode r
-fscanf (myFile, "Sth = %d", &newNumber);
-char str[size];
-fgets (str, size, myfile);
-*/
-
-
-
-//New
 int main()
 {
-
-    
-
-
-    //txCreateWindow (800, 600);
-    //txSetColor     (TX_LIGHTRED);
-    //txSetFillColor (TX_RED);
-    
     (void) _mkdir ("GravitySystemFolder");
     (void) _mkdir ("GravitySystemFolder/ScreenShots");
-
-
    
     UserScreen = {.x = (double)GetSystemMetrics (SM_CXSCREEN), .y = (double)GetSystemMetrics (SM_CYSCREEN)};
     CompressK = {.x = UserScreen.x / 1280, .y = UserScreen.y / 720};
@@ -220,19 +151,12 @@ int main()
 
     App *gravitySys = new App ();
     TheGS = gravitySys;
-    
-    //int mode = 0;
-    
-
-    
 
     loadImage ("GravitySystemFolder/DevMaterials/Menu720p_1.bmp", TheGS->Menu, {1280, 720}, UserScreen);
     loadImage ("GravitySystemFolder/DevMaterials/HUD720p_1.bmp", TheGS->HUD, {1280, 720}, UserScreen);
     loadImage ("GravitySystemFolder/DevMaterials/LeftButtons720p.bmp", TheGS->LeftButtonsImage, {605, 157}, {605 * CompressK.x, 157 * CompressK.y});    
     loadImage ("GravitySystemFolder/DevMaterials/CreateButtonHud.bmp", TheGS->CreateModeHDC, {760, 140}, {760 * CompressK.x, 140 * CompressK.y});    
     loadImage ("GravitySystemFolder/DevMaterials/HUD720p_Replay_1.bmp", TheGS->ReplayHUD, {1280, 720}, UserScreen);
-   
-    
 
     TheGS->monitorS = {.pos= {0,0}, .size = UserScreen};
     TheGS->miniMap.startPosPix_ = {0, 490 * CompressK.y};
@@ -240,8 +164,6 @@ int main()
     TheGS->miniMap.coorSize_ = {(double) txGetExtentX (), (double)txGetExtentY ()};
     TheGS->miniMap.intepretK_= {{TheGS->miniMap.scalePix_.x / TheGS->miniMap.coorSize_.x}, {TheGS->miniMap.scalePix_.y / TheGS->miniMap.coorSize_.y}};
     TheGS->miniMap.findRect ();
-    //$ (TheGS->miniMap.sysBorderPix_.pos.y);
-    
 
     TheGS->LeftButtons = {.pos = {0, 0}, .size = {605 * CompressK.x, 157 * CompressK.y}};
     TheGS->exitButtonHUD = {.pos = {1090 * CompressK.x, 0}, .size = {190 * CompressK.x, 80 * CompressK.y}};
@@ -263,7 +185,6 @@ int main()
     TheGS->infoButton = {.pos = {15 * CompressK.x, 485 * CompressK.y}, .size = {105 * CompressK.x, 215 * CompressK.y}};
     TheGS->exitButton = {.pos = {1092 * CompressK.x, 637 * CompressK.y}, .size = {188 * CompressK.x, 84 * CompressK.y}};
 
-
     txBegin ();
 
     for (;;)
@@ -273,48 +194,47 @@ int main()
         txSleep (0);
         for (;;)
         {
-            if (onButtonClicked (TheGS->startButton))
+            if (onButtonClicked(TheGS->startButton))
             {
-                if (key (VK_TAB))
+                if (key(VK_TAB))
                 {
                     TheGS->writeSaves = false;
                 }
                 TheGS->ballS.currlength = 0;
 
-                if (!key (VK_CONTROL))
+                if (!key(VK_CONTROL))
                 {
-                    TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, 0}),     {0, 0},  1e17, 10, 2e5, TX_YELLOW};
-                    TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -400}),  {24, 0}, 1e4,  10, 2,   TX_CYAN};
-                    TheGS->ballS.ball [TheGS->ballS.currlength++] = {txToss ({0, -200}),  {32, 0}, 1e4,  10, 2,   TX_RED};
+                    TheGS->ballS.ball[TheGS->ballS.currlength++] = { txToss({0, 0}),     {0, 0},  1e17, 10, 2e5, TX_YELLOW };
+                    TheGS->ballS.ball[TheGS->ballS.currlength++] = { txToss({0, -400}),  {24, 0}, 1e4,  10, 2,   TX_CYAN };
+                    TheGS->ballS.ball[TheGS->ballS.currlength++] = { txToss({0, -200}),  {32, 0}, 1e4,  10, 2,   TX_RED };
                 }
 
                 for (int i = TheGS->ballS.currlength; i < BallMax; i++)
                 {
-                    assert (0 <= i && i < BallMax);
+                    assert(0 <= i && i < BallMax);
 
-                    TheGS->ballS.ball[i] = {txToss ({0, 0}),   {0, 0}, 0, 0, 0, TX_RED};
+                    TheGS->ballS.ball[i] = { txToss({0, 0}),   {0, 0}, 0, 0, 0, TX_RED };
                 }
 
                 for (int i = 0; i < BallMax; i++)
                 {
-                    assert (0 <= i && i < BallMax);
+                    assert(0 <= i && i < BallMax);
 
                     TheGS->planetsInit[i] = TheGS->ballS.ball[i];
                 }
 
                 for (int i = 0; i < TheGS->ballS.currlength; i++)
                 {
-                    assert (0 <= i && i < BallMax);
+                    assert(0 <= i && i < BallMax);
                     TheGS->ballS.ball[i] = TheGS->planetsInit[i];
                 }
 
-        
-                RunEngineExperiment ();
+
+                RunEngineExperiment();
                 TheGS->writeSaves = true;
-                
+
                 break;
             }
-
        
             if (onButtonClicked (TheGS->repeatButton))
             {
@@ -349,7 +269,6 @@ int main()
 
            if (key ('5') && key ('7'))
            {
-               
                 txSpeak ("Я роняю Запад, у! Я роняю Запад, у!\n"
                          "Я роняю Запад, у! Я роняю Запад, а!\n"
                          "Я роняю Запад, у! Я роняю запад, а!\n"
@@ -362,7 +281,6 @@ int main()
            }
         }
     }
-
     
     txEnd ();
 
@@ -381,62 +299,6 @@ void loadImage (const char* path, HDC &finalImage, Vector originalSize, Vector f
     StretchBlt (finalImage, 0, 0, finalSize.x, finalSize.y,  Copyimage, 0, 0, originalSize.x, originalSize.y, SRCCOPY);
     txDeleteDC (Copyimage);
 }
-
-/*
-HRESULT Load(LPCTSTR szFile)
-    {
-        CComPtr<IStream> pStream;
-        
-        // Load the file to a memory stream
-        HRESULT hr = FileToStream(szFile, &pStream);
-
-        if (SUCCEEDED(hr))
-        {
-            // Decode the picture
-            hr = ::OleLoadPicture(
-                    pStream,            // [in] Pointer to the stream that contains picture's data
-                    0,                    // [in] Number of bytes read from the stream (0 == entire)
-                    true,                // [in] Loose original format if true
-                    IID_IPicture,        // [in] Requested interface
-                    (void**)&m_pPicture // [out] IPictire object on success
-                    );
-        }
-
-        return hr;
-    }
-
-    HRESULT DrawImg(HDC hdc, const RECT& rcBounds)
-    {
-        if (m_pPicture)
-        {
-            // Get the width and the height of the picture
-            long hmWidth = 0, hmHeight = 0;
-            m_pPicture->get_Width(&hmWidth);
-            m_pPicture->get_Height(&hmHeight);
-
-            // Convert himetric to pixels
-            int nWidth    = MulDiv(hmWidth, ::GetDeviceCaps(hdc, LOGPIXELSX), HIMETRIC_INCH);
-            int nHeight    = MulDiv(hmHeight, ::GetDeviceCaps(hdc, LOGPIXELSY), HIMETRIC_INCH);
-
-            // Display the picture using IPicture::Render
-            return m_pPicture->Render(
-                hdc,                            // [in] Handle of device context on which to render the image
-                rcBounds.left,                    // [in] Horizontal position of image in hdc
-                rcBounds.top,                    // [in] Vertical position of image in hdc
-                rcBounds.right - rcBounds.left,    // [in] Horizontal dimension of destination rectangle
-                rcBounds.bottom - rcBounds.top, // [in] Vertical dimension of destination rectangle
-                0,                                // [in] Horizontal offset in source picture
-                hmHeight,                        // [in] Vertical offset in source picture
-                hmWidth,                        // [in] Amount to copy horizontally in source picture
-                -hmHeight,                        // [in] Amount to copy vertically in source picture
-                &rcBounds                        // [in, optional] Pointer to position of destination for a metafile hdc
-                );
-        }
-
-        return E_UNEXPECTED;
-    }
-    */
-
 
 const char* openCustomFile ()
 {
@@ -461,13 +323,8 @@ const char* openCustomFile ()
         (GetOpenFileNameA (&ofn) );
     // Весьма полезная функция, отображает диалог выбора файла.
 
-    ///printf ("\n" "GetOpenFileName() returned: fileName = \"%s\"\n", fileName);
-
     return fileName;
 }
-
-
-
 
 void endOfProgram ()
 {
@@ -490,9 +347,6 @@ void printfDCS (const char *str)
     _getch ();
 }
 
-
-
-
 void CreateNewPlanet (BallSystem &ballS)
 {
     Ball newBall = {};
@@ -505,7 +359,6 @@ void CreateNewPlanet (BallSystem &ballS)
 
     for (;;)
     {
-        //printf ("%d", !onCreateButtons ());
         if (txMouseButtons () == 2)
         {
             newBall.pos = {.x = txMouseX (), .y = txMouseY ()};
@@ -522,11 +375,10 @@ void CreateNewPlanet (BallSystem &ballS)
         {
             newBall.r++;
         }
-        if (onButtonClicked (TheGS->rMinusButton))
+        if (onButtonClicked(TheGS->rMinusButton))
         {
             newBall.r--;
         }
-
 
         if (onButtonClicked (TheGS->mMinusButton))
         {
@@ -536,8 +388,6 @@ void CreateNewPlanet (BallSystem &ballS)
         {
             newBall.m++;
         }
-
-   
 
         if (txMouseButtons () == 1 && !onCreateButtons ()) 
         { 
@@ -557,10 +407,6 @@ void CreateNewPlanet (BallSystem &ballS)
         txTextOut (220 * CompressK.x, 20 * CompressK.y + 2, rInfo);
         txTextOut (190 * CompressK.x, 90 * CompressK.y + 2, mInfo);
 
-
-        
-       
-
         if (onButtonClicked (TheGS->exitButtonHUD)) break;
 
         newBall.draw ();
@@ -570,20 +416,11 @@ void CreateNewPlanet (BallSystem &ballS)
     }
 
     TheGS->ballS.addBall (newBall);
-
-
-
-
-
-    
-
-
 }
 
 void enterInt (Rect button, long long &num, Vector startText, Ball ball, Vector secondText)
 {
     txClear ();
-    
 
     for (;;)
     {
@@ -612,9 +449,6 @@ void enterInt (Rect button, long long &num, Vector startText, Ball ball, Vector 
         char ballInfo[100] = {};
         sprintf (info, "%ld",  num);
         sprintf (ballInfo, "%d", ball.m);
-       //printf ("%d\n", num);
-
-
         
         txBitBlt (0, 0, TheGS->HUD);
         txBitBlt (0, 0, TheGS->CreateModeHDC);
@@ -645,7 +479,6 @@ bool onCreateButtons ()
 void unitTest (BallSystem ballS, FILE *ballFile)
 {
     static int frameCount = 1;
-    //txClearConsole ();
 
     bool correctInput = true;
     double posX = 0;
@@ -654,39 +487,24 @@ void unitTest (BallSystem ballS, FILE *ballFile)
     double  r = 0;
     unsigned int alive = 0;
 
-    //printf ("Frame: %i\n", frameCount);
     frameCount++;
 
     for (int i = 0; i < BallMax; i++)
     {
-
         assert (0 <= i && i < BallMax);
-        
-        //OFF static char str[500] = "";
-
-        //fgets (str, sizeof (str), ballFile);
-        //printf ("//%s//\n", str);
-        //(void) _getch ();
 
         printf ("Readed elements: %i////", fscanf (ballFile, " { { %lf , %lf } , color: %u , r: %lf , alive: %u } | | |", &posX, &posY, &color, &r, &alive)); //!!!!!!!!!!!
-        
-        
-        
         
         printf ("Ball: %i:", i + 1);
 
         assert (0 <= i && i < BallMax);
 
         double deltaOfPosX = fabs (ballS.ball[i].pos.x - posX);
-
-        //printf ("Error: pos ({%e, %e}, {%e, %e})\n", ballS.ball[0].pos.x, ballS.ball[0].pos.y, posX, posY);
-       // printf ("ERROR: Delta = %e /// pos ({%d, %d}, {%d, %d})\n", deltaOfPosX, (int) ballS.ball[i].pos.x, (int) ballS.ball[i].pos.y, (int) posX, (int) posY);
         if (!(compareNearlyNum (ballS.ball[i].pos.x, posX)) || !(compareNearlyNum (ballS.ball[i].pos.y, posY)) )
         {
             correctInput = false;
             $se;
             printf ("Error: Delta = %e /// pos ({%e, %e}, {%e, %e}) ", deltaOfPosX, ballS.ball[i].pos.x, ballS.ball[i].pos.y, posX, posY);
-            //DebugBreak ();
         }
         
         assert (0 <= i && i < BallMax);
@@ -719,8 +537,6 @@ void unitTest (BallSystem ballS, FILE *ballFile)
     printf ("\n");
 
     (void) _getch ();
-
-    //void (printf ("Correct: %u\n", (unsigned int) correctInput));
 }
 
 
@@ -733,9 +549,7 @@ bool compareNearlyNum (double a, double b)
 void playSystem (const char path[])
 {
     FILE *ballSystemRecording = fopen (path, "r");  
-    //printf ("%p", ballSystemRecording);
     BallSystem currBallS = {};
-     
 
     for (;;)
     {
@@ -762,7 +576,6 @@ void playSystem (const char path[])
     }
 
     fclose (ballSystemRecording);
-
 }
 
 void dynamicSleeping ()
@@ -776,11 +589,8 @@ void dynamicSleeping ()
     if (txGetAsyncKeyState (VK_F5)) timesleep = 500;
     if (txGetAsyncKeyState (VK_F6)) timesleep = 1000;
 
-    //printf ("%i", timesleep);
-
     txSleep (timesleep);
 }
-
 
 void drawFrameReplay (BallSystem *ballS)
 {
@@ -800,7 +610,6 @@ void writeBall (const Ball &ball, FILE *ballFile)
 
 void writeAllBall (FILE *ballFile)
 {
-    //OFF fprintf (ballFile, "/BEGIN  :::  ");
     fprintf (ballFile, "Num: %d||", TheGS->ballS.currlength);
 
     for (int i = 0; i < TheGS->ballS.currlength; i++)
@@ -833,16 +642,12 @@ int readAllBall (BallSystem *ballS, FILE *ballFile)
         }
     }
     return 100;
-
-    //lining ();
 }
 
 int readBall (Ball *ball, FILE *ballFile)
 {
     return fscanf (ballFile, "{{%lf, %lf}, color: %u, r: %lf, alive: %u} ||| ", &ball->pos.x , &ball->pos.y, &ball->color, &ball->r, (unsigned int*) &ball->alive);
 }
-
-
 
 void RunEngineExperiment ()
 {
@@ -859,8 +664,6 @@ void RunEngineExperiment ()
         
     for (int i = 0; i > -1; i++)
     {
-        //TheGS->getWindowPos ();
-
         PhysicsAllBall ();
 
         PhysicsAllBall ();
@@ -892,7 +695,6 @@ void RunEngineExperiment ()
     {
         fclose (ballSystemRecording); 
     }
-
 }
 
 void drawEngineFrame (bool drawMiniMapFlag)
@@ -902,14 +704,9 @@ void drawEngineFrame (bool drawMiniMapFlag)
 
 }
 
-
-
 void drawConsole ()
 {
     char str[100] = "";
-
-    // int n = 0;
-    
 
     if (txGetAsyncKeyState (VK_CONTROL)) sprintf (str, "Нажата клавиша: ctrl");
     if (txGetAsyncKeyState (VK_TAB)) sprintf (str, "Нажата клавиша: tab");
@@ -922,32 +719,8 @@ void drawConsole ()
     {
         TheGS->console.print (str);
     }
-    //Какой оператор си инвертирует число! ~
-    //!(т) (любое число неравное нулю)
-    //false
-    //!(0) true
-    //0 - ложь, все кроме нуля правда
-    //n | n != 0: !(n) = 0
-    //!(0) = 1
-    //n | n != 0: !!(n) = 1
-    //!!(0) = 0
-    //!!0 = 0
-    //!!1 = 1
-    //!!2 = 1
-    //!!3 = 1
-    
-    //printf ("%с", "tf")
-    //Чем отличчается %s %c
-    //%s - строка
-    //%c - char символ
-
 
     TheGS->console.reDraw ();
-
-
-        
-
-
 }
 bool inButtonClicked (Rect button)
 {
@@ -981,22 +754,17 @@ bool notOnButtonClicked (Rect Button)
         }
     }
     return false;
-
-
 }
 
 bool onButtonClicked (Rect Button)
 {
-    
     if (txMouseButtons () == 1)
     {
         if (txMouseX () > Button.left () && txMouseX () <  Button.right ())
         {
             if (txMouseY () > Button.top () && txMouseY () <  Button.bottom ())
             {
-                while (txMouseButtons () == 1)
-                {
-                };
+                while (txMouseButtons () == 1) {}
                 if (txMouseX () > Button.left () && txMouseX () <  Button.right ())
                 {
                     if (txMouseY () > Button.top () && txMouseY () <  Button.bottom ())
@@ -1008,8 +776,6 @@ bool onButtonClicked (Rect Button)
         }
     }
     return false;
-
-    
 }
 
 void printFAQ ()
@@ -1027,7 +793,6 @@ void printFAQ ()
                       "P.S. Можете понажимать разные клавиши, тут очень много функции\n\n",//!!!Автроы
                       "Инструкция по использованию", MB_OK);
 }
-
 
 void drawMiniMap ()
 {
@@ -1062,7 +827,6 @@ void copyFrame (BallSystem copyOfMainBallS[], BallSystem ballS, int currFrame)//
 
 bool inButtonMouse (Rect Button)
 {
-
      if (txMouseX () > Button.left () && txMouseX () <  Button.right ())
      {
             if (txMouseY () > Button.top () && txMouseY () <  Button.bottom ())
@@ -1081,7 +845,6 @@ void cometShooting ()
             txMousePos().x < (TheGS->monitorS.pos.x + TheGS->monitorS.size.x) &&
             txMousePos().y >  TheGS->monitorS.pos.y &&
             txMousePos().y < (TheGS->monitorS.pos.y + TheGS->monitorS.size.y) &&
-            //isActive (MainScreen) &&
             !inButtonMouse (TheGS->cleanButton) && 
             !inButtonMouse (TheGS->exitButtonHUD) && 
             !inButtonMouse (TheGS->newPlanetButton) &&
@@ -1111,8 +874,7 @@ void cometShooting ()
             comet.r      = 10;
             $s
             comet.color = CometColor;
-            
-            //txSleep (0);
+
             if ((TheGS->ballS.currlength) + 1 < BallMax)
             {
                 TheGS->ballS.addBall (comet);
@@ -1124,10 +886,6 @@ void cometShooting ()
                 txMessageBox ("Невозможно добавить новую планету", "Предупреждение", MB_OK);
             }
         }
-
-        
-        //txSleep (0);
-        //$$p;
     }
 }
 
@@ -1157,7 +915,6 @@ Vector returnMouseVector (Vector *finishPos)
     return speed;
 }
 
-
 void drawAllBall (bool history /* = true*/)
 {
     static bool drawHistory = false;
@@ -1177,9 +934,7 @@ void drawAllBall (bool history /* = true*/)
                 if (drawHistory)
                     TheGS->ballS.ball[i].DrawHistory ();
             }
-                    
         }
-        
      }
 }
 
@@ -1240,31 +995,6 @@ void drawBall (const Ball *ball)
     }
 }
 
-/*
-// x = 100; y = 400; r = 20; vX = 5; vY = 5; dt = 1; g = 0.7
-void BallFrame (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle, Ball balls[], int numberOfFind)
-{
-     txSetFillColor (colorCircle);
-     txCircle ((*ball).pos.x, (*ball).pos.y, (*ball).r);
-     const Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
-     Physics (ball, box, dt, balls, numberOfFind);
-     ball->v.x = SpeedX (ball->v.x);
-     ball->v.y = SpeedY (ball->v.y);
-     SwitchColour ();
-     (*ball).r = SwitchRadius ((*ball).r);
-}
-void BallFrameNoGrathics (Ball *ball, double dt, double thicknessOfVector, COLORREF colorCircle, Ball balls[], int numberOfFind)
-{
-     txSetFillColor (colorCircle);
-     txCircle ((*ball).pos.x, (*ball).pos.y, (*ball).r);
-     const Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
-     PhysicsNoGrathics (ball, box, dt, balls, numberOfFind);
-     ball->v.x = SpeedX (ball->v.x);
-     ball->v.y = SpeedY (ball->v.y);
-     SwitchColour ();
-     (*ball).r = SwitchRadius ((*ball).r);
-}*/
-
 Vector txToss (Vector pos)
 {
     const Rect box = { {0, 0}, {double (txGetExtent().x), double (txGetExtent().y)} };
@@ -1299,7 +1029,6 @@ void ControlAllBalls ()
     }
 }  
 
-
 void makeScreenShot ()
 {
     FILE *lastScreenShotr = fopen ("GravitySystemFolder/Config.txt", "r");
@@ -1323,7 +1052,6 @@ void makeScreenShot ()
     HDC currScreen =  GetWindowDC (MainScreen);
     int saveVal = txSaveImage (path, currScreen);
     assert (saveVal);
-
 }           
 
 void ControlDelta ()
@@ -1334,7 +1062,6 @@ void ControlDelta ()
     } 
     if (inButtonClicked (TheGS->minusSpeedButton))
     {
-        //SLEEPINGTIME++;
         DT -= 0.001;
     } 
 }
@@ -1360,23 +1087,14 @@ void Control (Ball *ball)
     (*ball).r = SwitchRadius ((*ball).r);
 }
 
-//x^2 + x = 0
-//x^2 - 1 = 0 
-//(x - 1)(x + 1) = 0
-
 // 0 - x; 1 - y; 2 - vX; 3 - vY;
 void Physics (Ball *ball, int numberOfFind, bool Graphic)
 {
-    if (Graphic)
-    {
-        //ball->DrawHistoryLines ();
-    }
     const Rect box = { {ball->r, ball->r}, {txGetExtent().x - 2 * (ball->r), txGetExtent().y - 2 * (ball->r)} };
 
     Vector fGravity  = {.x = 0, .y = 0};
 
     Vector currPosMouse = {txMouseX (), txMouseY ()};
-    //Vector mouseForce = (currPosMouse - ball->pos) * 2;
     Vector fElectric = findElectricForce (TheGS->ballS.ball, numberOfFind, TheGS->ballS.currlength);
 
     Vector resultantForce = fGravity + /*mouseForce*/  fElectric;
@@ -1387,28 +1105,17 @@ void Physics (Ball *ball, int numberOfFind, bool Graphic)
     
 
     Vector a = resultantForce / ball->m;
-
     
     txSetFillColor (TX_YELLOW);
     txSetColor     (TX_YELLOW);
-    //txCircle (txMousePos ().x, txMousePos ().y, 10);
-    /*
-    Draw (resultantForce, ball->pos, TX_LIGHTRED,  5);
-    Draw (mouseForce,     ball->pos, TX_LIGHTCYAN, 3);
-    Draw (fGravity,       ball->pos, TX_LIGHTGRAY, 2);
-    */
-
 
     ball->v += (a * DT);
 
     ball->pos += (ball->v * DT);
 
     ball->fillHistory ();
-
     FindColilision (TheGS->ballS, numberOfFind);
-        
 }
-
 
 void FindColilision (BallSystem &ballS, int numberOfFind)
 {
@@ -1447,9 +1154,7 @@ void Colision (Ball *ball1, Ball *ball2)
     ERROR (ball1->m + ball2->m == 0);
     Vector newV = ((ball1->v * ball1->m) + (ball2->v * ball2->m)) / (ball1->m + ball2->m);
 
-    //ball2->color = 
-    ball2->pos = ((ball1->pos * ball1->m) + (ball2->pos * ball2->m))/(ball2->m + ball1->m);
-
+    ball2->pos = ((ball1->pos * ball1->m) + (ball2->pos * ball2->m)) / (ball2->m + ball1->m);
 
     ball2->m = ball2->m + ball1->m;
     ball1->m = 0;
@@ -1466,49 +1171,17 @@ void Colision (Ball *ball1, Ball *ball2)
 
     ball2->color = sumColors (ball1->color, ball2->color);
 
-
     ball1->alive = !"dead";
 }
 
 COLORREF sumColors (COLORREF a, COLORREF b)
 {
     int aRed   = (a & 0x0000ff);
-    int aGreen = (a & 0x00ff00) >> 8;   // 
-    int aBlue  = (a & 0xff0000) >> 16;      // = a & 0xff
-
-    //00000000_00000001_00000000
-    //& 0b1111111100000000 =   00_00_0xff
-    //               a & 100000000
-    /*
-    0   0000  0    
-    1   0001  1    
-    2   0010  2    
-    3   0011  3
-    4   0100  4
-    5   0101  5
-    6   0110  6
-    7   0111  7
-    8   1000  8
-    9   1001  9
-    10  1010  a
-    11  1011  b
-    12  1100  c
-    13  1101  d
-    14  1110  e
-    15  1111  f
-    */
-
-    /*
-    int aRed   = GetRValue (a);
-    int aGreen = GetGValue (a);   // 
-    int aBlue  = GetBValue (a);
-    int bRed   = GetRValue (b);
-    int bGreen = GetGValue (b);   // 
-    int bBlue  = GetBValue (b);
-    */
+    int aGreen = (a & 0x00ff00) >> 8;
+    int aBlue  = (a & 0xff0000) >> 16;
     
     int bRed   = (b & 0x0000ff);
-    int bGreen = (b & 0x00ff00) >> 8;   // 
+    int bGreen = (b & 0x00ff00) >> 8;
     int bBlue  = (b & 0xff0000) >> 16;
 
     int finishRed   = int ((bRed   + aRed)    /2);
@@ -1535,14 +1208,8 @@ void sumColorsUnitTest ()
 
 void ssCircle (Ball ball, Rect Box)
 {
-    //Rect Box = {{0, 0}, {double (txGetExtentX ()), double (txGetExtentY ())}} ;
-
     ball.pos.x += 0.5 * Box.right ()  + Box.pos.x;
     ball.pos.y += 0.5 * Box.bottom () + Box.pos.y;
-
-
-
-    //txCircle (x + 0.5 * Box.right (), y + 0.5 * Box.bottom (), r);
 
     drawBall (&ball);
 }
@@ -1571,18 +1238,6 @@ Vector findElectricForce (Ball ball[], int numberOfFind, int length)
 
             double vectorLength = (ball[j].charge * ball[numberOfFind].charge) / (distance * distance);
             fElectric += vectorNormal (vectorDistance) * vectorLength * ElectricKf;
-            
-            if (ball[j].alive)
-            {
-                if (ball[j].pos.x + ball[j].r < TheGS->mainPlace.right () && ball[j].pos.x - ball[j].r > TheGS->mainPlace.left ())
-                {
-                    if (ball[j].pos.y + ball[j].r < TheGS->mainPlace.bottom () && ball[j].pos.y - ball[j].r > TheGS->mainPlace.top ()) 
-                    {
-                        //Draw ((vectorNormal (vectorDistance) * vectorLength), ball[numberOfFind].pos, TX_PINK);
-                    }
-                }
-            }
-            //printf ("vectorLength: %lg\n", vectorLength);
         }
         
     }
@@ -1594,7 +1249,6 @@ Vector vectorNormal (Vector vector)
 {
     return vector / lengthV (vector);
 }
-
 
 double SpeedX (double vX)
 {
@@ -1631,12 +1285,6 @@ double SpeedY (double vY)
 
             if (vY < 0)  vY++;
         }
-        /*
-        if (txGetAsyncKeyState ('S'))
-        {
-            vY = standartY;                                                 
-        }
-        */
         return vY;
 }
 
@@ -1679,42 +1327,33 @@ void ClearBackground ()
      if (flagClearBackground == true && TheGS->HUD != NULL) 
      {
          txBitBlt (0, 0, TheGS->HUD);
-         //txBitBlt (0, 0, buttons);
      }
      if (flagClearBackground == true && TheGS->HUD == NULL) txClear();
-     //txClear();
      txSetFillColor (color);
-
 }
 
-void ClearBackground (HDC HUD, Vector startPos /*= {}*/)
+void ClearBackground(HDC HUD, Vector startPos /*= {}*/)
 {
     static bool flagClearBackground = true;
 
-     if (txGetAsyncKeyState ('C'))
-     {
-         flagClearBackground = true;
-     }
+    if (txGetAsyncKeyState('C'))
+    {
+        flagClearBackground = true;
+    }
 
-     if (txGetAsyncKeyState ('N'))
-     {
-         flagClearBackground = false;
-     }
+    if (txGetAsyncKeyState('N'))
+    {
+        flagClearBackground = false;
+    }
 
-     COLORREF color = txGetFillColor();
-     //txSetFillColor (TX_BLACK);
-     if (flagClearBackground == true && HUD != NULL) 
-     {
-         //if (size.x != 0 && size.y != 0) txBitBlt (0, 0, HUD, size.x, size.y);
-          txBitBlt (startPos.x, startPos.y, HUD);
+    COLORREF color = txGetFillColor();
+    if (flagClearBackground == true && HUD != NULL)
+    {
+        txBitBlt(startPos.x, startPos.y, HUD);
 
-     }
-     if (flagClearBackground == true && HUD == NULL) txClear();
-     //txClear();
-     //txSetFillColor (color);
-
+    }
+    if (flagClearBackground == true && HUD == NULL) txClear();
 }
-
 
 double degreesOfDouble (const double number, int degree)
 {
@@ -1743,7 +1382,6 @@ double degreesOfDouble (const double number, int degree)
 
     return result;
 }
-
 
 double elDeg (const double number, const double deg)
 {
@@ -1790,21 +1428,6 @@ double lengthV (const Vector &vector)
     return sqrt (vector.x * vector.x + vector.y * vector.y);
 }
 
-/*
-Vector operator ^ (const Vector &vector, int degree)    
-{
-    Vector result = {};
-    for (int i = 1; i <= degree; i++)
-    {
-        assert (0 <= i && i < BallMax);
-        result.x = vector.x * vector.x;
-        result.y = vector.y * vector.y;
-    }
-
-    return result;
-}
-*/
-
 void Draw_verVector (const Vector &vector, const Vector &startPoint, COLORREF /*colorOfMainVector*/, const double thickness, double rad)
 {
     txBegin ();
@@ -1827,7 +1450,6 @@ double DegToRad (double degrees)
 {
     return (degrees * M_PI / 180);
 }
-
 
 Vector rotateVector (const Vector &vector, double rad)
 {
@@ -1866,5 +1488,3 @@ Vector makePerpendikularLine(const Vector &mainVector)
 
     return perpendikularLine;
 }
-
-

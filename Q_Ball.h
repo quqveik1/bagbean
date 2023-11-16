@@ -4,7 +4,6 @@
 #include "Q_Vector.h"
 #include "Config.h"
 
-
 bool onButtons (Vector pos);
 
 struct Ball 
@@ -28,7 +27,6 @@ struct Ball
     void DrawHistory ();
     void DrawHistoryLines ();
 };
-
 
 void Ball::draw ()
 {
@@ -69,9 +67,7 @@ void Ball::fillHistory ()
     }
 
     history [oldestNum] = pos;
-    oldestNum++;
-
-    
+    oldestNum++; 
 }
 
 void Ball::DrawHistory ()
@@ -103,21 +99,17 @@ void Ball::DrawHistory ()
 
     txSetFillColor (currFillColor);
     txSetColor     (currColor);
-    //txCircle (history[oldestNum].x, history[oldestNum].y, 3);
 }
 
 void Ball::DrawHistoryLines ()
 {
     const double kRgb = 225 / BallHistoryLength;
     double nColor = 0;
-    //$(oldestNum);
 
     for (int i = oldestNum; i < BallHistoryLength - 1; i++)
     {
-        //cout << i;
         txSetFillColor (RGB (nColor, nColor, nColor));
         txSetColor     (RGB (nColor, nColor, nColor));
-      // txCircle (history[i].x, history[i].y, 2);
         assert (0 <= i     && i     < BallHistoryLength);
         assert (0 <= i + 1 && i + 1 < BallHistoryLength);
 
@@ -129,17 +121,14 @@ void Ball::DrawHistoryLines ()
     {
         assert (0 <= BallHistoryLength - 1 && BallHistoryLength - 1 < BallHistoryLength);
 
-
         txLine (history[BallHistoryLength - 1].x, history[BallHistoryLength - 1].y, history[0].x, history[0].y);
     }
 
     for (int i = 0; i < oldestNum - 1; i++)
     {
         assert (0 <= i && i < BallHistoryLength);
-        //cout << i;
         txSetFillColor (RGB (nColor, nColor, nColor));
         txSetColor     (RGB (nColor, nColor, nColor));
-        //txCircle (history[i].x, history[i].y, 2);
         txLine   (history[i].x, history[i].y, history[i + 1].x, history[i + 1].y);
         nColor += kRgb;
     }
@@ -164,16 +153,3 @@ void BallSystem::addBall (Ball newBall)
 
     currlength++;
 }
-
-/*
-
-bool onButtons (Vector pos)
-{
-      return    inRect (pos, TheGS->cleanButton) ||
-                inRect (pos, TheGS->exitButtonHUD) || 
-                inRect (pos, TheGS->newPlanetButton) ||
-                inRect (pos, TheGS->screenShotButton) ||
-                inRect (pos, TheGS->plusSpeedButton) ||
-                inRect (pos, TheGS->minusSpeedButton);
-}
-*/

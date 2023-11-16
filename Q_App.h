@@ -9,10 +9,6 @@
 
 bool isActive (HWND screen);
 
-
-/// <summary>
-/// 
-/// </summary>
 class App
 {
 public:
@@ -63,12 +59,7 @@ public:
 
     App ();
     void getWindowPos ();
-
-
-
 };
-
-
 
 App::App ():
     miniMap (Vector{25,  685}, Vector{375,  285}, {(double) txGetExtentX (), (double) txGetExtentY ()}),
@@ -80,7 +71,6 @@ App::App ():
 {
 
 }
-
 
 void App::getWindowPos ()
 {
@@ -104,5 +94,3 @@ bool isActive (HWND screen)
     }
     return true;
 }
-    
-

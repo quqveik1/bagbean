@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "TXLib.h"
 
 struct Vector 
@@ -112,7 +111,6 @@ void equal (Vector &a, const Vector &b)
     a.x = b.x;
     a.y = b.y;
 }
-
 
 inline void lining ()
 {
